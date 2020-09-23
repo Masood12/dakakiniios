@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dakakini/ui/HomeScreen.dart';
+import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -53,6 +54,15 @@ class _SplashScreenState extends State<SplashScreen> {
                       ],
                     ),
                   )),
+
+                Container(
+                  height: 100,
+                  width: MediaQuery.of(context).size.width,
+                    child: Image.asset(
+                      'assets/bottom.png',
+                      fit: BoxFit.fill,
+                    )
+                )
              // Expanded(flex: 2, child: bottomBarTextCopyright()),
 
             ],
