@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:dakakini/ui/HomeScreen.dart';
+import 'package:dakakini/ui/LoginScreen.dart';
+import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -16,10 +18,10 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
 
-//    Timer(
-//        Duration(seconds: 2),
-//        () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-//                builder: (BuildContext context) => HomeScreen())));
+    Timer(
+        Duration(seconds: 2),
+        () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (BuildContext context) => LoginScreen())));
   }
 
   @override
@@ -53,6 +55,15 @@ class _SplashScreenState extends State<SplashScreen> {
                       ],
                     ),
                   )),
+
+                Container(
+                  height: 100,
+                  width: MediaQuery.of(context).size.width,
+                    child: Image.asset(
+                      'assets/bottom.png',
+                      fit: BoxFit.fill,
+                    )
+                )
              // Expanded(flex: 2, child: bottomBarTextCopyright()),
 
             ],
