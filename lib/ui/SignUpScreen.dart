@@ -23,13 +23,7 @@ class _SignUpState extends State<SignUp> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text(
-                "SIGN UP",
-                style: TextStyle(fontSize: 20.0, color: Colors.grey),
-              ),
-              SizedBox(
-                height: 25,
-              ),
+              Container(width: 250, child: Image.asset('assets/logo.png')),
               fullNameTextFormFeild(),
               emailTextFormFeild(),
               passwordTextFormFeild(),
