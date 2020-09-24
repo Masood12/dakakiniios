@@ -216,6 +216,8 @@ class _SignUpState extends State<SignUp> {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: RaisedButton(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
           color: colorMain,
           textColor: Colors.white,
           child: Text("Sign Up"),

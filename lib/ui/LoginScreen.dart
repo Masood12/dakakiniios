@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 25,
               ),
-              signInWidget(height, width),
+              signInWidget(),
               SizedBox(
                 height: 15,
               ),
@@ -52,10 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       flex: 1,
                     ),
                     GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (BuildContext context) => SignUp()));
-                      },
+                      onTap: () {},
                       child: new Text("Forget Your Password?",
                           textAlign: TextAlign.start,
                           style: TextStyle(
@@ -124,12 +121,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     width: 5,
                   ),
-                  Text("SIGN UP",
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          fontSize: 14.0,
-                          color: colorMain,
-                          fontWeight: FontWeight.w600))
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (BuildContext context) => SignUp()));
+                    },
+                    child: Text("SIGN UP",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: 14.0,
+                            color: colorMain,
+                            fontWeight: FontWeight.w600)),
+                  )
                 ],
               )
             ],
@@ -140,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
 //
-  signInWidget(heightButton, width) {
+  signInWidget() {
     return Container(
       padding: EdgeInsets.all(0.0),
       height: height40,
