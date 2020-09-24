@@ -192,6 +192,13 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           labelStyle:
               TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: underLineColor),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: underLineColor),
+          ),
         ));
   }
 
@@ -225,32 +232,17 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           labelStyle:
               TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-          border: new UnderlineInputBorder(
-              borderSide: new BorderSide(color: Colors.black))),
+
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: underLineColor),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: underLineColor),
+        ),
+          ),
     );
   }
 
-  codeTextFormFeild() {
-    return TextFormField(
-      // onChanged: (value) => store.password = value,
-      decoration: InputDecoration(
-          hintText: 'Code if you have',
-          hintStyle: TextStyle(fontSize: 12, color: Colors.black),
-          // errorText: store.error.password,
-          prefixIcon: Container(
-            margin: EdgeInsets.fromLTRB(0, 4, 8, 4),
-            child: Icon(
-              Icons.email,
-              size: prefixIconSize,
-              color: Colors.black54,
-            ),
-          ),
-          labelStyle:
-              TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-          border: new UnderlineInputBorder(
-              borderSide: new BorderSide(color: Colors.black))),
-    );
-  }
 
   agreeText() {
     return Row(
