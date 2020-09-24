@@ -1,3 +1,4 @@
+import 'package:dakakini/ui/LoginScreen.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +14,8 @@ class _SignUpState extends State<SignUp> {
   FocusNode fullNameFocus = FocusNode();
   FocusNode emailFocus = FocusNode();
   FocusNode passwordFocus = FocusNode();
+  var dropDownValue = "Select Shop Type";
+  var dropDownValueID = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,27 +140,56 @@ class _SignUpState extends State<SignUp> {
   }
 
   shopType() {
-    return Container(
-      padding: EdgeInsets.symmetric(),
-      width: MediaQuery.of(context).size.width,
-      child: new DropdownButton<String>(
-        items: <String>[
-          'Select Shop Type',
-          'VIP shop',
-          'Gold Shop',
-          'Silver Shop',
-          'Free Shop',
-          'User'
-        ].map((String value) {
-          return new DropdownMenuItem<String>(
-            value: value,
-            child: Container(
-                width: MediaQuery.of(context).size.width - 65, //200.0 to 100.0
-                child: new Text(value)),
-          );
-        }).toList(),
-        onChanged: (_) {},
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.symmetric(),
+          child: new DropdownButton<String>(
+            value: dropDownValue,
+            icon: Icon(Icons.keyboard_arrow_down),
+            underline: Container(
+              height: 0,
+              width: 0,
+            ),
+            items: <String>[
+              'Select Shop Type',
+              'VIP shop',
+              'Gold Shop',
+              'Silver Shop',
+              'Free Shop',
+              'User'
+            ].map((String value) {
+              return new DropdownMenuItem<String>(
+                value: value,
+                child: Container(width: 200, child: new Text(value)),
+                onTap: () {
+                  setState(() {
+                    dropDownValue = value;
+                    if (dropDownValue == "VIP shop") {
+                      dropDownValueID = "1003";
+                    } else if (dropDownValue == "Gold Shop") {
+                      dropDownValueID = "1002";
+                    } else if (dropDownValue == "Silver Shop") {
+                      dropDownValueID = "1006";
+                    } else if (dropDownValue == "Free Shop") {
+                      dropDownValueID = "1007";
+                    } else if (dropDownValue == "User") {
+                      dropDownValueID = "1005";
+                    }
+                  });
+                },
+              );
+            }).toList(),
+            onChanged: (_) {},
+          ),
+        ),
+        Container(
+          height: 1,
+          width: MediaQuery.of(context).size.width,
+          color: underLineColor,
+        )
+      ],
     );
   }
 
@@ -172,7 +204,7 @@ class _SignUpState extends State<SignUp> {
           prefixIcon: Container(
             margin: EdgeInsets.fromLTRB(0, 4, 8, 4),
             child: Icon(
-              Icons.email,
+              Icons.code,
               size: prefixIconSize,
               color: Colors.black54,
             ),
@@ -239,9 +271,15 @@ class _SignUpState extends State<SignUp> {
           SizedBox(
             width: 10,
           ),
-          Text(
-            'Sign In',
-            style: TextStyle(color: colorMain),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (BuildContext context) => LoginScreen()));
+            },
+            child: Text(
+              'Sign In',
+              style: TextStyle(color: colorMain),
+            ),
           )
         ],
       ),
