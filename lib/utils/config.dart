@@ -3,6 +3,8 @@ import 'dart:ui';
 
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const smallAppBar = 60.0;
 const BigAppBar = 120.0;
@@ -73,16 +75,16 @@ const Map<int, String> monthsInYear = {
   12: "Dec",
 };
 
-//showToast(msg, error) {
-//  Fluttertoast.showToast(
-//      msg: msg,
-//      toastLength: Toast.LENGTH_SHORT,
-//      gravity: ToastGravity.BOTTOM,
-//      timeInSecForIosWeb: 1,
-//      backgroundColor: error == true ? Colors.red : Colors.green,
-//      textColor: error == true ? Colors.white : Colors.black,
-//      fontSize: 16.0);
-//}
+showToast(msg, error) {
+  Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: error == true ? Colors.red : Colors.green,
+      textColor: error == true ? Colors.white : Colors.black,
+      fontSize: 16.0);
+}
 
 //showLongPressDialog(BuildContext context) {
 //  return showDialog(
@@ -287,124 +289,124 @@ fieldFocusChange(
 //  return computedTime;
 //}
 //
-//class Config {
-//  static Future<bool> getIntroScreenViewed() async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    return prefs.getBool('introScreen');
-//  }
-//
-//  static isIntroScreenViewed(bool introScreen) async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    prefs.setBool('introScreen', introScreen);
-//  }
-//
-//  static Future<String> getUserName() async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    return prefs.getString('userName');
-//  }
-//
-//  static setUserName(String userName) async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    currentUserNameValue = userName;
-//    prefs.setString('userName', userName);
-//  }
-//
-//  static Future<String> getUserEmail() async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    return prefs.getString('userEmail');
-//  }
-//
-//  static setUserEmail(String userEmail) async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    currentUserEmailValue = userEmail;
-//    prefs.setString('userEmail', userEmail);
-//  }
-//
-//  static Future<String> getUserProfilePicture() async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    return prefs.getString('userProfilePicture');
-//  }
-//
-//  static setUserProfilePicture(String userProfilePicture) async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    prefs.setString('userProfilePicture', userProfilePicture);
-//  }
-//
-//  static Future<String> getUserID() async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    return prefs.getString('userID');
-//  }
-//
-//  static setUserID(String userID) async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    prefs.setString('userID', userID);
-//  }
-//
-//  static Future<String> getCompanyID() async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    return prefs.getString('companyID');
-//  }
-//
-//  static setCompanyID(String companyID) async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    prefs.setString('companyID', companyID);
-//  }
-//
-//  static Future<String> getBasicImageUrl() async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    return prefs.getString('imageURL');
-//  }
-//
-//  static setBasicImageUrl(String imageURL) async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    prefs.setString('imageURL', imageURL);
-//  }
-//
-//  static Future<String> getUserDisplayName() async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    return prefs.getString('displayName');
-//  }
-//
-//  static setUserDisplayName(String displayName) async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    prefs.setString('displayName', displayName);
-//  }
-//
-//  static Future<String> getUserMobile() async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    return prefs.getString('userMobile');
-//  }
-//
-//  static setUserMobile(String userMobile) async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    prefs.setString('userMobile', userMobile);
-//  }
-//
-//  static Future<String> getUserCompanyName() async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    return prefs.getString('userCompanyName');
-//  }
-//
-//  static setUserCompanyName(String userCompanyName) async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    prefs.setString('userCompanyName', userCompanyName);
-//  }
-//
-//  static Future<String> getDateForShowingDialog() async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    return prefs.getString('Lastdate');
-//  }
-//
-//  static setDateForShowingDialog(String lastdate) async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    prefs.setString('Lastdate', lastdate);
-//  }
-//
-//  static clearSharePreference() async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    prefs.remove("userName");
-//  }
-//}
+class Config {
+  static Future<bool> getIntroScreenViewed() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('introScreen');
+  }
+
+  static isIntroScreenViewed(bool introScreen) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('introScreen', introScreen);
+  }
+
+  static Future<String> getUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userName');
+  }
+
+  static setUserName(String userName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    currentUserNameValue = userName;
+    prefs.setString('userName', userName);
+  }
+
+  static Future<String> getUserEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userEmail');
+  }
+
+  static setUserEmail(String userEmail) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    currentUserEmailValue = userEmail;
+    prefs.setString('userEmail', userEmail);
+  }
+
+  static Future<String> getUserProfilePicture() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userProfilePicture');
+  }
+
+  static setUserProfilePicture(String userProfilePicture) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('userProfilePicture', userProfilePicture);
+  }
+
+  static Future<int> getUserID() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('userID');
+  }
+
+  static setUserID(int userID) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('userID', userID);
+  }
+
+  static Future<int> getUserType() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('userType');
+  }
+
+  static setUserType(int companyID) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('userType', companyID);
+  }
+
+  static Future<String> getBasicImageUrl() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('imageURL');
+  }
+
+  static setBasicImageUrl(String imageURL) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('imageURL', imageURL);
+  }
+
+  static Future<String> getUserDisplayName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('displayName');
+  }
+
+  static setUserDisplayName(String displayName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('displayName', displayName);
+  }
+
+  static Future<String> getUserMobile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userMobile');
+  }
+
+  static setUserMobile(String userMobile) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('userMobile', userMobile);
+  }
+
+  static Future<String> getUserCompanyName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userCompanyName');
+  }
+
+  static setUserCompanyName(String userCompanyName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('userCompanyName', userCompanyName);
+  }
+
+  static Future<String> getDateForShowingDialog() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('Lastdate');
+  }
+
+  static setDateForShowingDialog(String lastdate) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('Lastdate', lastdate);
+  }
+
+  static clearSharePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove("userName");
+  }
+}
 
 int secondsPassed = 0;
 
