@@ -65,10 +65,10 @@ class _SignUpState extends State<SignUp> {
         ),
         labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: colorMain),
+          borderSide: BorderSide(color: underLineColor),
         ),
         focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: colorMain),
+          borderSide: BorderSide(color: underLineColor),
         ),
       ),
     );
@@ -94,10 +94,10 @@ class _SignUpState extends State<SignUp> {
           labelStyle:
               TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: colorMain),
+            borderSide: BorderSide(color: underLineColor),
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: colorMain),
+            borderSide: BorderSide(color: underLineColor),
           )),
     );
   }
@@ -134,10 +134,10 @@ class _SignUpState extends State<SignUp> {
           labelStyle:
               TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: colorMain),
+            borderSide: BorderSide(color: underLineColor),
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: colorMain),
+            borderSide: BorderSide(color: underLineColor),
           )),
     );
   }
@@ -147,7 +147,14 @@ class _SignUpState extends State<SignUp> {
       padding: EdgeInsets.symmetric(),
       width: MediaQuery.of(context).size.width,
       child: new DropdownButton<String>(
-        items: <String>['A', 'B', 'C', 'D'].map((String value) {
+        items: <String>[
+          'Select Shop Type',
+          'VIP shop',
+          'Gold Shop',
+          'Silver Shop',
+          'Free Shop',
+          'User'
+        ].map((String value) {
           return new DropdownMenuItem<String>(
             value: value,
             child: Container(
@@ -179,10 +186,10 @@ class _SignUpState extends State<SignUp> {
           labelStyle:
               TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: colorMain),
+            borderSide: BorderSide(color: underLineColor),
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: colorMain),
+            borderSide: BorderSide(color: underLineColor),
           )),
     );
   }
