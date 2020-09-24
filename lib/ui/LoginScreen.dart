@@ -1,4 +1,5 @@
 //import 'package:camera/camera.dart';
+import 'package:dakakini/ui/SignUpScreen.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,21 +28,24 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-               Container(
-                   width: 250,
-                   height: 300,
-                   child: Image.asset('assets/logo.png')),
-
+              Container(
+                  width: 250,
+                  height: 300,
+                  child: Image.asset('assets/logo.png')),
               emailTextFormFeild(),
-              SizedBox(height: 5,),
+              SizedBox(
+                height: 5,
+              ),
               passwordTextFormFeild(),
-              SizedBox(height: 25,),
-
-              signInWidget(height,width),
-              SizedBox(height: 15,),
-
+              SizedBox(
+                height: 25,
+              ),
+              signInWidget(height, width),
+              SizedBox(
+                height: 15,
+              ),
               Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     agreeText(),
                     Spacer(
@@ -49,43 +53,47 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-//                        Navigator.push(context,
-//                            MaterialPageRoute(builder: (context) {
-//                              return SignUpNew();
-//                            }));
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (BuildContext context) => SignUp()));
                       },
                       child: new Text("Forget Your Password?",
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                              fontSize: 12.0, color: Colors.black,fontWeight: FontWeight.w600)),
+                              fontSize: 12.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600)),
                     )
                   ]),
-
-              SizedBox(height: 15,),
+              SizedBox(
+                height: 15,
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Expanded(child:Container(
+                      Expanded(
+                          child: Container(
                         height: 1,
                         color: Colors.grey,
                       )),
                       Padding(
-                        padding: const EdgeInsets.only(left:8.0,right: 8.0),
-                        child: Text('0R',style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600
-                        ),),
+                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                        child: Text(
+                          '0R',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
+                        ),
                       ),
-                      Expanded(child:Container(
+                      Expanded(
+                          child: Container(
                         height: 1,
                         color: Colors.grey,
                       )),
                     ]),
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -94,29 +102,34 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 36,
                     width: 36,
                   ),
-                  SizedBox(width: 30,),
+                  SizedBox(
+                    width: 30,
+                  ),
                   SvgPicture.asset(
                     "assets/google.svg",
                     height: 36,
                     width: 36,
-
                   )
                 ],
               ),
-              SizedBox(height: 20,),
-
+              SizedBox(
+                height: 20,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text("Don't Have an account?",
                       textAlign: TextAlign.start,
-                      style: TextStyle(
-                          fontSize: 12.0, color: Colors.black)),
-                  SizedBox(width: 5,),
+                      style: TextStyle(fontSize: 12.0, color: Colors.black)),
+                  SizedBox(
+                    width: 5,
+                  ),
                   Text("SIGN UP",
                       textAlign: TextAlign.start,
                       style: TextStyle(
-                          fontSize: 14.0, color: colorMain,fontWeight: FontWeight.w600))
+                          fontSize: 14.0,
+                          color: colorMain,
+                          fontWeight: FontWeight.w600))
                 ],
               )
             ],
@@ -128,45 +141,41 @@ class _LoginScreenState extends State<LoginScreen> {
 
 //
   signInWidget(heightButton, width) {
-    return
-          Container(
-        padding: EdgeInsets.all(0.0),
-        height: height40,
-        child: RaisedButton(
-          padding: EdgeInsets.all(0),
-         onPressed: (){},
-         // onPressed: store.validateEmailAndPassword() ? null : callSignInApi,
-          color: colorMain,
-          disabledColor: disabledButtonColor,
-          textColor: Colors.white,
-          disabledTextColor: Colors.white,
-          child: Stack(
-            // mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  ' SIGN IN',
-                  style: TextStyle(
-                      fontSize: buttonFontSize, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
+    return Container(
+      padding: EdgeInsets.all(0.0),
+      height: height40,
+      child: RaisedButton(
+        padding: EdgeInsets.all(0),
+        onPressed: () {},
+        // onPressed: store.validateEmailAndPassword() ? null : callSignInApi,
+        color: colorMain,
+        disabledColor: disabledButtonColor,
+        textColor: Colors.white,
+        disabledTextColor: Colors.white,
+        child: Stack(
+          // mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                ' SIGN IN',
+                style: TextStyle(
+                    fontSize: buttonFontSize, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
-
-            ],
-          ),
-          shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
+            ),
+          ],
         ),
-      );
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
+      ),
+    );
   }
-
 
   emailTextFormFeild() {
     return TextFormField(
-      focusNode: emailFocus,
-      // onChanged: (value) => store.password = value,
-      decoration: InputDecoration(
+        focusNode: emailFocus,
+        // onChanged: (value) => store.password = value,
+        decoration: InputDecoration(
           hintText: 'Email',
           hintStyle: TextStyle(fontSize: 12, color: Colors.black),
           // errorText: store.error.password,
@@ -180,8 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           labelStyle:
               TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-
-    ));
+        ));
   }
 
   passwordTextFormFeild() {
@@ -246,10 +254,13 @@ class _LoginScreenState extends State<LoginScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         checkBox(),
-        SizedBox(width: 3,),
+        SizedBox(
+          width: 3,
+        ),
         Text(
           'Remember Me',
-          style: TextStyle(color: Colors.black,fontSize: 12,fontWeight: FontWeight.w600),
+          style: TextStyle(
+              color: Colors.black, fontSize: 12, fontWeight: FontWeight.w600),
         )
       ],
     );
