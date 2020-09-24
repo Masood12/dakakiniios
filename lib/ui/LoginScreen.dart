@@ -1,4 +1,6 @@
 //import 'package:camera/camera.dart';
+import 'package:dakakini/store/sign_in_store.dart';
+import 'package:dakakini/ui/HomeScreen.dart';
 import 'package:dakakini/ui/SignUpScreen.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +13,34 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool passwordVisible = false;
+
+  final store = SignInStore();
+
+  String msg = '';
+  bool passwordVisible;
+  bool showTooltip = false;
   bool checkBoxValue = false;
-  FocusNode fullNameFocus = FocusNode();
+
+  //Focus Nodes
   FocusNode emailFocus = FocusNode();
   FocusNode passwordFocus = FocusNode();
+  //Controllers
+  final emailController = TextEditingController();
+  final passController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    store.setupValidations();
+    passwordVisible = false;
+  }
+
+  @override
+  void dispose() {
+    store.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -142,15 +167,15 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-//
+
   signInWidget() {
     return Container(
       padding: EdgeInsets.all(0.0),
       height: height40,
       child: RaisedButton(
         padding: EdgeInsets.all(0),
-        onPressed: () {},
-        // onPressed: store.validateEmailAndPassword() ? null : callSignInApi,
+
+         onPressed: store.validateEmailAndPassword() ? null : callSignInApi,
         color: colorMain,
         disabledColor: disabledButtonColor,
         textColor: Colors.white,
@@ -177,7 +202,8 @@ class _LoginScreenState extends State<LoginScreen> {
   emailTextFormFeild() {
     return TextFormField(
         focusNode: emailFocus,
-        // onChanged: (value) => store.password = value,
+        textInputAction: TextInputAction.next,
+        onChanged: (value) => store.email = value,
         decoration: InputDecoration(
           hintText: 'Email',
           hintStyle: TextStyle(fontSize: 12, color: Colors.black),
@@ -192,6 +218,13 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           labelStyle:
               TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: underLineColor),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: underLineColor),
+          ),
         ));
   }
 
@@ -199,10 +232,12 @@ class _LoginScreenState extends State<LoginScreen> {
     return TextFormField(
       obscureText: !passwordVisible,
       focusNode: passwordFocus,
-      // onChanged: (value) => store.password = value,
+      controller: passController,
+      onChanged: (value) => store.password = value,
       decoration: InputDecoration(
           hintText: 'Password',
           hintStyle: TextStyle(fontSize: 12, color: Colors.black),
+
           // errorText: store.error.password,
           suffixIcon: IconButton(
             icon: Icon(
@@ -225,30 +260,14 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           labelStyle:
               TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-          border: new UnderlineInputBorder(
-              borderSide: new BorderSide(color: Colors.black))),
-    );
-  }
 
-  codeTextFormFeild() {
-    return TextFormField(
-      // onChanged: (value) => store.password = value,
-      decoration: InputDecoration(
-          hintText: 'Code if you have',
-          hintStyle: TextStyle(fontSize: 12, color: Colors.black),
-          // errorText: store.error.password,
-          prefixIcon: Container(
-            margin: EdgeInsets.fromLTRB(0, 4, 8, 4),
-            child: Icon(
-              Icons.email,
-              size: prefixIconSize,
-              color: Colors.black54,
-            ),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: underLineColor),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: underLineColor),
+        ),
           ),
-          labelStyle:
-              TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-          border: new UnderlineInputBorder(
-              borderSide: new BorderSide(color: Colors.black))),
     );
   }
 
@@ -283,5 +302,40 @@ class _LoginScreenState extends State<LoginScreen> {
         },
       ),
     );
+  }
+  callSignInApi() {
+    store.getTheUsers(context).then((response) {
+      if (response.status == 1) {
+        //showToast(response.messages[0], false);
+        Config.setUserName("${response.data.name}");
+        Config.setUserEmail("${response.data.email}");
+        Config.setUserProfilePicture(
+            "${response.data.image}");
+        Config.setUserID(response.data.userId);
+        Config.setUserType(response.data.userType);
+        // Config.setUserMobile("${response.data.user}");
+        if(response.data.userType==1005){
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+                (Route<dynamic> route) => false,
+          );
+        }else{
+
+          if(response.data.isexpire){
+            showToast("Contact Admin to approve", true);
+          }else{
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (Route<dynamic> route) => false,
+            );
+          }
+        }
+
+      } else if (response.status == 0) {
+        showToast(response.message, true);
+      }
+    });
   }
 }
