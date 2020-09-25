@@ -1,3 +1,4 @@
+import 'package:dakakini/store/sign_up_store.dart';
 import 'package:dakakini/ui/LoginScreen.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final store = SignUpStore();
   bool passwordVisible = false;
   bool checkBoxValue = false;
   FocusNode fullNameFocus = FocusNode();
@@ -47,7 +49,7 @@ class _SignUpState extends State<SignUp> {
     return TextFormField(
       focusNode: fullNameFocus,
       textInputAction: TextInputAction.next,
-      // onChanged: (value) => store.password = value,
+      onChanged: (value) => store.fullName = value,
       decoration: InputDecoration(
         hintText: 'Full Name',
         hintStyle: TextStyle(fontSize: 12, color: Colors.black),
@@ -75,7 +77,7 @@ class _SignUpState extends State<SignUp> {
     return TextFormField(
       focusNode: emailFocus,
       textInputAction: TextInputAction.next,
-      // onChanged: (value) => store.password = value,
+      onChanged: (value) => store.email = value,
       decoration: InputDecoration(
           hintText: 'Email',
           hintStyle: TextStyle(fontSize: 12, color: Colors.black),
@@ -104,7 +106,7 @@ class _SignUpState extends State<SignUp> {
       obscureText: !passwordVisible,
       textInputAction: TextInputAction.next,
       focusNode: passwordFocus,
-      // onChanged: (value) => store.password = value,
+      onChanged: (value) => store.password = value,
       decoration: InputDecoration(
           hintText: 'Password',
           hintStyle: TextStyle(fontSize: 12, color: Colors.black),
@@ -177,6 +179,7 @@ class _SignUpState extends State<SignUp> {
                     } else if (dropDownValue == "User") {
                       dropDownValueID = "1005";
                     }
+                    store.userType = dropDownValueID;
                   });
                 },
               );
@@ -195,7 +198,7 @@ class _SignUpState extends State<SignUp> {
 
   codeTextFormFeild() {
     return TextFormField(
-      // onChanged: (value) => store.password = value,
+      onChanged: (value) => store.refNo = value,
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
           hintText: 'Code if you have',
@@ -254,7 +257,9 @@ class _SignUpState extends State<SignUp> {
           color: colorMain,
           textColor: Colors.white,
           child: Text("Sign Up"),
-          onPressed: () {}),
+          onPressed: () {
+            store.signUp(context);
+          }),
     );
   }
 

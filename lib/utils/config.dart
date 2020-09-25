@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
 
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,9 +52,6 @@ const kDefaultShadow = BoxShadow(
   blurRadius: 4,
   color: Colors.black26,
 );
-
-
-
 
 const String about_us =
     'Lorem Ipsum is simply dummy text of the printing and typesetting industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum';
@@ -150,10 +146,6 @@ dummyCoverImage(context, isLoading) {
       ));
 }
 
-
-
-
-
 dummyDeveloperImage(context, isLoading) {
   return Container(
       color: colorDivider,
@@ -238,7 +230,6 @@ backgroundImage() {
   );
 }
 
-
 String truncateWithEllipsis(int cutoff, String myString) {
   return (myString.length <= cutoff)
       ? myString
@@ -273,6 +264,7 @@ fieldFocusChange(
   currentFocus.unfocus();
   FocusScope.of(context).requestFocus(nextFocus);
 }
+
 //
 //computeTimeAndDate(dateAndTime) {
 //  var computedTime;
@@ -408,79 +400,23 @@ class Config {
   }
 }
 
-int secondsPassed = 0;
-
-class TimerApp extends StatefulWidget {
-  @override
-  _TimerAppState createState() => _TimerAppState();
-}
-
-class _TimerAppState extends State<TimerApp> {
-  static const duration = const Duration(seconds: 1, days: 5);
-
-  bool isActive = true;
-
-  Timer timer;
-
-  void handleTick() {
-    if (isActive) {
-      setState(() {
-        secondsPassed = secondsPassed - 1;
-      });
-    }
+class UIHelper {
+  static Widget verticalSpace([double height = 8]) {
+    return SizedBox(height: height);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    if (timer == null) {
-      timer = Timer.periodic(duration, (Timer t) {
-        handleTick();
-      });
-    }
-    int seconds = secondsPassed % 60;
-    int minutes = secondsPassed ~/ 60;
-    int hours = secondsPassed ~/ (60 * 60);
-
-    return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          LabelText(label: 'HRS', value: hours.toString().padLeft(2, '0')),
-          LabelText(label: 'MIN', value: minutes.toString().padLeft(2, '0')),
-          LabelText(label: 'SEC', value: seconds.toString().padLeft(2, '0')),
-        ],
-      ),
-    );
+  static Widget horizontalSpace([double width = 8]) {
+    return SizedBox(width: width);
   }
 }
 
-class LabelText extends StatelessWidget {
-  LabelText({this.label, this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 2),
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), color: colorDivider),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(
-            '$value',
-            style: TextStyle(
-                color: colorMain, fontSize: 14, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            '$label',
-            style: TextStyle(color: colorMain, fontSize: 8),
-          ),
-        ],
-      ),
-    );
-  }
+noImageAvailable({height, width}) {
+  return Container(
+    color: Color(0xffd8d6d9),
+    child: Image.asset(
+      "assets/no_image.png",
+      height: height,
+      width: width,
+    ),
+  );
 }
