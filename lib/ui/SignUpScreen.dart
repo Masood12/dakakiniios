@@ -10,34 +10,40 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final store = SignUpStore();
+  SignUpStore store = SignUpStore();
+
   bool passwordVisible = false;
   bool checkBoxValue = false;
+
   FocusNode fullNameFocus = FocusNode();
   FocusNode emailFocus = FocusNode();
   FocusNode passwordFocus = FocusNode();
+
   var dropDownValue = "Select Shop Type";
   var dropDownValueID = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(width: 250, child: Image.asset('assets/logo.png')),
-              fullNameTextFormFeild(),
-              emailTextFormFeild(),
-              passwordTextFormFeild(),
-              shopType(),
-              codeTextFormFeild(),
-              agreeText(),
-              singUpBotton(),
-              alreadyHaveAnAccount()
-            ],
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(width: 250, child: Image.asset('assets/logo.png')),
+                fullNameTextFormFeild(),
+                emailTextFormFeild(),
+                passwordTextFormFeild(),
+                shopType(),
+                codeTextFormFeild(),
+                agreeText(),
+                singUpBotton(),
+                alreadyHaveAnAccount()
+              ],
+            ),
           ),
         ),
       ),
@@ -48,6 +54,10 @@ class _SignUpState extends State<SignUp> {
   fullNameTextFormFeild() {
     return TextFormField(
       focusNode: fullNameFocus,
+      onFieldSubmitted: (term) {
+        fieldFocusChange(context, fullNameFocus, emailFocus);
+      },
+      keyboardType: TextInputType.text,
       textInputAction: TextInputAction.next,
       onChanged: (value) => store.fullName = value,
       decoration: InputDecoration(
@@ -76,6 +86,10 @@ class _SignUpState extends State<SignUp> {
   emailTextFormFeild() {
     return TextFormField(
       focusNode: emailFocus,
+      onFieldSubmitted: (term) {
+        fieldFocusChange(context, emailFocus, passwordFocus);
+      },
+      keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
       onChanged: (value) => store.email = value,
       decoration: InputDecoration(
@@ -104,8 +118,9 @@ class _SignUpState extends State<SignUp> {
   passwordTextFormFeild() {
     return TextFormField(
       obscureText: !passwordVisible,
-      textInputAction: TextInputAction.next,
       focusNode: passwordFocus,
+      keyboardType: TextInputType.visiblePassword,
+      textInputAction: TextInputAction.done,
       onChanged: (value) => store.password = value,
       decoration: InputDecoration(
           hintText: 'Password',
@@ -149,6 +164,7 @@ class _SignUpState extends State<SignUp> {
           padding: EdgeInsets.symmetric(),
           child: new DropdownButton<String>(
             value: dropDownValue,
+            isExpanded: true,
             icon: Icon(Icons.keyboard_arrow_down),
             underline: Container(
               height: 0,
@@ -164,7 +180,7 @@ class _SignUpState extends State<SignUp> {
             ].map((String value) {
               return new DropdownMenuItem<String>(
                 value: value,
-                child: Container(width: 200, child: new Text(value)),
+                child: Container(child: new Text(value)),
                 onTap: () {
                   setState(() {
                     dropDownValue = value;
@@ -199,6 +215,7 @@ class _SignUpState extends State<SignUp> {
   codeTextFormFeild() {
     return TextFormField(
       onChanged: (value) => store.refNo = value,
+      keyboardType: TextInputType.text,
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
           hintText: 'Code if you have',
@@ -230,7 +247,7 @@ class _SignUpState extends State<SignUp> {
         checkBox(),
         Text(
           'I accept all terms and conditions',
-          style: TextStyle(color: Colors.black54),
+          style: TextStyle(color: Colors.black),
         )
       ],
     );
@@ -258,7 +275,7 @@ class _SignUpState extends State<SignUp> {
           textColor: Colors.white,
           child: Text("Sign Up"),
           onPressed: () {
-            store.signUp(context);
+            store.validate(context);
           }),
     );
   }
@@ -271,7 +288,7 @@ class _SignUpState extends State<SignUp> {
         children: <Widget>[
           Text(
             'Already have an Account',
-            style: TextStyle(color: Colors.black54),
+            style: TextStyle(color: Colors.black),
           ),
           SizedBox(
             width: 10,

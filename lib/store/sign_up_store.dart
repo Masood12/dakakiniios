@@ -1,10 +1,7 @@
-import 'dart:convert';
-
-import 'package:dakakini/models/login_response_model.dart';
 import 'package:dakakini/models/sign_model.dart';
 import 'package:dakakini/network/network_calls_apis.dart';
 import 'package:dakakini/network/network_services.dart';
-import 'package:dakakini/ui/ShopScreen.dart';
+import 'package:dakakini/ui/LoginScreen.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -21,15 +18,17 @@ abstract class _SignUpStore with Store {
 
   SignUp signUpModel;
   @observable
-  String fullName;
+  String fullName = "";
   @observable
-  String email;
+  String email = "";
   @observable
-  String password;
+  String password = "";
   @observable
-  String userType;
+  String userType = "";
   @observable
-  String refNo;
+  String refNo = "";
+  @observable
+  bool acceptTerms = false;
 
   void dispose() {
     for (final d in _disposers) {
@@ -37,20 +36,41 @@ abstract class _SignUpStore with Store {
     }
   }
 
-  Future<SignUp> signUp(context) async {
-    if (refNo == "") {
-      signUpModel.status = 0;
-      signUpModel.message = "Please select user type";
-      showToast(signUpModel.message, true);
-      return signUpModel;
+  validate(context) {
+    if (fullName.isEmpty) {
+      showToast("Full Name cannot be empty", true);
+      return;
     }
+    if (email.isEmpty) {
+      showToast("Email cannot be empty", true);
+      return;
+    }
+    if (!RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email)) {
+      showToast("Invalid Email", true);
+      return;
+    }
+    if (password.isEmpty) {
+      showToast("Password cannot be empty", true);
+      return;
+    }
+    if (userType.isEmpty) {
+      showToast("Select Shop Type", true);
+      return;
+    }
+    signUp(context);
+  }
+
+  Future<SignUp> signUp(context) async {
     signUpModel = await networkService.signUpUser(
         signUpApi, fullName, email, password, userType, refNo, context);
     if (signUpModel.status == 0) {
       showToast(signUpModel.message, true);
     } else {
+      showToast("Registration Sucessfull", false);
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (BuildContext context) => ShopSearch()));
+          MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
     }
     return signUpModel;
   }

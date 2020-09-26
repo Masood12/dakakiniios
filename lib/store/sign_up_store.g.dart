@@ -84,6 +84,21 @@ mixin _$SignUpStore on _SignUpStore, Store {
     });
   }
 
+  final _$acceptTermsAtom = Atom(name: '_SignUpStore.acceptTerms');
+
+  @override
+  bool get acceptTerms {
+    _$acceptTermsAtom.reportRead();
+    return super.acceptTerms;
+  }
+
+  @override
+  set acceptTerms(bool value) {
+    _$acceptTermsAtom.reportWrite(value, super.acceptTerms, () {
+      super.acceptTerms = value;
+    });
+  }
+
   final _$stateAtom = Atom(name: '_SignUpStore.state');
 
   @override
@@ -107,6 +122,7 @@ email: ${email},
 password: ${password},
 userType: ${userType},
 refNo: ${refNo},
+acceptTerms: ${acceptTerms},
 state: ${state}
     ''';
   }

@@ -60,15 +60,21 @@ class NetworkService {
       url, fullName, email, password, userType, refNo, context) async {
     ProgressDialogDotted().showProgressDialog(context);
 
-    var body = jsonEncode({
+    var body = {
       "name": '$fullName',
       "email": "$email",
-      "user_type": "$userType",
       "pass": "$password",
-      "ref_no": "ref_no",
-    });
+      "user_type": "$userType",
+      "ref_no": "$refNo",
+    };
+    print("$body");
+    var headers = {"Content-Type": "application/x-www-form-urlencoded"};
     try {
-      final response = await http.post(url, body: body);
+      final response = await http.post(
+        url,
+        body: body,
+        headers: headers,
+      );
       final int statusCode = response.statusCode;
       print(statusCode);
       var decodedResponse = json.decode(response.body);
