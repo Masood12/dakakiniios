@@ -1,6 +1,4 @@
-import 'package:dakakini/ui/HomeScreen.dart';
-import 'package:dakakini/ui/LoginScreen.dart';
-import 'package:dakakini/ui/ShopScreen.dart';
+import 'package:dakakini/ui/Shop/ShopScreen.dart';
 import 'package:dakakini/ui/SplashScreen.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
@@ -18,16 +16,15 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
         statusBarColor: colorMain, // Color for Android
         statusBarBrightness:
-        Brightness.dark, // Dark == white status bar -- for IOS.
-        statusBarIconBrightness: Brightness.dark));
+            Brightness.light, // Dark == white status bar -- for IOS.
+        statusBarIconBrightness: Brightness.light));
     return MaterialApp(
-      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomeScreen(),
+      home: SplashScreen(),
     );
   }
 }
-
