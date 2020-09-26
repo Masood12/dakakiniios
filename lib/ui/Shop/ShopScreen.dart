@@ -22,106 +22,104 @@ class _ShopSearchState extends State<ShopSearch>
 
   @override
   Widget build(BuildContext context) {
-    return ColoredSafeArea(
-      color: colorMain,
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: colorMain,
-          onPressed: () {},
-          child: Icon(Icons.add),
-        ),
-        body: Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                color: colorMain,
-                padding: EdgeInsets.only(top: 15.0, bottom: 5.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.canPop(context);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 15.0),
-                        child: Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
-                        ),
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: colorMain,
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
+      body: Container(
+        margin: EdgeInsets.only(top: 25),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              color: colorMain,
+              padding: EdgeInsets.only(top: 15.0, bottom: 5.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.canPop(context);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
                       ),
                     ),
-                    Expanded(
-                      child: searchTextFormFeild(),
-                    ),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                    child: searchTextFormFeild(),
+                  ),
+                ],
               ),
-              Container(
-                padding: EdgeInsets.only(top: 10),
-                color: colorMain,
-                child: TabBar(
-                    isScrollable: true,
-                    indicatorWeight: 2.0,
-                    indicatorColor: Colors.white,
-                    controller: _tabController,
-                    tabs: [
-                      Tab(
-                        text: 'FOOD & SWEETS',
-                      ),
-                      Tab(
-                        text: 'CLOTHS & ACCESSORIES',
-                      ),
-                      Tab(
-                        text: 'OUD & BAKHOOR',
-                      ),
-                    ]),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                color: smokeybgColor,
-                child: Row(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Icon(Icons.filter),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text("Filter")
-                      ],
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 10),
+              color: colorMain,
+              child: TabBar(
+                  isScrollable: true,
+                  indicatorWeight: 2.0,
+                  indicatorColor: Colors.white,
+                  controller: _tabController,
+                  tabs: [
+                    Tab(
+                      text: 'FOOD & SWEETS',
                     ),
-                    Spacer(),
-                    Row(
-                      children: <Widget>[
-                        GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                singleLineCard = !singleLineCard;
-                              });
-                            },
-                            child: Icon(Icons.list)),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                singleLineCard = !singleLineCard;
-                              });
-                            },
-                            child: Icon(Icons.line_style)),
-                      ],
+                    Tab(
+                      text: 'CLOTHS & ACCESSORIES',
                     ),
-                  ],
-                ),
+                    Tab(
+                      text: 'OUD & BAKHOOR',
+                    ),
+                  ]),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+              color: smokeybgColor,
+              child: Row(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Icon(Icons.filter),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text("Filter")
+                    ],
+                  ),
+                  Spacer(),
+                  Row(
+                    children: <Widget>[
+                      GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              singleLineCard = !singleLineCard;
+                            });
+                          },
+                          child: Icon(Icons.list)),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              singleLineCard = !singleLineCard;
+                            });
+                          },
+                          child: Icon(Icons.line_style)),
+                    ],
+                  ),
+                ],
               ),
-              Expanded(
-                child: shopListView(),
-              )
-            ],
-          ),
+            ),
+            Expanded(
+              child: shopListView(),
+            )
+          ],
         ),
       ),
     );

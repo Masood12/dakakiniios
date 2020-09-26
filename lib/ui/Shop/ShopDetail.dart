@@ -21,25 +21,25 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ColoredSafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                topPortion(),
-                Container(
-                  color: smokeybgColor,
-                  height: 10,
-                ),
-                middlePortion(),
-                Container(
-                  color: smokeybgColor,
-                  height: 10,
-                ),
-              ],
-            ),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.only(top: 25),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              topPortion(),
+              Container(
+                color: smokeybgColor,
+                height: 10,
+              ),
+              middlePortion(),
+              Container(
+                color: smokeybgColor,
+                height: 10,
+              ),
+              bottomPortion()
+            ],
           ),
         ),
       ),
@@ -60,7 +60,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                   width: MediaQuery.of(context).size.width,
                   fit: BoxFit.fill,
                   imageUrl:
-                      "https://images.unsplash.com/photo-1448630360428-65456885c650?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+                      "https://www.arabnews.pk/sites/default/files/styles/n_670_395/public/2020/08/10/2224091-247797304.jpg?itok=O4ZNv0aI",
                   placeholder: (context, url) => noImageAvailable(
                       height: 250.0, width: MediaQuery.of(context).size.width),
                   errorWidget: (context, url, error) => noImageAvailable(
@@ -181,7 +181,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                           width: 120,
                           fit: BoxFit.fill,
                           imageUrl:
-                              "https://images.unsplash.com/photo-1448630360428-65456885c650?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+                              "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSmwE8vAaXmMYCtgFLOlnDPxzlPzjFOMpulFQ&usqp=CAU",
                           placeholder: (context, url) =>
                               noImageAvailable(height: 100.0, width: 100.0),
                           errorWidget: (context, url, error) =>
@@ -223,6 +223,177 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
             style: TextStyle(fontSize: 14, color: Colors.black),
           ),
         ],
+      ),
+    );
+  }
+
+  bottomPortion() {
+    return Container(
+        margin: EdgeInsets.all(15.0),
+        alignment: Alignment.centerLeft,
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Text(
+                    "Menus",
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey),
+                  ),
+                  Expanded(
+                    child: Text(
+                      "See All",
+                      textAlign: TextAlign.end,
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
+              UIHelper.verticalSpace(10),
+              Container(
+                child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: 3,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      return menuCard();
+                    }),
+              ),
+              UIHelper.verticalSpace(15),
+              Row(
+                children: <Widget>[
+                  Text(
+                    "Reviews",
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey),
+                  ),
+                  Expanded(
+                    child: Text(
+                      "See All",
+                      textAlign: TextAlign.end,
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
+              UIHelper.verticalSpace(10),
+              Container(
+                child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: 3,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      return reviewsCard();
+                    }),
+              ),
+              UIHelper.verticalSpace(10),
+            ]));
+  }
+
+  menuCard() {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              child: CachedNetworkImage(
+                  height: 80,
+                  width: 80,
+                  fit: BoxFit.fill,
+                  imageUrl:
+                      "https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+                  placeholder: (context, url) =>
+                      noImageAvailable(height: 80.0, width: 80.0),
+                  errorWidget: (context, url, error) =>
+                      noImageAvailable(height: 80.0, width: 80.0)),
+            ),
+            Expanded(
+                child: Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "Burger Bistro",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  UIHelper.verticalSpace(5),
+                  Text(
+                    "Serving 1 Person",
+                    style: TextStyle(fontSize: 12, color: smokeyColor),
+                  ),
+                  UIHelper.verticalSpace(5),
+                  Text(
+                    "AED 150",
+                    style: TextStyle(fontSize: 12, color: smokeyColor),
+                  ),
+                ],
+              ),
+            ))
+          ],
+        ),
+      ),
+    );
+  }
+
+  reviewsCard() {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(100.0)),
+              child: CachedNetworkImage(
+                  height: 50,
+                  width: 50,
+                  fit: BoxFit.fill,
+                  imageUrl: "https://img.icons8.com/plasticine/2x/user.png",
+                  placeholder: (context, url) =>
+                      noImageAvailable(height: 50.0, width: 50.0),
+                  errorWidget: (context, url, error) =>
+                      noImageAvailable(height: 50.0, width: 50.0)),
+            ),
+            Expanded(
+                child: Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "Ellen John",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                  UIHelper.verticalSpace(5),
+                  Text(
+                    "A small, dimly-lit room covered in deep hues and antique cutlery, Chef’s Table definitely checked all boxes for fine dining.",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 12, color: smokeyColor),
+                  ),
+                ],
+              ),
+            ))
+          ],
+        ),
       ),
     );
   }
