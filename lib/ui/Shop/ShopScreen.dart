@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dakakini/ui/Shop/ShopDetail.dart';
+import 'package:dakakini/utils/color_safe_area.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:dakakini/utils/start_rating.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +22,7 @@ class _ShopSearchState extends State<ShopSearch>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return ColoredSafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           backgroundColor: colorMain,
@@ -33,7 +35,7 @@ class _ShopSearchState extends State<ShopSearch>
             children: <Widget>[
               Container(
                 color: colorMain,
-                padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                padding: EdgeInsets.only(top: 15.0, bottom: 5.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -56,7 +58,7 @@ class _ShopSearchState extends State<ShopSearch>
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 15),
+                padding: EdgeInsets.only(top: 10),
                 color: colorMain,
                 child: TabBar(
                     isScrollable: true,
@@ -133,52 +135,63 @@ class _ShopSearchState extends State<ShopSearch>
       children: List.generate(6, (index) {
         return ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          child: Card(
-            elevation: 1.0,
-            child: Container(
-              padding: EdgeInsets.all(5.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    child: CachedNetworkImage(
-                        height: 150,
-                        width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.fill,
-                        imageUrl:
-                            "https://images.unsplash.com/photo-1448630360428-65456885c650?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-                        placeholder: (context, url) =>
-                            noImageAvailable(height: 65.0, width: 65.0),
-                        errorWidget: (context, url, error) =>
-                            noImageAvailable(height: 65.0, width: 65.0)),
-                  ),
-                  UIHelper.verticalSpace(5),
-                  Row(
-                    children: <Widget>[Text("my shop vip")],
-                  ),
-                  UIHelper.verticalSpace(5),
-                  Text("test"),
-                  UIHelper.verticalSpace(5),
-                  Text("test"),
-                  UIHelper.verticalSpace(5),
-                  Row(
-                    children: <Widget>[
-                      Text("Reviews "),
-                      Container(
-                        child: IconTheme(
-                          data: IconThemeData(
-                            color: Colors.amber,
-                            size: 15,
-                          ),
-                          child: StarRating(
-                            rating: 2.6,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ShopDetailScreen()),
+              );
+            },
+            child: Card(
+              elevation: 1.0,
+              child: Container(
+                padding: EdgeInsets.all(5.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      child: CachedNetworkImage(
+                          height: 150,
+                          width: MediaQuery.of(context).size.width,
+                          fit: BoxFit.fill,
+                          imageUrl:
+                              "https://images.unsplash.com/photo-1448630360428-65456885c650?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+                          placeholder: (context, url) => noImageAvailable(
+                              height: 150.0,
+                              width: MediaQuery.of(context).size.width),
+                          errorWidget: (context, url, error) =>
+                              noImageAvailable(
+                                  height: 150.0,
+                                  width: MediaQuery.of(context).size.width)),
+                    ),
+                    UIHelper.verticalSpace(5),
+                    Row(
+                      children: <Widget>[Text("my shop vip")],
+                    ),
+                    UIHelper.verticalSpace(5),
+                    Text("test"),
+                    UIHelper.verticalSpace(5),
+                    Text("test"),
+                    UIHelper.verticalSpace(5),
+                    Row(
+                      children: <Widget>[
+                        Text("Reviews "),
+                        Container(
+                          child: IconTheme(
+                            data: IconThemeData(
+                              color: Colors.amber,
+                              size: 15,
+                            ),
+                            child: StarRating(
+                              rating: 2.6,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -189,6 +202,7 @@ class _ShopSearchState extends State<ShopSearch>
 
   searchTextFormFeild() {
     return Container(
+      height: height40,
       margin: EdgeInsets.only(right: 15),
       child: TextFormField(
         // onChanged: (value) => store.password = value,
