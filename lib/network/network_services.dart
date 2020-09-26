@@ -24,12 +24,18 @@ class NetworkService {
   Future<LoginResponseModel> outhUser(url, email, password, context) async {
     ProgressDialogDotted().showProgressDialog(context);
 
-    var body = jsonEncode({});
+    var body = {
+      "email": "$email",
+      "pass": "$password",
+    };
+    print("$body");
+    var headers = {"Content-Type": "application/x-www-form-urlencoded"};
     try {
       final response =
-          await http.post(url + "email=$email&pass=$password", body: body);
+          await http.post(url,headers: headers,
+              body: body);
       final int statusCode = response.statusCode;
-      print(statusCode);
+      print('status code :: ${statusCode}');
       var decodedResponse = json.decode(response.body);
       ProgressDialogDotted().hideProgressDialog(context);
       if (statusCode >= 200 && statusCode <= 299) {

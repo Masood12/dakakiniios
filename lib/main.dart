@@ -1,6 +1,10 @@
+import 'package:dakakini/ui/HomeScreen.dart';
+import 'package:dakakini/ui/LoginScreen.dart';
+import 'package:dakakini/ui/ShopScreen.dart';
 import 'package:dakakini/ui/SplashScreen.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,12 +14,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+        statusBarColor: colorMain, // Color for Android
+        statusBarBrightness:
+        Brightness.dark, // Dark == white status bar -- for IOS.
+        statusBarIconBrightness: Brightness.dark));
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SplashScreen(),
+      home: HomeScreen(),
     );
   }
 }

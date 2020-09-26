@@ -5,6 +5,7 @@ import 'package:dakakini/ui/SignUpScreen.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -32,13 +33,11 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    store.setupValidations();
     passwordVisible = false;
   }
 
   @override
   void dispose() {
-    store.dispose();
     super.dispose();
   }
   @override
@@ -167,47 +166,37 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-
   signInWidget() {
-    return Container(
-      padding: EdgeInsets.all(0.0),
-      height: height40,
+    return Observer(
+        builder: (_) =>Container(
+      width: MediaQuery.of(context).size.width,
       child: RaisedButton(
-        padding: EdgeInsets.all(0),
-
-         onPressed: store.validateEmailAndPassword() ? null : callSignInApi,
-        color: colorMain,
-        disabledColor: disabledButtonColor,
-        textColor: Colors.white,
-        disabledTextColor: Colors.white,
-        child: Stack(
-          // mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                ' SIGN IN',
-                style: TextStyle(
-                    fontSize: buttonFontSize, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
-      ),
-    );
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
+          color: colorMain,
+          textColor: Colors.white,
+          child: Text("Sign In"),
+          onPressed: () {
+            print('object');
+           store.validate(context);
+          }),
+    ));
   }
 
+
   emailTextFormFeild() {
-    return TextFormField(
+    return Observer(
+        builder: (_) =>
+        TextFormField(
         focusNode: emailFocus,
         textInputAction: TextInputAction.next,
         onChanged: (value) => store.email = value,
-        decoration: InputDecoration(
+            controller: emailController,
+
+            decoration: InputDecoration(
           hintText: 'Email',
           hintStyle: TextStyle(fontSize: 12, color: Colors.black),
-          // errorText: store.error.password,
+
           prefixIcon: Container(
             margin: EdgeInsets.fromLTRB(0, 4, 8, 4),
             child: Icon(
@@ -225,11 +214,13 @@ class _LoginScreenState extends State<LoginScreen> {
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: underLineColor),
           ),
-        ));
+        )));
   }
 
   passwordTextFormFeild() {
-    return TextFormField(
+    return Observer(
+        builder: (_) =>
+        TextFormField(
       obscureText: !passwordVisible,
       focusNode: passwordFocus,
       controller: passController,
@@ -238,7 +229,6 @@ class _LoginScreenState extends State<LoginScreen> {
           hintText: 'Password',
           hintStyle: TextStyle(fontSize: 12, color: Colors.black),
 
-          // errorText: store.error.password,
           suffixIcon: IconButton(
             icon: Icon(
                 // Based on passwordVisible state choose the icon
@@ -268,7 +258,7 @@ class _LoginScreenState extends State<LoginScreen> {
           borderSide: BorderSide(color: underLineColor),
         ),
           ),
-    );
+    ));
   }
 
   agreeText() {
@@ -303,39 +293,5 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-  callSignInApi() {
-    store.getTheUsers(context).then((response) {
-      if (response.status == 1) {
-        //showToast(response.messages[0], false);
-        Config.setUserName("${response.data.name}");
-        Config.setUserEmail("${response.data.email}");
-        Config.setUserProfilePicture(
-            "${response.data.image}");
-        Config.setUserID(response.data.userId);
-        Config.setUserType(response.data.userType);
-        // Config.setUserMobile("${response.data.user}");
-        if(response.data.userType==1005){
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-                (Route<dynamic> route) => false,
-          );
-        }else{
 
-          if(response.data.isexpire){
-            showToast("Contact Admin to approve", true);
-          }else{
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => HomeScreen()),
-                  (Route<dynamic> route) => false,
-            );
-          }
-        }
-
-      } else if (response.status == 0) {
-        showToast(response.message, true);
-      }
-    });
-  }
 }
