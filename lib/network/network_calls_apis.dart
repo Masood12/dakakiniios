@@ -4,3 +4,5 @@ const String BaseUrl = 'https://provider.dakakini.com/api/app/';
 final String outhUserApi = BaseUrl + 'login';
 /* Sign Up Api */
 final String signUpApi = BaseUrl + 'signup';
+/* gte cities and cuntries Api */
+final String countryApi = BaseUrl + 'getCountry';

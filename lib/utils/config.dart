@@ -25,7 +25,7 @@ const suffixIconSize = 18.0;
 const prefixIconSize = 20.0;
 const drawerListColor = Color(0xffFBFBFB);
 const ratingcolor = Color(0xff99cb0a);
-const underLineColor = Colors.black;
+const underLineColor = colorMain;
 
 const technicalErrorMessage =
     "Something went wrong please contact system administrator";

@@ -23,6 +23,7 @@ class _ShopSearchState extends State<ShopSearch>
   @override
   Widget build(BuildContext context) {
     return ColoredSafeArea(
+      color: colorMain,
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           backgroundColor: colorMain,

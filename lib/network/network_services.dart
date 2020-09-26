@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dakakini/models/login_response_model.dart';
+import 'package:dakakini/models/ountry_cities_response_model.dart';
 import 'package:dakakini/models/sign_model.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:dakakini/utils/loaders/progress_dialog.dart';
@@ -9,7 +10,7 @@ import 'package:http/http.dart' as http;
 class NetworkService {
   LoginResponseModel authModel = new LoginResponseModel();
   SignUp signUpModel = new SignUp();
-
+  CountryCitiesResponse countryCitiesResponse = CountryCitiesResponse();
   checkIfInternetIsAvailable() async {
     try {
       final result = await InternetAddress.lookup('google.com');
@@ -108,4 +109,39 @@ class NetworkService {
       return Future.value(signUpModel);
     }
   }
+
+  Future<CountryCitiesResponse> getCitiesAndCountries(url, context) async {
+     ProgressDialogDotted().showProgressDialog(context);
+    try {
+      final response = await http.get(url);
+      final int statusCode = response.statusCode;
+      var decodedResponse = json.decode(response.body);
+      print("$url \n $decodedResponse");
+       ProgressDialogDotted().hideProgressDialog(context);
+      print(decodedResponse);
+      if (statusCode >= 200 && statusCode <= 299) {
+        return CountryCitiesResponse.fromJson(decodedResponse);
+      } else if ((statusCode >= 100 && statusCode <= 199) ||
+          (statusCode >= 300 && statusCode <= 499) ||
+          json == null) {
+        countryCitiesResponse.status = 0;
+        countryCitiesResponse.message = decodedResponse['messages'];
+        return Future.value(countryCitiesResponse);
+      } else if (statusCode >= 500 && statusCode <= 599) {
+        countryCitiesResponse.status = 0;
+        countryCitiesResponse.message = 'Internal Server Error';
+        return Future.value(countryCitiesResponse);
+      }
+    } on Exception catch (e) {
+        ProgressDialogDotted().hideProgressDialog(context);
+      countryCitiesResponse.status = 0;
+      if (e.toString().contains("SocketException"))
+        countryCitiesResponse.message = 'Internet Not Connected';
+      else
+        countryCitiesResponse.message = '' + technicalErrorMessage;
+      return Future.value(countryCitiesResponse);
+    }
+  }
+
+
 }

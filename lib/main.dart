@@ -1,4 +1,6 @@
+import 'package:dakakini/ui/HomeScreen.dart';
 import 'package:dakakini/ui/Shop/ShopScreen.dart';
+import 'package:dakakini/ui/Shop/create_shop.dart';
 import 'package:dakakini/ui/SplashScreen.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SplashScreen(),
+      home: CreateShopScreen(),
     );
   }
 }
