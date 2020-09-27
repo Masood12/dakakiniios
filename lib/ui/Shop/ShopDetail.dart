@@ -1,10 +1,14 @@
 import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dakakini/ui/Shop/SeeAllMenu.dart';
+import 'package:dakakini/ui/Shop/SeeAllReviews.dart';
+import 'package:dakakini/ui/Shop/ShopScreen.dart';
 import 'package:dakakini/utils/color_safe_area.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:dakakini/utils/start_rating.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ShopDetailScreen extends StatefulWidget {
@@ -18,13 +22,22 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
     zoom: 14.4746,
   );
   Completer<GoogleMapController> _controller = Completer();
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+        body: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.light,
+          child: shopDetail(),
+        ),
+        bottomNavigationBar: bottomNavigationBar());
+  }
+
+  shopDetail() {
+    return SafeArea(
+      child: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(top: 25),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -48,83 +61,136 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
 
   topPortion() {
     return Container(
-      margin: EdgeInsets.all(15.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              child: CachedNetworkImage(
-                  height: 250,
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.fill,
-                  imageUrl:
-                      "https://www.arabnews.pk/sites/default/files/styles/n_670_395/public/2020/08/10/2224091-247797304.jpg?itok=O4ZNv0aI",
-                  placeholder: (context, url) => noImageAvailable(
-                      height: 250.0, width: MediaQuery.of(context).size.width),
-                  errorWidget: (context, url, error) => noImageAvailable(
-                      height: 250.0, width: MediaQuery.of(context).size.width)),
-            ),
-          ),
-          UIHelper.verticalSpace(10),
-          Row(
-            children: <Widget>[
-              Text(
-                "my shop vip",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              )
-            ],
-          ),
-          UIHelper.verticalSpace(5),
-          Text(
-            "test",
-            style: TextStyle(fontSize: 12, color: smokeyColor),
-          ),
-          UIHelper.verticalSpace(5),
-          Row(
+          Stack(
             children: <Widget>[
               Container(
-                child: IconTheme(
-                  data: IconThemeData(
-                    color: Colors.amber,
-                    size: 15,
+                margin: EdgeInsets.only(top: 15),
+                child: CarouselSlider.builder(
+                  itemCount: 5,
+                  itemBuilder: (BuildContext context, int itemIndex) =>
+                      Container(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      child: CachedNetworkImage(
+                          height: 1000,
+                          width: 1000,
+                          fit: BoxFit.fill,
+                          imageUrl:
+                              "https://www.arabnews.pk/sites/default/files/styles/n_670_395/public/2020/08/10/2224091-247797304.jpg?itok=O4ZNv0aI",
+                          placeholder: (context, url) => noImageAvailable(
+                              height: 250.0,
+                              width: MediaQuery.of(context).size.width),
+                          errorWidget: (context, url, error) =>
+                              noImageAvailable(
+                                  height: 250.0,
+                                  width: MediaQuery.of(context).size.width)),
+                    ),
                   ),
-                  child: StarRating(
-                    rating: 2.6,
-                  ),
-                ),
-              ),
-              Text(
-                "Reviews ",
-                style: TextStyle(fontSize: 12, color: smokeyColor),
-              ),
-            ],
-          ),
-          UIHelper.verticalSpace(15),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        " OPEN IN ",
-                        style: TextStyle(fontSize: 12, color: smokeyColor),
-                      ),
-                      UIHelper.verticalSpace(4),
-                      Text(
-                        "14:12:22",
-                        style: TextStyle(fontSize: 12, color: Colors.black),
-                      ),
-                    ],
+                  options: CarouselOptions(
+                    height: 230,
+                    enlargeCenterPage: true,
+                    viewportFraction: 0.8,
+                    autoPlay: true,
+                    autoPlayInterval: Duration(seconds: 3),
+                    autoPlayAnimationDuration: Duration(milliseconds: 800),
+                    autoPlayCurve: Curves.fastLinearToSlowEaseIn,
                   ),
                 ),
               ),
-              contactUsBotton()
+              Container(
+                margin: EdgeInsets.all(15),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(100.0)),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      color: colorMain,
+                      height: 40,
+                      width: 40,
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                UIHelper.verticalSpace(15),
+                Row(
+                  children: <Widget>[
+                    Text(
+                      "my shop vip",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    )
+                  ],
+                ),
+                UIHelper.verticalSpace(5),
+                Text(
+                  "test",
+                  style: TextStyle(fontSize: 12, color: smokeyColor),
+                ),
+                UIHelper.verticalSpace(5),
+                Row(
+                  children: <Widget>[
+                    Container(
+                      child: IconTheme(
+                        data: IconThemeData(
+                          color: Colors.amber,
+                          size: 15,
+                        ),
+                        child: StarRating(
+                          rating: 2.6,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      "Reviews ",
+                      style: TextStyle(fontSize: 12, color: smokeyColor),
+                    ),
+                  ],
+                ),
+                UIHelper.verticalSpace(15),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              " OPEN IN ",
+                              style:
+                                  TextStyle(fontSize: 12, color: smokeyColor),
+                            ),
+                            UIHelper.verticalSpace(4),
+                            Text(
+                              "14:12:22",
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    contactUsBotton()
+                  ],
+                ),
+                UIHelper.verticalSpace(10),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -245,10 +311,18 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                         color: Colors.grey),
                   ),
                   Expanded(
-                    child: Text(
-                      "See All",
-                      textAlign: TextAlign.end,
-                      style: TextStyle(fontSize: 16, color: Colors.black),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SeeAllMenu()),
+                        );
+                      },
+                      child: Text(
+                        "See All",
+                        textAlign: TextAlign.end,
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      ),
                     ),
                   ),
                 ],
@@ -277,10 +351,19 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                         color: Colors.grey),
                   ),
                   Expanded(
-                    child: Text(
-                      "See All",
-                      textAlign: TextAlign.end,
-                      style: TextStyle(fontSize: 16, color: Colors.black),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SeeAllReviews()),
+                        );
+                      },
+                      child: Text(
+                        "See All",
+                        textAlign: TextAlign.end,
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      ),
                     ),
                   ),
                 ],
@@ -396,5 +479,99 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
         ),
       ),
     );
+  }
+
+  bottomNavigationBar() {
+    return BottomAppBar(
+      child: Container(
+        margin: EdgeInsets.only(left: 12.0, right: 12.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: InkWell(
+                  onTap: () {
+                    updateTabSelection(0);
+                  },
+                  child: Icon(
+                    Icons.home,
+                    color: selectedIndex == 0 ? colorMain : colorDivider,
+                  )),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: InkWell(
+                onTap: () {
+                  updateTabSelection(1);
+                },
+                child: Icon(
+                  Icons.location_on,
+                  color: selectedIndex == 1 ? colorMain : colorDivider,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: InkWell(
+                onTap: () {
+                  updateTabSelection(2);
+                },
+                child: Icon(
+                  Icons.notifications,
+                  color: selectedIndex == 2 ? colorMain : colorDivider,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: InkWell(
+                onTap: () {
+                  updateTabSelection(3);
+                },
+                child: Icon(
+                  Icons.person,
+                  color: selectedIndex == 3 ? colorMain : colorDivider,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      //color of the BottomAppBar
+      color: Colors.white,
+    );
+  }
+
+  void updateTabSelection(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
+  bottomTabFragments(int pos) {
+    switch (pos) {
+      case 0:
+        return Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ShopDetailScreen()),
+        );
+      case 1:
+        return Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SeeAllMenu()),
+        );
+      case 2:
+        return Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SeeAllMenu()),
+        );
+      case 3:
+        return Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SeeAllMenu()),
+        );
+    }
   }
 }
