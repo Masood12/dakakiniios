@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dakakini/ui/Shop/ShopDetail.dart';
-import 'package:dakakini/utils/color_safe_area.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:dakakini/utils/start_rating.dart';
 import 'package:flutter/material.dart';
@@ -127,6 +126,7 @@ class _ShopSearchState extends State<ShopSearch>
 
   shopListView() {
     return GridView.count(
+      padding: EdgeInsets.zero,
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
       crossAxisCount: !singleLineCard ? 2 : 1,
