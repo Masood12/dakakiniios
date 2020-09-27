@@ -2,6 +2,7 @@
 import 'package:dakakini/store/sign_in_store.dart';
 import 'package:dakakini/ui/HomeScreen.dart';
 import 'package:dakakini/ui/SignUpScreen.dart';
+import 'package:dakakini/ui/forget_password.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -76,7 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       flex: 1,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) => ForgetPasswordScreen()));
+                      },
                       child: new Text("Forget Your Password?",
                           textAlign: TextAlign.start,
                           style: TextStyle(
