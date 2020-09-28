@@ -30,6 +30,7 @@ class _ShopSearchState extends State<ShopSearch>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
         backgroundColor: colorMain,
         onPressed: () {},
