@@ -1,21 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dakakini/ui/Shop/ShopDetail.dart';
+import 'package:dakakini/store/get_category_store.dart';
+import 'package:dakakini/ui/Shop/Shop.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:dakakini/utils/start_rating.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class ShopSearch extends StatefulWidget {
+  final categoryId;
+  ShopSearch({this.categoryId});
   @override
   _ShopSearchState createState() => _ShopSearchState();
 }
 
 class _ShopSearchState extends State<ShopSearch>
     with SingleTickerProviderStateMixin {
+  GetShopStore getShopStore = GetShopStore();
+  int initialIndex = 0;
   TabController _tabController;
-  bool singleLineCard = false;
   @override
   void initState() {
-    _tabController = TabController(vsync: this, initialIndex: 0, length: 3);
+    initialIndex = widget.categoryId - 1;
+
+    _tabController =
+        TabController(vsync: this, initialIndex: initialIndex, length: 3);
     super.initState();
   }
 
@@ -40,7 +48,7 @@ class _ShopSearchState extends State<ShopSearch>
                 children: <Widget>[
                   GestureDetector(
                     onTap: () {
-                      Navigator.canPop(context);
+                      Navigator.pop(context);
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
@@ -76,50 +84,112 @@ class _ShopSearchState extends State<ShopSearch>
                     ),
                   ]),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-              color: smokeybgColor,
-              child: Row(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Icon(Icons.filter),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Filter")
-                    ],
-                  ),
-                  Spacer(),
-                  Row(
-                    children: <Widget>[
-                      GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              singleLineCard = !singleLineCard;
-                            });
-                          },
-                          child: Icon(Icons.list)),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              singleLineCard = !singleLineCard;
-                            });
-                          },
-                          child: Icon(Icons.line_style)),
-                    ],
-                  ),
-                ],
-              ),
-            ),
             Expanded(
-              child: shopListView(),
+              child: TabBarView(controller: _tabController, children: [
+                ShopCard(
+                  categoryId: 1,
+                  getShopStore: getShopStore,
+                ),
+                ShopCard(
+                  categoryId: 2,
+                  getShopStore: getShopStore,
+                ),
+                ShopCard(
+                  categoryId: 3,
+                  getShopStore: getShopStore,
+                )
+              ]),
             )
           ],
         ),
+      ),
+    );
+  }
+
+  searchTextFormFeild() {
+    return Container(
+      height: height40,
+      margin: EdgeInsets.only(right: 15),
+      child: TextFormField(
+        // onChanged: (value) => store.password = value,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.all(8.0),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          hintText: 'Search Shop',
+        ),
+      ),
+    );
+  }
+}
+
+class ShopCard extends StatefulWidget {
+  final categoryId;
+  GetShopStore getShopStore;
+  ShopCard({this.categoryId, this.getShopStore});
+  @override
+  _ShopCardState createState() => _ShopCardState();
+}
+
+class _ShopCardState extends State<ShopCard> {
+  bool singleLineCard = false;
+  @override
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      widget.getShopStore.getshopByCatagory(context, widget.categoryId);
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[filterOption(), Expanded(child: shopListView())],
+    );
+  }
+
+  filterOption() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+      color: smokeybgColor,
+      child: Row(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Icon(Icons.filter),
+              SizedBox(
+                width: 10,
+              ),
+              Text("Filter")
+            ],
+          ),
+          Spacer(),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      singleLineCard = !singleLineCard;
+                    });
+                  },
+                  child: Icon(Icons.list)),
+              SizedBox(
+                width: 10,
+              ),
+              GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      singleLineCard = !singleLineCard;
+                    });
+                  },
+                  child: Icon(Icons.line_style)),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -138,7 +208,7 @@ class _ShopSearchState extends State<ShopSearch>
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ShopDetailScreen()),
+                MaterialPageRoute(builder: (context) => Shop()),
               );
             },
             child: Card(
@@ -196,25 +266,6 @@ class _ShopSearchState extends State<ShopSearch>
           ),
         );
       }),
-    );
-  }
-
-  searchTextFormFeild() {
-    return Container(
-      height: height40,
-      margin: EdgeInsets.only(right: 15),
-      child: TextFormField(
-        // onChanged: (value) => store.password = value,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding: const EdgeInsets.all(8.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-          hintText: 'Search Shop',
-        ),
-      ),
     );
   }
 }

@@ -129,6 +129,7 @@ class _ContactUsState extends State<CreateShopScreen>
       ),
     );
   }
+  
   shopCat() {
     return Row(
       children: <Widget>[

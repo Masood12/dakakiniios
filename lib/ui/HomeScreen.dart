@@ -190,7 +190,9 @@ class _HomeScreenState extends State<HomeScreen> {
             child: GestureDetector(
               onTap: (){
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (BuildContext context) => ShopSearch()));
+                    MaterialPageRoute(builder: (BuildContext context) => ShopSearch(
+                      categoryId: 1,
+                    )));
               },
               child: Container(
                 width: MediaQuery.of(context).size.width,
@@ -221,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: GestureDetector(
               onTap: (){
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (BuildContext context) => ShopSearch()));
+                    MaterialPageRoute(builder: (BuildContext context) => ShopSearch(categoryId: 2,)));
               },
               child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -245,14 +247,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   )
               ),
             ),
-
           ),
           Expanded(
             flex: 1,
             child: GestureDetector(
               onTap: (){
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (BuildContext context) => ShopSearch()));
+                    MaterialPageRoute(builder: (BuildContext context) => ShopSearch(
+                      categoryId: 3,
+                    )));
               },
               child: Container(
                   width: MediaQuery.of(context).size.width,

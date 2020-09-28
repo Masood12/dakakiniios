@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dakakini/utils/config.dart';
+import 'package:dakakini/utils/start_rating.dart';
 import 'package:flutter/material.dart';
 
 class SeeAllReviews extends StatefulWidget {
@@ -56,10 +57,23 @@ class _SeeAllReviewsState extends State<SeeAllReviews> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Text(
-                        "Ellen John",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500),
+                      Expanded(
+                        child: Text(
+                          "Ellen John",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                      Container(
+                        child: IconTheme(
+                          data: IconThemeData(
+                            color: Colors.amber,
+                            size: 13,
+                          ),
+                          child: StarRating(
+                            rating: 2.6,
+                          ),
+                        ),
                       ),
                     ],
                   ),
