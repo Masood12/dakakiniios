@@ -1,3 +1,4 @@
+import 'package:dakakini/models/user_shop.dart';
 import 'package:dakakini/store/get_category_store.dart';
 import 'package:dakakini/ui/Shop/LocationScreen.dart';
 import 'package:dakakini/ui/Shop/NotificationScreen.dart';
@@ -10,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 class Shop extends StatefulWidget {
-  GetShopStore getShopStore;
-  Shop({@required this.getShopStore});
+  Datum shopDetail;
+  Shop({@required this.shopDetail});
   @override
   _ShopState createState() => _ShopState();
 }
@@ -126,14 +127,18 @@ class _ShopState extends State<Shop> {
     switch (pos) {
       case 0:
         return ShopDetailScreen(
-          getShopStore: widget.getShopStore,
+          shopDetail: widget.shopDetail,
         );
       case 1:
         return RatingScreen();
       case 2:
-        return LocationScreen();
+        return LocationScreen(
+          shopDetail: widget.shopDetail,
+        );
       case 3:
-        return NotificationScreen();
+        return NotificationScreen(
+          shopDetail: widget.shopDetail,
+        );
       case 4:
         return ProfileScreen();
     }

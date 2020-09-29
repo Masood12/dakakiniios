@@ -92,13 +92,15 @@ class _ShopCardState extends State<ShopCloths> {
       children:
           List.generate(widget.getShopStore.userClothShopModel.data.length, (index) {
         var data = widget.getShopStore.userClothShopModel.data[index];
-        return ClipRRect(
+         return ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
           child: GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Shop()),
+                MaterialPageRoute(builder: (context) => Shop(
+                  shopDetail: data,
+                )),
               );
             },
             child: Card(
@@ -125,12 +127,12 @@ class _ShopCardState extends State<ShopCloths> {
                     ),
                     UIHelper.verticalSpace(5),
                     Row(
-                      children: <Widget>[Text("my shop vip")],
+                      children: <Widget>[Text("${data.name}")],
                     ),
                     UIHelper.verticalSpace(5),
-                    Text("test"),
+                    Text("${data.subTitle}"),
                     UIHelper.verticalSpace(5),
-                    Text("test"),
+                    Text("${data.shopId}"),
                     UIHelper.verticalSpace(5),
                     Row(
                       children: <Widget>[
@@ -138,11 +140,11 @@ class _ShopCardState extends State<ShopCloths> {
                         Container(
                           child: IconTheme(
                             data: IconThemeData(
-                              color: Colors.amber,
+                              color: colorMain,
                               size: 15,
                             ),
                             child: StarRating(
-                              rating: 2.6,
+                              rating: calculateReview(data),
                             ),
                           ),
                         ),

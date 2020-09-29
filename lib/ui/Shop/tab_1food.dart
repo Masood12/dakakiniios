@@ -98,7 +98,9 @@ class _ShopCardState extends State<ShopFood> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Shop()),
+                MaterialPageRoute(builder: (context) => Shop(
+                  shopDetail: data,
+                )),
               );
             },
             child: Card(
@@ -156,15 +158,5 @@ class _ShopCardState extends State<ShopFood> {
         );
       }),
     );
-  }
-
-  calculateReview(data) {
-    int sum_of_max_rating_of_user_count = (data.shopReview.length * 5);
-    int sum_of_rating = 0;
-    double rating = 0.0;
-    for (int i = 0; i < data.shopReview.length; i++) {
-      sum_of_rating = sum_of_rating + data.shopReview[i].value;
-    }
-    return rating = (sum_of_rating * 5) / sum_of_max_rating_of_user_count;
   }
 }

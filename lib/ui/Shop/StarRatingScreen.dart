@@ -18,6 +18,7 @@ class _RatingScreenState extends State<RatingScreen> {
     return Container(
       margin: EdgeInsets.all(15.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           commentsDescription(width),
           starRating(),
@@ -60,15 +61,21 @@ class _RatingScreenState extends State<RatingScreen> {
   starRating() {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 15),
-      child: StarRating(
-        rating: rating,
-        color: colorMain,
-        size: 25,
-        onRatingChanged: (rating) {
-          setState(() {
-            this.rating = rating;
-          });
-        },
+      child: Row(
+        children: <Widget>[
+          Spacer(),
+          StarRating(
+            rating: rating,
+            color: colorMain,
+            size: 35,
+            onRatingChanged: (rating) {
+              setState(() {
+                this.rating = rating;
+              });
+            },
+          ),
+          Spacer(),
+        ],
       ),
     );
   }

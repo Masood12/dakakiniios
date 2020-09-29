@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dakakini/models/user_shop.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:dakakini/utils/start_rating.dart';
 import 'package:flutter/material.dart';
 
 class SeeAllReviews extends StatefulWidget {
+  List<ShopReview> shopReview;
+  SeeAllReviews({this.shopReview});
   @override
   _SeeAllReviewsState createState() => _SeeAllReviewsState();
 }
@@ -22,16 +25,20 @@ class _SeeAllReviewsState extends State<SeeAllReviews> {
             padding: EdgeInsets.zero,
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: 3,
+            itemCount: widget.shopReview.length,
             scrollDirection: Axis.vertical,
             itemBuilder: (context, index) {
-              return reviewsCard();
+              return reviewsCard(index);
             }),
       ),
     );
   }
 
-  reviewsCard() {
+  reviewsCard(index) {
+    var name = "${widget.shopReview[index].byName}";
+    var image = "${widget.shopReview[index].byImg}";
+    var comments = "${widget.shopReview[index].comments}";
+    var rating = "${widget.shopReview[index].value}";
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -43,7 +50,7 @@ class _SeeAllReviewsState extends State<SeeAllReviews> {
                   height: 50,
                   width: 50,
                   fit: BoxFit.fill,
-                  imageUrl: "https://img.icons8.com/plasticine/2x/user.png",
+                  imageUrl: "$image",
                   placeholder: (context, url) =>
                       noImageAvailable(height: 50.0, width: 50.0),
                   errorWidget: (context, url, error) =>
@@ -59,7 +66,7 @@ class _SeeAllReviewsState extends State<SeeAllReviews> {
                     children: <Widget>[
                       Expanded(
                         child: Text(
-                          "Ellen John",
+                          "$name",
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w500),
                         ),
@@ -71,7 +78,8 @@ class _SeeAllReviewsState extends State<SeeAllReviews> {
                             size: 13,
                           ),
                           child: StarRating(
-                            rating: 2.6,
+                            rating:
+                                double.tryParse(rating != null ? rating : 0.0),
                           ),
                         ),
                       ),
@@ -79,7 +87,7 @@ class _SeeAllReviewsState extends State<SeeAllReviews> {
                   ),
                   UIHelper.verticalSpace(5),
                   Text(
-                    "A small, dimly-lit room covered in deep hues and antique cutlery, Chef’s Table definitely checked all boxes for fine dining.",
+                    "$comments",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontSize: 12, color: smokeyColor),

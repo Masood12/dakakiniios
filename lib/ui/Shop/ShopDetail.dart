@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dakakini/store/get_category_store.dart';
+import 'package:dakakini/models/user_shop.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:intl/intl.dart';
 import 'package:dakakini/ui/Shop/SeeAllMenu.dart';
 import 'package:dakakini/ui/Shop/SeeAllReviews.dart';
 import 'package:dakakini/utils/config.dart';
@@ -10,18 +11,47 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ShopDetailScreen extends StatefulWidget {
-  final GetShopStore getShopStore;
-  ShopDetailScreen({@required this.getShopStore});
+  final Datum shopDetail;
+  ShopDetailScreen({@required this.shopDetail});
   @override
   _ShopDetailScreenState createState() => _ShopDetailScreenState();
 }
 
 class _ShopDetailScreenState extends State<ShopDetailScreen> {
-  static final CameraPosition _kGooglePlex = CameraPosition(
+  static CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
-  Completer<GoogleMapController> _controller = Completer();
+  Set<Marker> markers = Set();
+
+  GoogleMapController _controller;
+  @override
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      add();
+    });
+    super.initState();
+  }
+
+  void add() {
+    for (int i = 0; i < widget.shopDetail.shopLocation.length; i++) {
+      LatLng latLng = LatLng(widget.shopDetail.shopLocation[i].lat,
+          widget.shopDetail.shopLocation[i].lng);
+      if (i == 0) moveCamera(latLng);
+      Marker resultMarker = Marker(
+        icon: BitmapDescriptor.defaultMarker,
+        markerId: MarkerId(i.toString()),
+        position: latLng,
+      );
+      markers.add(resultMarker);
+    }
+    setState(() {});
+  }
+
+  moveCamera(LatLng latLng) {
+    _controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: latLng, zoom: 10.0)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,35 +86,17 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
       child: Column(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(top: 15),
-            child: CarouselSlider.builder(
-              itemCount: 5,
-              itemBuilder: (BuildContext context, int itemIndex) => Container(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  child: CachedNetworkImage(
-                      height: 1000,
-                      width: 1000,
-                      fit: BoxFit.fill,
-                      imageUrl:
-                          "https://www.arabnews.pk/sites/default/files/styles/n_670_395/public/2020/08/10/2224091-247797304.jpg?itok=O4ZNv0aI",
-                      placeholder: (context, url) => noImageAvailable(
-                          height: 250.0,
-                          width: MediaQuery.of(context).size.width),
-                      errorWidget: (context, url, error) => noImageAvailable(
-                          height: 250.0,
-                          width: MediaQuery.of(context).size.width)),
-                ),
-              ),
-              options: CarouselOptions(
-                height: 230,
-                enlargeCenterPage: true,
-                viewportFraction: 0.8,
-                autoPlay: true,
-                autoPlayInterval: Duration(seconds: 3),
-                autoPlayAnimationDuration: Duration(milliseconds: 800),
-                autoPlayCurve: Curves.fastLinearToSlowEaseIn,
-              ),
+            margin: EdgeInsets.all(10),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              child: CachedNetworkImage(
+                  height: 230,
+                  fit: BoxFit.fill,
+                  imageUrl: "${widget.shopDetail.featureImg}",
+                  placeholder: (context, url) => noImageAvailable(
+                      height: 250.0, width: MediaQuery.of(context).size.width),
+                  errorWidget: (context, url, error) => noImageAvailable(
+                      height: 250.0, width: MediaQuery.of(context).size.width)),
             ),
           ),
           Container(
@@ -96,7 +108,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                 Row(
                   children: <Widget>[
                     Text(
-                      "my shop vip",
+                      "${widget.shopDetail.name}",
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     )
@@ -104,7 +116,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                 ),
                 UIHelper.verticalSpace(5),
                 Text(
-                  "test",
+                  "${widget.shopDetail.subTitle}",
                   style: TextStyle(fontSize: 12, color: smokeyColor),
                 ),
                 UIHelper.verticalSpace(5),
@@ -117,7 +129,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                           size: 15,
                         ),
                         child: StarRating(
-                          rating: 2.6,
+                          rating: calculateReview(widget.shopDetail),
                         ),
                       ),
                     ),
@@ -142,7 +154,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                             ),
                             UIHelper.verticalSpace(4),
                             Text(
-                              "14:12:22",
+                              "${DateFormat.jm().format(widget.shopDetail.shopDetail.openAt)}",
                               style:
                                   TextStyle(fontSize: 12, color: Colors.black),
                             ),
@@ -179,7 +191,9 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
               Text("Contact Us"),
             ],
           ),
-          onPressed: () {}),
+          onPressed: () {
+            launchCaller("tell:${widget.shopDetail.shopDetail.cellNo}");
+          }),
     );
   }
 
@@ -198,12 +212,13 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
           ),
           UIHelper.verticalSpace(10),
           Container(
-            height: 120,
+            height: widget.shopDetail.shopPhotoes.length > 0 ? 120 : 0,
             child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: 5,
+                itemCount: widget.shopDetail.shopPhotoes.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
+                  var shopImage = "${widget.shopDetail.shopPhotoes[index]}";
                   return Container(
                     margin: EdgeInsets.only(right: 10),
                     child: ClipRRect(
@@ -212,8 +227,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                           height: 100,
                           width: 120,
                           fit: BoxFit.fill,
-                          imageUrl:
-                              "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSmwE8vAaXmMYCtgFLOlnDPxzlPzjFOMpulFQ&usqp=CAU",
+                          imageUrl: "$shopImage",
                           placeholder: (context, url) =>
                               noImageAvailable(height: 100.0, width: 100.0),
                           errorWidget: (context, url, error) =>
@@ -236,8 +250,9 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
               mapType: MapType.normal,
               zoomControlsEnabled: false,
               initialCameraPosition: _kGooglePlex,
+              markers: markers,
               onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
+                _controller = controller;
               },
             ),
           ),
@@ -250,7 +265,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
           ),
           UIHelper.verticalSpace(5),
           Text(
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+            "${widget.shopDetail.description}",
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 14, color: Colors.black),
           ),
@@ -281,7 +296,10 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SeeAllMenu()),
+                          MaterialPageRoute(
+                              builder: (context) => SeeAllMenu(
+                                    shopMenu: widget.shopDetail.shopMenu,
+                                  )),
                         );
                       },
                       child: Text(
@@ -299,10 +317,12 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                     padding: EdgeInsets.zero,
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: 3,
+                    itemCount: widget.shopDetail.shopMenu.length > 3
+                        ? 3
+                        : widget.shopDetail.shopMenu.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
-                      return menuCard();
+                      return menuCard(index);
                     }),
               ),
               UIHelper.verticalSpace(15),
@@ -322,7 +342,9 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SeeAllReviews()),
+                              builder: (context) => SeeAllReviews(
+                                    shopReview: widget.shopDetail.shopReview,
+                                  )),
                         );
                       },
                       child: Text(
@@ -340,17 +362,23 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                     padding: EdgeInsets.zero,
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: 3,
+                    itemCount: widget.shopDetail.shopReview.length > 3
+                        ? 3
+                        : widget.shopDetail.shopReview.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
-                      return reviewsCard();
+                      return reviewsCard(index);
                     }),
               ),
               UIHelper.verticalSpace(10),
             ]));
   }
 
-  menuCard() {
+  menuCard(index) {
+    var title = "${widget.shopDetail.shopMenu[index].title}";
+    var desc = "${widget.shopDetail.shopMenu[index].description}";
+    var image = "${widget.shopDetail.shopMenu[index].img}";
+    var price = "${widget.shopDetail.shopMenu[index].price}";
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -362,8 +390,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                   height: 80,
                   width: 80,
                   fit: BoxFit.fill,
-                  imageUrl:
-                      "https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+                  imageUrl: "$image",
                   placeholder: (context, url) =>
                       noImageAvailable(height: 80.0, width: 80.0),
                   errorWidget: (context, url, error) =>
@@ -376,17 +403,19 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "Burger Bistro",
+                    "$title",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   UIHelper.verticalSpace(5),
                   Text(
-                    "Serving 1 Person",
+                    "$desc",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                     style: TextStyle(fontSize: 12, color: smokeyColor),
                   ),
                   UIHelper.verticalSpace(5),
                   Text(
-                    "AED 150",
+                    "$price",
                     style: TextStyle(fontSize: 12, color: smokeyColor),
                   ),
                 ],
@@ -398,7 +427,11 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
     );
   }
 
-  reviewsCard() {
+  reviewsCard(index) {
+    var name = "${widget.shopDetail.shopReview[index].byName}";
+    var image = "${widget.shopDetail.shopReview[index].byImg}";
+    var comments = "${widget.shopDetail.shopReview[index].comments}";
+    var rating = "${widget.shopDetail.shopReview[index].value}";
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -410,7 +443,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                   height: 50,
                   width: 50,
                   fit: BoxFit.fill,
-                  imageUrl: "https://img.icons8.com/plasticine/2x/user.png",
+                  imageUrl: "$image",
                   placeholder: (context, url) =>
                       noImageAvailable(height: 50.0, width: 50.0),
                   errorWidget: (context, url, error) =>
@@ -426,7 +459,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                     children: <Widget>[
                       Expanded(
                         child: Text(
-                          "Ellen John",
+                          "$name",
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w500),
                         ),
@@ -438,7 +471,8 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                             size: 13,
                           ),
                           child: StarRating(
-                            rating: 2.6,
+                            rating:
+                                double.tryParse(rating != null ? rating : 0.0),
                           ),
                         ),
                       ),
@@ -446,7 +480,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                   ),
                   UIHelper.verticalSpace(5),
                   Text(
-                    "A small, dimly-lit room covered in deep hues and antique cutlery, Chef’s Table definitely checked all boxes for fine dining.",
+                    "$comments",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontSize: 12, color: smokeyColor),

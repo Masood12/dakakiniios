@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dakakini/models/user_shop.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
 
 class SeeAllMenu extends StatefulWidget {
+  List<ShopMenu> shopMenu;
+  SeeAllMenu({this.shopMenu});
   @override
   _SeeAllMenuState createState() => _SeeAllMenuState();
 }
@@ -21,16 +24,20 @@ class _SeeAllMenuState extends State<SeeAllMenu> {
             padding: EdgeInsets.zero,
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: 3,
+            itemCount: widget.shopMenu.length,
             scrollDirection: Axis.vertical,
             itemBuilder: (context, index) {
-              return menuCard();
+              return menuCard(index);
             }),
       ),
     );
   }
 
-  menuCard() {
+  menuCard(index) {
+    var title = "${widget.shopMenu[index].title}";
+    var desc = "${widget.shopMenu[index].description}";
+    var image = "${widget.shopMenu[index].img}";
+    var price = "${widget.shopMenu[index].price}";
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -42,8 +49,7 @@ class _SeeAllMenuState extends State<SeeAllMenu> {
                   height: 80,
                   width: 80,
                   fit: BoxFit.fill,
-                  imageUrl:
-                      "https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+                  imageUrl: "$image",
                   placeholder: (context, url) =>
                       noImageAvailable(height: 80.0, width: 80.0),
                   errorWidget: (context, url, error) =>
@@ -56,17 +62,19 @@ class _SeeAllMenuState extends State<SeeAllMenu> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "Burger Bistro",
+                    "$title",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   UIHelper.verticalSpace(5),
                   Text(
-                    "Serving 1 Person",
+                    "$desc",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                     style: TextStyle(fontSize: 12, color: smokeyColor),
                   ),
                   UIHelper.verticalSpace(5),
                   Text(
-                    "AED 150",
+                    "$price",
                     style: TextStyle(fontSize: 12, color: smokeyColor),
                   ),
                 ],

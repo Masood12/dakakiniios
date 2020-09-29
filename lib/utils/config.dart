@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const smallAppBar = 60.0;
 const BigAppBar = 120.0;
@@ -407,6 +408,26 @@ class UIHelper {
 
   static Widget horizontalSpace([double width = 8]) {
     return SizedBox(width: width);
+  }
+}
+
+calculateReview(data) {
+  int sum_of_max_rating_of_user_count = (data.shopReview.length * 5);
+  int sum_of_rating = 0;
+  double rating = 0.0;
+  for (int i = 0; i < data.shopReview.length; i++) {
+    sum_of_rating = sum_of_rating + data.shopReview[i].value;
+  }
+  return rating = (sum_of_rating * 5) / sum_of_max_rating_of_user_count;
+}
+
+launchCaller(url) async {
+  url = "$url";
+  print(url);
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
   }
 }
 
