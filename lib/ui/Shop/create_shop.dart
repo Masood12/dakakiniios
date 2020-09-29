@@ -73,9 +73,14 @@ class _ContactUsState extends State<CreateShopScreen>
           SizedBox(
             height: 15,
           ),
-          countryTextFilesWidget("City", 'Country'),
+
+          CountryDropDown(),
           SizedBox(
-            height: 15,
+            height: 10,
+          ),
+          cityDropDown(),
+          SizedBox(
+            height: 10,
           ),
           shopDescription(width),
           SizedBox(
@@ -131,78 +136,206 @@ class _ContactUsState extends State<CreateShopScreen>
   }
   
   shopCat() {
-    return Row(
+    return Column(
       children: <Widget>[
-        Expanded(
-          child: InkWell(
-            onTap: () {
-              //selectLocationPicker(context, widget.dashboardStore);
-            },
-            child: Observer(
-              builder: (_) => Container(
-                height: height40,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(),
-                    child: new DropdownButton<String>(
-                      value: dropDownValue,
-                      isExpanded: true,
-                      icon: Icon(
-                        Icons.arrow_drop_down,
-                        size: prefixIconSize,
-                        color: Colors.black,
-                      ),
-                      underline: Container(
-                        height: 0,
-                        width: 0,
-                      ),
-                      items: <String>[
-                        'Select Shop Category',
-                        'Food & Sweets',
-                        'Clothes & Accessories',
-                        'Oud & Bakhoor',
-                      ].map((String value) {
-                        return new DropdownMenuItem<String>(
-                          value: value,
-                          child: SizedBox(
-                            width: 200,
-                            child: Container(
-                                child: new Text(
-                              value,
-                              style: TextStyle(color: Colors.black, fontSize: 12),
-                            )),
-                          ),
-                          onTap: () {
-                            setState(() {
-                              dropDownValue = value;
-                              if (dropDownValue == "Food & Sweets") {
-                                dropDownValueID = "1";
-                              } else if (dropDownValue == "Clothes & Accessories") {
-                                dropDownValueID = "2";
-                              } else if (dropDownValue == "Oud & Bakhoor") {
-                                dropDownValueID = "3";
-                              }
-                              //store.userType = dropDownValueID;
-                            });
-                          },
-                        );
-                      }).toList(),
-                      onChanged: (_) {},
+        Container(
+          height: height40,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              padding: EdgeInsets.symmetric(),
+              child: new DropdownButton<String>(
+                value: dropDownValue,
+                isExpanded: true,
+                icon: Icon(
+                  Icons.arrow_drop_down,
+                  size: prefixIconSize,
+                  color: Colors.black,
+                ),
+                underline: Container(
+                  height: 0,
+                  width: 0,
+                ),
+                items: <String>[
+                  'Select Shop Category',
+                  'Food & Sweets',
+                  'Clothes & Accessories',
+                  'Oud & Bakhoor',
+                ].map((String value) {
+                  return new DropdownMenuItem<String>(
+                    value: value,
+                    child: SizedBox(
+                      width: 200,
+                      child: Container(
+                          child: new Text(
+                            value,
+                            style: TextStyle(color: Colors.black, fontSize: 12),
+                          )),
                     ),
-                  ),
-                ),
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(
-                  border: Border.all(color: colorMain),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(7.0),
-                  ),
-                ),
+                    onTap: () {
+                      setState(() {
+                        dropDownValue = value;
+                        if (dropDownValue == "Food & Sweets") {
+                          dropDownValueID = "1";
+                        } else if (dropDownValue == "Clothes & Accessories") {
+                          dropDownValueID = "2";
+                        } else if (dropDownValue == "Oud & Bakhoor") {
+                          dropDownValueID = "3";
+                        }
+                        //store.userType = dropDownValueID;
+                      });
+                    },
+                  );
+                }).toList(),
+                onChanged: (_) {},
               ),
             ),
           ),
+          alignment: Alignment.centerLeft,
+
         ),
+        Container(
+          height: 1,
+          width: MediaQuery.of(context).size.width,
+          color: underLineColor,
+        )
+      ],
+    );
+  }
+
+
+  CountryDropDown() {
+    return Column(
+      children: <Widget>[
+        Container(
+          height: height40,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              padding: EdgeInsets.symmetric(),
+              child: new DropdownButton<String>(
+                value: dropDownValue,
+                isExpanded: true,
+                icon: Icon(
+                  Icons.arrow_drop_down,
+                  size: prefixIconSize,
+                  color: Colors.black,
+                ),
+                underline: Container(
+                  height: 0,
+                  width: 0,
+                ),
+                items: <String>[
+                  'Select Shop Category',
+                  'Food & Sweets',
+                  'Clothes & Accessories',
+                  'Oud & Bakhoor',
+                ].map((String value) {
+                  return new DropdownMenuItem<String>(
+                    value: value,
+                    child: SizedBox(
+                      width: 200,
+                      child: Container(
+                          child: new Text(
+                            value,
+                            style: TextStyle(color: Colors.black, fontSize: 12),
+                          )),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        dropDownValue = value;
+                        if (dropDownValue == "Food & Sweets") {
+                          dropDownValueID = "1";
+                        } else if (dropDownValue == "Clothes & Accessories") {
+                          dropDownValueID = "2";
+                        } else if (dropDownValue == "Oud & Bakhoor") {
+                          dropDownValueID = "3";
+                        }
+                        //store.userType = dropDownValueID;
+                      });
+                    },
+                  );
+                }).toList(),
+                onChanged: (_) {},
+              ),
+            ),
+          ),
+          alignment: Alignment.centerLeft,
+
+        ),
+        Container(
+          height: 1,
+          width: MediaQuery.of(context).size.width,
+          color: underLineColor,
+        )
+      ],
+    );
+  }
+
+ cityDropDown() {
+    return Column(
+      children: <Widget>[
+        Container(
+          height: height40,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              padding: EdgeInsets.symmetric(),
+              child: new DropdownButton<String>(
+                value: dropDownValue,
+                isExpanded: true,
+                icon: Icon(
+                  Icons.arrow_drop_down,
+                  size: prefixIconSize,
+                  color: Colors.black,
+                ),
+                underline: Container(
+                  height: 0,
+                  width: 0,
+                ),
+                items: <String>[
+                  'Select Shop Category',
+                  'Food & Sweets',
+                  'Clothes & Accessories',
+                  'Oud & Bakhoor',
+                ].map((String value) {
+                  return new DropdownMenuItem<String>(
+                    value: value,
+                    child: SizedBox(
+                      width: 200,
+                      child: Container(
+                          child: new Text(
+                            value,
+                            style: TextStyle(color: Colors.black, fontSize: 12),
+                          )),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        dropDownValue = value;
+                        if (dropDownValue == "Food & Sweets") {
+                          dropDownValueID = "1";
+                        } else if (dropDownValue == "Clothes & Accessories") {
+                          dropDownValueID = "2";
+                        } else if (dropDownValue == "Oud & Bakhoor") {
+                          dropDownValueID = "3";
+                        }
+                        //store.userType = dropDownValueID;
+                      });
+                    },
+                  );
+                }).toList(),
+                onChanged: (_) {},
+              ),
+            ),
+          ),
+          alignment: Alignment.centerLeft,
+
+        ),
+        Container(
+          height: 1,
+          width: MediaQuery.of(context).size.width,
+          color: underLineColor,
+        )
       ],
     );
   }

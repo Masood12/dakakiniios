@@ -27,6 +27,29 @@ const drawerListColor = Color(0xffFBFBFB);
 const ratingcolor = Color(0xff99cb0a);
 const underLineColor = colorMain;
 
+Color blue = const Color(0xFF2a2861);
+Color orange = const Color(0xFFfb876e);
+Color fontBlack = const Color(0xFF464648);
+Color fontOrange = const Color(0xFFeb421b);
+Color gradientStart = const Color(0xFF4c41a3);
+Color gradientEnd = const Color(0xFF1f176f);
+Color buttonLightBlue = const Color(0xFF5c51b2);
+Color percentageOrange = const Color(0xFFf49475);
+Color lsBLUE = const Color(0xFF453b9b);
+Color greyColorLabel = const Color(0xFFb5b5b6);
+Color greyColorAppBar = const Color(0xFFeeeef0);
+Color appbarTextclr = const Color(0xFF4a426f);
+Color tabBarUNFOCUSclr = const Color(0xFF9e99c8);
+Color headingsLight = const Color(0xFF888888);
+Color cardLgrey = const Color(0xFFf5f5f5);
+Color green = const Color(0xFF17c228);
+Color dismisTxtClr = const Color(0xFFf49475);
+Color starColor = const Color(0xFFffaa00);
+Color pricTagColor = const Color(0xFFef8f79);
+Color hyperLinkColor = const Color(0xFF3947dc);
+Color radioBTnClr = const Color(0xFFeb5d3b);
+Color searchBtnClr = const Color(0xFF5d5781);
+
 const technicalErrorMessage =
     "Something went wrong please contact system administrator";
 const colorLoadingRed = Color(0xffC40B0B);
@@ -382,6 +405,16 @@ class Config {
   static setUserCompanyName(String userCompanyName) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('userCompanyName', userCompanyName);
+  }
+
+  static Future<bool> getrememberme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('rememberme');
+  }
+
+  static setRememberMe(bool rememberme) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('rememberme', false);
   }
 
   static Future<String> getDateForShowingDialog() async {

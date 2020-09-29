@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dakakini/store/get_category_store.dart';
 import 'package:dakakini/ui/Shop/Shop.dart';
+import 'package:dakakini/ui/Shop/create_shop.dart';
 import 'package:dakakini/ui/Shop/tab_1food.dart';
 import 'package:dakakini/ui/Shop/tab_2cloths.dart';
 import 'package:dakakini/ui/Shop/tab_3bakhoor.dart';
@@ -34,13 +35,17 @@ class _ShopSearchState extends State<ShopSearch>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorMain,
       floatingActionButton: FloatingActionButton(
         backgroundColor: colorMain,
-        onPressed: () {},
+        onPressed: () {
+                Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (BuildContext context) => CreateShopScreen()));
+        },
         child: Icon(Icons.add),
       ),
       body: Container(
+        color: Colors.white,
         margin: EdgeInsets.only(top: 25),
         child: Column(
           mainAxisSize: MainAxisSize.min,

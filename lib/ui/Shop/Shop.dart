@@ -1,9 +1,9 @@
 import 'package:dakakini/store/get_category_store.dart';
 import 'package:dakakini/ui/Shop/LocationScreen.dart';
 import 'package:dakakini/ui/Shop/NotificationScreen.dart';
-import 'package:dakakini/ui/Shop/ProfileScreen.dart';
 import 'package:dakakini/ui/Shop/SeeAllMenu.dart';
 import 'package:dakakini/ui/Shop/ShopDetail.dart';
+import 'package:dakakini/ui/Shop/ShopProfile.dart';
 import 'package:dakakini/ui/Shop/StarRatingScreen.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';

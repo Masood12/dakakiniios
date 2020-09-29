@@ -1,5 +1,6 @@
 import 'package:dakakini/ui/HomeScreen.dart';
 import 'package:dakakini/ui/LoginScreen.dart';
+import 'package:dakakini/ui/Shop/ShopProfile.dart';
 import 'package:dakakini/ui/Shop/ShopScreen.dart';
 import 'package:dakakini/ui/Shop/create_shop.dart';
 import 'package:dakakini/ui/Shop/create_shop_menu.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
         statusBarColor: colorMain, // Color for Android
         statusBarBrightness:
-            Brightness.dark, // Dark == white status bar -- for IOS.
+            Brightness.light, // Dark == white status bar -- for IOS.
         statusBarIconBrightness: Brightness.light));
     return MaterialApp(
       debugShowCheckedModeBanner: false,

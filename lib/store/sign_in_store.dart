@@ -4,6 +4,7 @@ import 'package:dakakini/models/login_response_model.dart';
 import 'package:dakakini/network/network_calls_apis.dart';
 import 'package:dakakini/network/network_services.dart';
 import 'package:dakakini/ui/HomeScreen.dart';
+import 'package:dakakini/ui/change_password_screen.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,8 @@ abstract class _SignInStore with Store {
   String email = '';
   @observable
   String password = '';
+  @observable
+  bool rememberMe = false;
 
 
   validate(context) {

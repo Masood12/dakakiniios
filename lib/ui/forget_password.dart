@@ -1,4 +1,5 @@
 
+import 'package:dakakini/store/forget_password_store.dart';
 import 'package:dakakini/store/sign_up_store.dart';
 import 'package:dakakini/ui/LoginScreen.dart';
 import 'package:dakakini/utils/config.dart';
@@ -11,15 +12,8 @@ class ForgetPasswordScreen extends StatefulWidget {
 }
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
-  bool passwordVisible = false;
-  bool cnfrmpasswordVisible = false;
-
-  bool checkBoxValue = false;
-
-  FocusNode fullNameFocus = FocusNode();
-  FocusNode confrmPasswordFocous = FocusNode();
-  FocusNode passwordFocus = FocusNode();
-
+  FocusNode emailFocus = FocusNode();
+    ForgetPasswordStore store = ForgetPasswordStore();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,11 +67,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   emailTextField() {
     return TextFormField(
-      focusNode: passwordFocus,
+      focusNode: emailFocus,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.done,
       style: TextStyle(fontSize: 12),
-      //onChanged: (value) => store.password = value,
+      onChanged: (value) => store.email = value,
       decoration: InputDecoration(
           hintText: 'Email Address',
           hintStyle: TextStyle(fontSize: 12, color: Colors.black),
@@ -111,7 +105,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           textColor: Colors.white,
           child: Text("FORGET PASSWORD"),
           onPressed: () {
-            //store.validate(context);
+            store.validate(context);
           }),
     );
   }
