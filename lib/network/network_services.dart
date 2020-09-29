@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dakakini/models/base_response_model.dart';
 import 'package:dakakini/models/login_response_model.dart';
 import 'package:dakakini/models/ountry_cities_response_model.dart';
 import 'package:dakakini/models/sign_model.dart';
@@ -13,6 +14,8 @@ class NetworkService {
   SignUp signUpModel = new SignUp();
   UserShop userShopModel = new UserShop();
   CountryCitiesResponse countryCitiesResponse = CountryCitiesResponse();
+  BaseResponseModel baseResponseModel = BaseResponseModel();
+
   checkIfInternetIsAvailable() async {
     try {
       final result = await InternetAddress.lookup('google.com');
@@ -174,6 +177,48 @@ class NetworkService {
       else
         userShopModel.message = '' + technicalErrorMessage;
       return Future.value(userShopModel);
+    }
+  }
+
+  Future<BaseResponseModel> forgetPassword(url, email, context) async {
+    ProgressDialogDotted().showProgressDialog(context);
+
+    var body = {
+      "email": "$email",
+    };
+    print("$body");
+    var headers = {"Content-Type": "application/x-www-form-urlencoded"};
+    try {
+      final response = await http.post(
+        url,
+        body: body,
+        headers: headers,
+      );
+      final int statusCode = response.statusCode;
+      print(statusCode);
+      var decodedResponse = json.decode(response.body);
+      ProgressDialogDotted().hideProgressDialog(context);
+      if (statusCode >= 200 && statusCode <= 299) {
+        return BaseResponseModel.fromJson(decodedResponse);
+      } else if ((statusCode >= 100 && statusCode <= 199) ||
+          (statusCode >= 300 && statusCode <= 499) ||
+          json == null) {
+        baseResponseModel.status = 1;
+        baseResponseModel.message = decodedResponse['messages'];
+        return Future.value(baseResponseModel);
+      } else if (statusCode >= 500 && statusCode <= 599) {
+        baseResponseModel.status = 0;
+        baseResponseModel.message = 'Internal Server Error';
+        return Future.value(baseResponseModel);
+      }
+    } on Exception catch (e) {
+      ProgressDialogDotted().hideProgressDialog(context);
+      baseResponseModel.status = 0;
+      if (e.toString().contains("SocketException"))
+        baseResponseModel.message = 'Internet Not Connected';
+      else
+        baseResponseModel.message = '' + technicalErrorMessage;
+      return Future.value(baseResponseModel);
     }
   }
 }

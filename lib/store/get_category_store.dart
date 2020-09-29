@@ -13,14 +13,52 @@ abstract class _GetShopStore with Store {
   NetworkService networkService = new NetworkService();
 
   @observable
-  UserShop userShopModel;
+  UserShop userFoodShopModel;
+  @observable
+  UserShop userClothShopModel;
+  @observable
+  UserShop userBakhoorShopModel;
   @observable
   bool isLoaded = false;
+  @observable
+  bool isFoodListLoaded = false;
+  @observable
+  bool isClothListLoaded = false;
+  @observable
+  bool isBakhoorListLoaded = false;
 
   Future<UserShop> getshopByCatagory(context, categoryId) async {
-    userShopModel = await networkService.getshopByCatagory(
-        getShopByCategory, context, categoryId);
+    if (categoryId == 1) {
+      userFoodShopModel = await networkService.getshopByCatagory(
+          getShopByCategory, context, categoryId);
+      if (userFoodShopModel.status == 1) {
+        isFoodListLoaded = true;
+      } else {
+        isFoodListLoaded = false;
+      }
+      return userFoodShopModel;
+    }
 
-    return userShopModel;
+    if (categoryId == 2) {
+      userClothShopModel = await networkService.getshopByCatagory(
+          getShopByCategory, context, categoryId);
+      if (userClothShopModel.status == 1) {
+        isClothListLoaded = true;
+      } else {
+        isClothListLoaded = false;
+      }
+      return userClothShopModel;
+    }
+
+    if (categoryId == 3) {
+      userBakhoorShopModel = await networkService.getshopByCatagory(
+          getShopByCategory, context, categoryId);
+      if (userBakhoorShopModel.status == 1) {
+        isBakhoorListLoaded = true;
+      } else {
+        isBakhoorListLoaded = false;
+      }
+      return userBakhoorShopModel;
+    }
   }
 }
