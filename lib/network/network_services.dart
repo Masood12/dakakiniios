@@ -183,8 +183,46 @@ class NetworkService {
   Future<BaseResponseModel> forgetPassword(url, email, context) async {
     ProgressDialogDotted().showProgressDialog(context);
 
+    url = url + "email=$email";
+    print(url);
+    var headers = {"Content-Type": "application/x-www-form-urlencoded"};
+    try {
+      final response = await http.get(url);
+      final int statusCode = response.statusCode;
+      print(statusCode);
+      var decodedResponse = json.decode(response.body);
+      ProgressDialogDotted().hideProgressDialog(context);
+      if (statusCode >= 200 && statusCode <= 299) {
+        return BaseResponseModel.fromJson(decodedResponse);
+      } else if ((statusCode >= 100 && statusCode <= 199) ||
+          (statusCode >= 300 && statusCode <= 499) ||
+          json == null) {
+        baseResponseModel.status = 1;
+        baseResponseModel.message = decodedResponse['messages'];
+        return Future.value(baseResponseModel);
+      } else if (statusCode >= 500 && statusCode <= 599) {
+        baseResponseModel.status = 0;
+        baseResponseModel.message = 'Internal Server Error';
+        return Future.value(baseResponseModel);
+      }
+    } on Exception catch (e) {
+      ProgressDialogDotted().hideProgressDialog(context);
+      baseResponseModel.status = 0;
+      if (e.toString().contains("SocketException"))
+        baseResponseModel.message = 'Internet Not Connected';
+      else
+        baseResponseModel.message = '' + technicalErrorMessage;
+      return Future.value(baseResponseModel);
+    }
+  }
+  Future<BaseResponseModel> changePassword(
+      url, oldPassword, newPassword, userId, context) async {
+    ProgressDialogDotted().showProgressDialog(context);
+
     var body = {
-      "email": "$email",
+      "oldpass": '$oldPassword',
+      "newpass": "$newPassword",
+      "userId": "$userId",
     };
     print("$body");
     var headers = {"Content-Type": "application/x-www-form-urlencoded"};

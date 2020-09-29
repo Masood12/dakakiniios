@@ -55,12 +55,28 @@ mixin _$SignInStore on _SignInStore, Store {
     });
   }
 
+  final _$rememberMeAtom = Atom(name: '_SignInStore.rememberMe');
+
+  @override
+  bool get rememberMe {
+    _$rememberMeAtom.reportRead();
+    return super.rememberMe;
+  }
+
+  @override
+  set rememberMe(bool value) {
+    _$rememberMeAtom.reportWrite(value, super.rememberMe, () {
+      super.rememberMe = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 loginResponseModel: ${loginResponseModel},
 email: ${email},
-password: ${password}
+password: ${password},
+rememberMe: ${rememberMe}
     ''';
   }
 }

@@ -1,3 +1,4 @@
+import 'package:dakakini/store/change_password_store.dart';
 import 'package:dakakini/store/sign_up_store.dart';
 import 'package:dakakini/ui/LoginScreen.dart';
 import 'package:dakakini/utils/config.dart';
@@ -17,8 +18,20 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   bool checkBoxValue = false;
 
   FocusNode fullNameFocus = FocusNode();
-  FocusNode confrmPasswordFocous = FocusNode();
-  FocusNode passwordFocus = FocusNode();
+  FocusNode oldPasswordFocus = FocusNode();
+  FocusNode newPasswordFocus = FocusNode();
+
+  int userId;
+  ChangePasswordStore store =  ChangePasswordStore();
+  @override
+  void initState() {
+    Config.getUserID().then((value) {
+      userId= value;
+    });
+   print(userId);
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +71,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   passwordTextFormFeild() {
     return TextFormField(
       obscureText: !passwordVisible,
-      focusNode: passwordFocus,
+      focusNode: oldPasswordFocus,
       keyboardType: TextInputType.visiblePassword,
       textInputAction: TextInputAction.done,
-      //onChanged: (value) => store.password = value,
+      onChanged: (value) => store.oldPassword = value,
+      style: TextStyle(
+        fontSize: 12,
+        color: Colors.black
+      ),
       decoration: InputDecoration(
-          hintText: 'Password',
+          hintText: 'Old Password',
           hintStyle: TextStyle(fontSize: 12, color: Colors.black),
           // errorText: store.error.password,
           suffixIcon: IconButton(
@@ -98,12 +115,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   confirmpasswordTextFormFeild() {
     return TextFormField(
       obscureText: !passwordVisible,
-      focusNode: confrmPasswordFocous,
+      focusNode: newPasswordFocus,
       keyboardType: TextInputType.visiblePassword,
       textInputAction: TextInputAction.done,
-      //onChanged: (value) => store.password = value,
+      onChanged: (value) => store.newPassword = value,
+      style: TextStyle(
+          fontSize: 12,
+          color: Colors.black
+      ),
       decoration: InputDecoration(
-          hintText: 'Confirm Password',
+          hintText: 'New Password',
           hintStyle: TextStyle(fontSize: 12, color: Colors.black),
           // errorText: store.error.password,
           suffixIcon: IconButton(
@@ -140,8 +161,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
 
 
-
-
   singUpBotton() {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -152,7 +171,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           textColor: Colors.white,
           child: Text("CHANGE PASSWORD"),
           onPressed: () {
-            //store.validate(context);
+            store.validate(context);
           }),
     );
   }

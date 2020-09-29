@@ -8,4 +8,6 @@ final String countryApi = BaseUrl + 'getCountry';
 /* Shop Category Up Api */
 final String getShopByCategory = BaseUrl + 'getshopByCatagory?';
 /* ForgetPassword Up Api */
-final String forgetPasswordApi = BaseUrl + 'forgetPass';
+final String forgetPasswordApi = BaseUrl + 'forgetPass?';
+/* change password Up Api */
+final String changePasswordApi = BaseUrl + 'changepassword';

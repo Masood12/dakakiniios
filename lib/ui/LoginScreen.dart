@@ -171,8 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   signInWidget() {
-    return Observer(
-        builder: (_) =>Container(
+    return   Container(
       width: MediaQuery.of(context).size.width,
       child: RaisedButton(
           shape:
@@ -182,22 +181,20 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Text("Sign In"),
           onPressed: () {
             print('object');
-           store.validate(context);
+            store.validate(context);
           }),
-    ));
+    );
   }
 
 
   emailTextFormFeild() {
-    return Observer(
-        builder: (_) =>
-        TextFormField(
+    return TextFormField(
         focusNode: emailFocus,
         textInputAction: TextInputAction.next,
         onChanged: (value) => store.email = value,
-            controller: emailController,
+        controller: emailController,
 
-            decoration: InputDecoration(
+        decoration: InputDecoration(
           hintText: 'Email',
           hintStyle: TextStyle(fontSize: 12, color: Colors.black),
 
@@ -210,7 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           labelStyle:
-              TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+          TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
 
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: underLineColor),
@@ -218,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: underLineColor),
           ),
-        )));
+        ));
   }
 
   passwordTextFormFeild() {
@@ -292,6 +289,7 @@ class _LoginScreenState extends State<LoginScreen> {
         onChanged: (bool value) {
           setState(() {
             checkBoxValue = value;
+            Config.setRememberMe(checkBoxValue);
           });
         },
       ),

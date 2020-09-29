@@ -3,6 +3,7 @@ import 'package:dakakini/ui/HomeScreen.dart';
 import 'package:dakakini/ui/LoginScreen.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   // This widget is the root of your application.
@@ -15,13 +16,29 @@ class _SplashScreenState extends State<SplashScreen> {
   bool isUserLoggedIn = false;
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
+    Config.getrememberme().then((value) {
+      if (value == true)
+        isUserLoggedIn = true;
+      else
+        isUserLoggedIn = false;
+    });    super.initState();
 
     Timer(
-        Duration(seconds: 2),
-        () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => LoginScreen())));
+        Duration(seconds: 4),
+        () {
+          checkUserIsLogin();
+        }
+    );
+  }
+  checkUserIsLogin() async {
+
+    if(isUserLoggedIn){
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (BuildContext context) => HomeScreen()));
+    }else{
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (BuildContext context) => LoginScreen()));
+    }
   }
 
   @override
