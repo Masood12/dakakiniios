@@ -60,6 +60,7 @@ abstract class _SignInStore with Store {
           "${loginResponseModel.data.image}");
       Config.setUserID(loginResponseModel.data.userId);
       Config.setUserType(loginResponseModel.data.userType);
+      Config.setRememberMe(rememberMe);
       // Config.setUserMobile("${response.data.user}");
       if(loginResponseModel.data.userType==1005){
         Navigator.pushAndRemoveUntil(

@@ -31,7 +31,6 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
   checkUserIsLogin() async {
-
     if(isUserLoggedIn){
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (BuildContext context) => HomeScreen()));
