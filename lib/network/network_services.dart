@@ -4,6 +4,7 @@ import 'package:dakakini/models/base_response_model.dart';
 import 'package:dakakini/models/login_response_model.dart';
 import 'package:dakakini/models/ountry_cities_response_model.dart';
 import 'package:dakakini/models/sign_model.dart';
+import 'package:dakakini/models/submit_review.dart';
 import 'package:dakakini/models/user_shop.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:dakakini/utils/loaders/progress_dialog.dart';
@@ -15,6 +16,7 @@ class NetworkService {
   UserShop userShopModel = new UserShop();
   CountryCitiesResponse countryCitiesResponse = CountryCitiesResponse();
   BaseResponseModel baseResponseModel = BaseResponseModel();
+  SubmitReview submitReview = SubmitReview();
 
   checkIfInternetIsAvailable() async {
     try {
@@ -215,6 +217,7 @@ class NetworkService {
       return Future.value(baseResponseModel);
     }
   }
+
   Future<BaseResponseModel> changePassword(
       url, oldPassword, newPassword, userId, context) async {
     ProgressDialogDotted().showProgressDialog(context);
@@ -257,6 +260,52 @@ class NetworkService {
       else
         baseResponseModel.message = '' + technicalErrorMessage;
       return Future.value(baseResponseModel);
+    }
+  }
+
+  Future<SubmitReview> submitReviewApiCall(
+      context, url, toId, value, comments) async {
+    ProgressDialogDotted().showProgressDialog(context);
+    var userID = Config.getUserID();
+    var body = {
+      "by_id": '$userID',
+      "toid": "$toId",
+      "value": "$value",
+      "comments": "$comments",
+    };
+    print("$body");
+    var headers = {"Content-Type": "application/x-www-form-urlencoded"};
+    try {
+      final response = await http.post(
+        url,
+        body: body,
+        headers: headers,
+      );
+      final int statusCode = response.statusCode;
+      print(statusCode);
+      var decodedResponse = json.decode(response.body);
+      ProgressDialogDotted().hideProgressDialog(context);
+      if (statusCode >= 200 && statusCode <= 299) {
+        return SubmitReview.fromJson(decodedResponse);
+      } else if ((statusCode >= 100 && statusCode <= 199) ||
+          (statusCode >= 300 && statusCode <= 499) ||
+          json == null) {
+        submitReview.status = 1;
+        submitReview.message = decodedResponse['messages'];
+        return Future.value(submitReview);
+      } else if (statusCode >= 500 && statusCode <= 599) {
+        submitReview.status = 0;
+        submitReview.message = 'Internal Server Error';
+        return Future.value(submitReview);
+      }
+    } on Exception catch (e) {
+      ProgressDialogDotted().hideProgressDialog(context);
+      submitReview.status = 0;
+      if (e.toString().contains("SocketException"))
+        submitReview.message = 'Internet Not Connected';
+      else
+        submitReview.message = '' + technicalErrorMessage;
+      return Future.value(submitReview);
     }
   }
 }

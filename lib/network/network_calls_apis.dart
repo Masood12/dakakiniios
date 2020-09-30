@@ -11,3 +11,5 @@ final String getShopByCategory = BaseUrl + 'getshopByCatagory?';
 final String forgetPasswordApi = BaseUrl + 'forgetPass?';
 /* change password Up Api */
 final String changePasswordApi = BaseUrl + 'changepassword';
+/* change password Up Api */
+final String submitReviewApi = BaseUrl + 'rateShop';

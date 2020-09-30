@@ -118,6 +118,51 @@ mixin _$GetShopStore on _GetShopStore, Store {
     });
   }
 
+  final _$commentsAtom = Atom(name: '_GetShopStore.comments');
+
+  @override
+  String get comments {
+    _$commentsAtom.reportRead();
+    return super.comments;
+  }
+
+  @override
+  set comments(String value) {
+    _$commentsAtom.reportWrite(value, super.comments, () {
+      super.comments = value;
+    });
+  }
+
+  final _$ratingValueAtom = Atom(name: '_GetShopStore.ratingValue');
+
+  @override
+  int get ratingValue {
+    _$ratingValueAtom.reportRead();
+    return super.ratingValue;
+  }
+
+  @override
+  set ratingValue(int value) {
+    _$ratingValueAtom.reportWrite(value, super.ratingValue, () {
+      super.ratingValue = value;
+    });
+  }
+
+  final _$toIDAtom = Atom(name: '_GetShopStore.toID');
+
+  @override
+  String get toID {
+    _$toIDAtom.reportRead();
+    return super.toID;
+  }
+
+  @override
+  set toID(String value) {
+    _$toIDAtom.reportWrite(value, super.toID, () {
+      super.toID = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
@@ -127,7 +172,10 @@ userBakhoorShopModel: ${userBakhoorShopModel},
 isLoaded: ${isLoaded},
 isFoodListLoaded: ${isFoodListLoaded},
 isClothListLoaded: ${isClothListLoaded},
-isBakhoorListLoaded: ${isBakhoorListLoaded}
+isBakhoorListLoaded: ${isBakhoorListLoaded},
+comments: ${comments},
+ratingValue: ${ratingValue},
+toID: ${toID}
     ''';
   }
 }

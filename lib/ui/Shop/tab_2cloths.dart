@@ -100,6 +100,7 @@ class _ShopCardState extends State<ShopCloths> {
                 context,
                 MaterialPageRoute(builder: (context) => Shop(
                   shopDetail: data,
+                  getShopStore: widget.getShopStore,
                 )),
               );
             },

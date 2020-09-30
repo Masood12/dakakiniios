@@ -12,7 +12,8 @@ import 'package:flutter/scheduler.dart';
 
 class Shop extends StatefulWidget {
   Datum shopDetail;
-  Shop({@required this.shopDetail});
+  GetShopStore getShopStore;
+  Shop({@required this.shopDetail, @required this.getShopStore});
   @override
   _ShopState createState() => _ShopState();
 }
@@ -130,7 +131,10 @@ class _ShopState extends State<Shop> {
           shopDetail: widget.shopDetail,
         );
       case 1:
-        return RatingScreen();
+        return RatingScreen(
+          shopDetail: widget.shopDetail,
+          getShopStore:widget.getShopStore,
+        );
       case 2:
         return LocationScreen(
           shopDetail: widget.shopDetail,

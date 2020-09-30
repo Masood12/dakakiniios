@@ -1,5 +1,6 @@
 import 'package:dakakini/models/ountry_cities_response_model.dart';
 import 'package:dakakini/models/user_shop.dart';
+import 'package:dakakini/models/submit_review.dart';
 import 'package:dakakini/network/network_calls_apis.dart';
 import 'package:dakakini/network/network_services.dart';
 import 'package:dakakini/utils/config.dart';
@@ -26,6 +27,14 @@ abstract class _GetShopStore with Store {
   bool isClothListLoaded = false;
   @observable
   bool isBakhoorListLoaded = false;
+
+  SubmitReview submitReview;
+  @observable
+  String comments = "";
+  @observable
+  int ratingValue;
+  @observable
+  String toID;
 
   Future<UserShop> getshopByCatagory(context, categoryId) async {
     if (categoryId == 1) {
@@ -60,5 +69,28 @@ abstract class _GetShopStore with Store {
       }
       return userBakhoorShopModel;
     }
+  }
+
+  validateStarScreen(context) {
+    if (comments.isEmpty) {
+      showToast("Comments can't be empty", true);
+      return;
+    }
+    if (ratingValue == 0) {
+      showToast("Please give rating", true);
+      return;
+    }
+    review(context);
+  }
+
+  Future<SubmitReview> review(context) async {
+    submitReview = await networkService.submitReviewApiCall(
+        context, submitReviewApi, toID, ratingValue, comments);
+    if (submitReview.status == 0) {
+      showToast(submitReview.message, true);
+    } else {
+      showToast(submitReview.message, false);
+    }
+    return submitReview;
   }
 }

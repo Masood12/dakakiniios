@@ -3,8 +3,14 @@ import 'dart:async';
 import 'package:dakakini/utils/config.dart';
 import 'package:dakakini/utils/start_rating.dart';
 import 'package:flutter/material.dart';
+import 'package:dakakini/models/user_shop.dart';
+import 'package:dakakini/store/get_category_store.dart';
 
 class RatingScreen extends StatefulWidget {
+  final Datum shopDetail;
+  GetShopStore getShopStore;
+
+  RatingScreen({this.shopDetail, @required this.getShopStore});
   @override
   _RatingScreenState createState() => _RatingScreenState();
 }
@@ -34,7 +40,7 @@ class _RatingScreenState extends State<RatingScreen> {
       child: TextField(
         maxLines: 7,
         style: TextStyle(fontSize: 12),
-        //onChanged: (value) => store.company = value,
+        onChanged: (value) => widget.getShopStore.comments = value,
         decoration: InputDecoration(
             filled: true,
             fillColor: Colors.white,
@@ -71,6 +77,7 @@ class _RatingScreenState extends State<RatingScreen> {
             onRatingChanged: (rating) {
               setState(() {
                 this.rating = rating;
+                widget.getShopStore.ratingValue = rating.toInt();
               });
             },
           ),
@@ -90,6 +97,8 @@ class _RatingScreenState extends State<RatingScreen> {
           textColor: Colors.white,
           child: Text("Submit Review"),
           onPressed: () {
+            widget.getShopStore.toID = widget.shopDetail.shopId.toString();
+            widget.getShopStore.review(context);
             //  store.validate(context);
           }),
     );
