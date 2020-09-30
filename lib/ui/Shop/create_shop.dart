@@ -1,8 +1,11 @@
+import 'package:dakakini/store/create_shop_store.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
+
+import '../../utils/config.dart';
 
 class CreateShopScreen extends StatefulWidget {
   @override
@@ -11,20 +14,30 @@ class CreateShopScreen extends StatefulWidget {
 
 class _ContactUsState extends State<CreateShopScreen>
     with SingleTickerProviderStateMixin {
+  CreateShopStore store = CreateShopStore();
   var imgUrl, userName, userEmail, userMobile, subject;
   DateTime dateTime;
   List<Asset> images = List<Asset>();
   String _error = 'No Error Dectected';
   var dropDownValue = "Select Shop Category";
   var dropDownValue3 = " Select Shop Type";
-
+  int countryId;
   var dropDownValueID = "";
+  String _mySelection;
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      store.citiesCountries(context);
+    });
+
+    getCitiesCounriesList();
     super.initState();
   }
 
+  getCitiesCounriesList(){
+
+  }
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -44,7 +57,12 @@ class _ContactUsState extends State<CreateShopScreen>
           elevation: 0.0,
           // ignore: missing_required_param
         ),
-        body: postViewAdvertisment(width));
+        body: Observer(
+    builder: (_) => store.isLoaded?postViewAdvertisment(width):Center(
+      child: CircularProgressIndicator(
+        backgroundColor: colorMain,
+      ),
+    )));
   }
 
   postViewAdvertisment(width) {
@@ -145,7 +163,10 @@ class _ContactUsState extends State<CreateShopScreen>
             child: Container(
               padding: EdgeInsets.symmetric(),
               child: new DropdownButton<String>(
-                value: dropDownValue,
+                hint: Text('Select Shop Category',style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 12
+                ),),
                 isExpanded: true,
                 icon: Icon(
                   Icons.arrow_drop_down,
@@ -157,7 +178,6 @@ class _ContactUsState extends State<CreateShopScreen>
                   width: 0,
                 ),
                 items: <String>[
-                  'Select Shop Category',
                   'Food & Sweets',
                   'Clothes & Accessories',
                   'Oud & Bakhoor',
@@ -214,8 +234,11 @@ class _ContactUsState extends State<CreateShopScreen>
             child: Container(
               padding: EdgeInsets.symmetric(),
               child: new DropdownButton<String>(
-                value: dropDownValue,
                 isExpanded: true,
+                hint: Text('Select Country',style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 12
+                ),),
                 icon: Icon(
                   Icons.arrow_drop_down,
                   size: prefixIconSize,
@@ -225,38 +248,28 @@ class _ContactUsState extends State<CreateShopScreen>
                   height: 0,
                   width: 0,
                 ),
-                items: <String>[
-                  'Select Shop Category',
-                  'Food & Sweets',
-                  'Clothes & Accessories',
-                  'Oud & Bakhoor',
-                ].map((String value) {
+                items: store.citiesResponse.data.map((data) {
                   return new DropdownMenuItem<String>(
-                    value: value,
+                    value: _mySelection,
                     child: SizedBox(
                       width: 200,
                       child: Container(
                           child: new Text(
-                            value,
+                            data.name,
                             style: TextStyle(color: Colors.black, fontSize: 12),
                           )),
                     ),
                     onTap: () {
                       setState(() {
-                        dropDownValue = value;
-                        if (dropDownValue == "Food & Sweets") {
-                          dropDownValueID = "1";
-                        } else if (dropDownValue == "Clothes & Accessories") {
-                          dropDownValueID = "2";
-                        } else if (dropDownValue == "Oud & Bakhoor") {
-                          dropDownValueID = "3";
-                        }
+                       // _error = data.name;
                         //store.userType = dropDownValueID;
                       });
                     },
                   );
                 }).toList(),
-                onChanged: (_) {},
+                onChanged: (newVal) {
+                  _mySelection = newVal;
+                },
               ),
             ),
           ),
@@ -671,4 +684,6 @@ class _ContactUsState extends State<CreateShopScreen>
       _error = error;
     });
   }
+
+
 }
