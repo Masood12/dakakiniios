@@ -266,7 +266,7 @@ class NetworkService {
   Future<SubmitReview> submitReviewApiCall(
       context, url, toId, value, comments) async {
     ProgressDialogDotted().showProgressDialog(context);
-    var userID = Config.getUserID();
+    var userID = await Config.getUserID();
     var body = {
       "by_id": '$userID',
       "toid": "$toId",

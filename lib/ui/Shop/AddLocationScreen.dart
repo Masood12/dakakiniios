@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dakakini/models/user_shop.dart';
+import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -9,17 +10,18 @@ const double CAMERA_ZOOM = 10;
 const double CAMERA_TILT = 0;
 const double CAMERA_BEARING = 30;
 
-class LocationScreen extends StatefulWidget {
+class AddLocationScreen extends StatefulWidget {
   final Datum shopDetail;
-  LocationScreen({this.shopDetail});
+  AddLocationScreen({this.shopDetail});
   @override
   _LocationScreenState createState() => _LocationScreenState();
 }
 
-class _LocationScreenState extends State<LocationScreen> {
+class _LocationScreenState extends State<AddLocationScreen> {
   GoogleMapController _controller;
   Set<Marker> markers = Set();
   LatLng shopLatLng;
+  
   @override
   void initState() {
     if (widget.shopDetail.shopLocation.length > 0)
@@ -62,7 +64,13 @@ class _LocationScreenState extends State<LocationScreen> {
         tilt: CAMERA_TILT,
         target: shopLatLng);
 
-    return GoogleMap(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Add Shop Location"),
+        centerTitle: true,
+        backgroundColor: colorMain,
+      ),
+      body: GoogleMap(
         myLocationEnabled: true,
         myLocationButtonEnabled: false,
         compassEnabled: true,
@@ -71,6 +79,27 @@ class _LocationScreenState extends State<LocationScreen> {
         markers: markers,
         mapType: MapType.normal,
         initialCameraPosition: initialLocation,
-        onMapCreated: onMapCreated);
+        onMapCreated: onMapCreated,
+        onTap: (latlng) {
+          print("Hello::::    $latlng");
+          _handleTap(latlng);
+        },
+      ),
+    );
+  }
+
+  _handleTap(LatLng point) {
+    markers.clear();
+    setState(() {
+      markers.add(Marker(
+        markerId: MarkerId("asd"),
+        position: point,
+        infoWindow: InfoWindow(
+          title: 'I am a marker',
+        ),
+        icon:
+            BitmapDescriptor.defaultMarker,
+      ));
+    });
   }
 }

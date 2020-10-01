@@ -21,9 +21,15 @@ class Shop extends StatefulWidget {
 class _ShopState extends State<Shop> {
   int selectedIndex = 0;
   var title = "Shop Detail";
+  int userType = 0;
 
   @override
   void initState() {
+    Config.getUserType().then((value) {
+      setState(() {
+        userType = value;
+      });
+    });
     super.initState();
   }
 
@@ -45,8 +51,8 @@ class _ShopState extends State<Shop> {
         margin: EdgeInsets.only(left: 12.0, right: 12.0),
         child: Row(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
+            Spacer(),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: InkWell(
@@ -58,17 +64,27 @@ class _ShopState extends State<Shop> {
                     color: selectedIndex == 0 ? colorMain : colorDivider,
                   )),
             ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: InkWell(
-                  onTap: () {
-                    updateTabSelection(1);
-                  },
-                  child: Icon(
-                    Icons.star,
-                    color: selectedIndex == 1 ? colorMain : colorDivider,
-                  )),
-            ),
+            userType == 1005
+                ? Spacer()
+                : Container(
+                    height: 0,
+                  ),
+            userType == 1005
+                ? Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: InkWell(
+                        onTap: () {
+                          updateTabSelection(1);
+                        },
+                        child: Icon(
+                          Icons.star,
+                          color: selectedIndex == 1 ? colorMain : colorDivider,
+                        )),
+                  )
+                : Container(
+                    height: 0,
+                  ),
+            Spacer(),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: InkWell(
@@ -81,6 +97,7 @@ class _ShopState extends State<Shop> {
                 ),
               ),
             ),
+            Spacer(),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: InkWell(
@@ -93,6 +110,7 @@ class _ShopState extends State<Shop> {
                 ),
               ),
             ),
+            Spacer(),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: InkWell(
@@ -105,6 +123,7 @@ class _ShopState extends State<Shop> {
                 ),
               ),
             ),
+            Spacer(),
           ],
         ),
       ),
@@ -133,7 +152,7 @@ class _ShopState extends State<Shop> {
       case 1:
         return RatingScreen(
           shopDetail: widget.shopDetail,
-          getShopStore:widget.getShopStore,
+          getShopStore: widget.getShopStore,
         );
       case 2:
         return LocationScreen(

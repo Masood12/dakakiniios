@@ -1,14 +1,13 @@
-import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dakakini/models/user_shop.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:dakakini/ui/Shop/AddLocationScreen.dart';
+import 'package:dakakini/ui/Shop/LocationScreen.dart';
 import 'package:intl/intl.dart';
 import 'package:dakakini/ui/Shop/SeeAllMenu.dart';
 import 'package:dakakini/ui/Shop/SeeAllReviews.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:dakakini/utils/start_rating.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ShopDetailScreen extends StatefulWidget {
   final Datum shopDetail;
@@ -18,39 +17,9 @@ class ShopDetailScreen extends StatefulWidget {
 }
 
 class _ShopDetailScreenState extends State<ShopDetailScreen> {
-  static CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-  Set<Marker> markers = Set();
-
-  GoogleMapController _controller;
   @override
   void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      add();
-    });
     super.initState();
-  }
-
-  void add() {
-    for (int i = 0; i < widget.shopDetail.shopLocation.length; i++) {
-      LatLng latLng = LatLng(widget.shopDetail.shopLocation[i].lat,
-          widget.shopDetail.shopLocation[i].lng);
-      if (i == 0) moveCamera(latLng);
-      Marker resultMarker = Marker(
-        icon: BitmapDescriptor.defaultMarker,
-        markerId: MarkerId(i.toString()),
-        position: latLng,
-      );
-      markers.add(resultMarker);
-    }
-    setState(() {});
-  }
-
-  moveCamera(LatLng latLng) {
-    _controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: latLng, zoom: 10.0)));
   }
 
   @override
@@ -204,11 +173,22 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            "Photos",
-            textAlign: TextAlign.start,
-            style: TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w500, color: Colors.grey),
+          Row(
+            children: <Widget>[
+              Text(
+                "Photos",
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey),
+              ),
+              Spacer(),
+              GestureDetector(
+                onTap: () {},
+                child: Icon(Icons.add),
+              )
+            ],
           ),
           UIHelper.verticalSpace(10),
           Container(
@@ -218,7 +198,8 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                 itemCount: widget.shopDetail.shopPhotoes.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  var shopImage = "${widget.shopDetail.shopPhotoes[index]}";
+                  var shopImage =
+                      "${widget.shopDetail.shopPhotoes[index].photo}";
                   return Container(
                     margin: EdgeInsets.only(right: 10),
                     child: ClipRRect(
@@ -236,26 +217,38 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                   );
                 }),
           ),
-          UIHelper.verticalSpace(10),
-          Text(
-            "Shop Location",
-            textAlign: TextAlign.start,
-            style: TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w500, color: Colors.grey),
+          UIHelper.verticalSpace(20),
+          Row(
+            children: <Widget>[
+              Text(
+                "Shop Location",
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey),
+              ),
+              Spacer(),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddLocationScreen(
+                              shopDetail: widget.shopDetail,
+                            )),
+                  );
+                },
+                child: Icon(Icons.add),
+              )
+            ],
           ),
-          UIHelper.verticalSpace(10),
+          UIHelper.verticalSpace(20),
           Container(
-            height: 200,
-            child: GoogleMap(
-              mapType: MapType.normal,
-              zoomControlsEnabled: false,
-              initialCameraPosition: _kGooglePlex,
-              markers: markers,
-              onMapCreated: (GoogleMapController controller) {
-                _controller = controller;
-              },
-            ),
-          ),
+              height: 200,
+              child: LocationScreen(
+                shopDetail: widget.shopDetail,
+              )),
           UIHelper.verticalSpace(10),
           Text(
             "Description",
@@ -291,24 +284,11 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                         fontWeight: FontWeight.w500,
                         color: Colors.grey),
                   ),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SeeAllMenu(
-                                    shopMenu: widget.shopDetail.shopMenu,
-                                  )),
-                        );
-                      },
-                      child: Text(
-                        "See All",
-                        textAlign: TextAlign.end,
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      ),
-                    ),
-                  ),
+                  Spacer(),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Icon(Icons.add),
+                  )
                 ],
               ),
               UIHelper.verticalSpace(10),
@@ -318,7 +298,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: widget.shopDetail.shopMenu.length > 3
-                        ? 3
+                        ? 3 + 1
                         : widget.shopDetail.shopMenu.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
@@ -375,53 +355,80 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
   }
 
   menuCard(index) {
-    var title = "${widget.shopDetail.shopMenu[index].title}";
-    var desc = "${widget.shopDetail.shopMenu[index].description}";
-    var image = "${widget.shopDetail.shopMenu[index].img}";
-    var price = "${widget.shopDetail.shopMenu[index].price}";
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              child: CachedNetworkImage(
-                  height: 80,
-                  width: 80,
-                  fit: BoxFit.fill,
-                  imageUrl: "$image",
-                  placeholder: (context, url) =>
-                      noImageAvailable(height: 80.0, width: 80.0),
-                  errorWidget: (context, url, error) =>
-                      noImageAvailable(height: 80.0, width: 80.0)),
-            ),
-            Expanded(
-                child: Container(
-              margin: EdgeInsets.only(left: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "$title",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                  UIHelper.verticalSpace(5),
-                  Text(
-                    "$desc",
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    style: TextStyle(fontSize: 12, color: smokeyColor),
-                  ),
-                  UIHelper.verticalSpace(5),
-                  Text(
-                    "$price",
-                    style: TextStyle(fontSize: 12, color: smokeyColor),
-                  ),
-                ],
+    if (index < 3) {
+      var title = "${widget.shopDetail.shopMenu[index].title}";
+      var desc = "${widget.shopDetail.shopMenu[index].description}";
+      var image = "${widget.shopDetail.shopMenu[index].img}";
+      var price = "${widget.shopDetail.shopMenu[index].price}";
+
+      return Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                child: CachedNetworkImage(
+                    height: 80,
+                    width: 80,
+                    fit: BoxFit.fill,
+                    imageUrl: "$image",
+                    placeholder: (context, url) =>
+                        noImageAvailable(height: 80.0, width: 80.0),
+                    errorWidget: (context, url, error) =>
+                        noImageAvailable(height: 80.0, width: 80.0)),
               ),
-            ))
-          ],
+              Expanded(
+                  child: Container(
+                margin: EdgeInsets.only(left: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "$title",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    ),
+                    UIHelper.verticalSpace(5),
+                    Text(
+                      "$desc",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style: TextStyle(fontSize: 12, color: smokeyColor),
+                    ),
+                    UIHelper.verticalSpace(5),
+                    Text(
+                      "$price",
+                      style: TextStyle(fontSize: 12, color: smokeyColor),
+                    ),
+                  ],
+                ),
+              ))
+            ],
+          ),
+        ),
+      );
+    }
+    return Card(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => SeeAllMenu(
+                      shopMenu: widget.shopDetail.shopMenu,
+                    )),
+          );
+        },
+        child: Container(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text(
+              "See All",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16, color: Colors.black),
+            ),
+          ),
         ),
       ),
     );
