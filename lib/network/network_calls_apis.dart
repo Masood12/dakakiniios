@@ -13,3 +13,6 @@ final String forgetPasswordApi = BaseUrl + 'forgetPass?';
 final String changePasswordApi = BaseUrl + 'changepassword';
 /* change password Up Api */
 final String submitReviewApi = BaseUrl + 'rateShop';
+/* Api For Image Upload */
+const String imageUpload =
+    'https://application.dakakini.com/api/services/uploadimg';

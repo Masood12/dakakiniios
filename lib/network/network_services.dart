@@ -5,6 +5,7 @@ import 'package:dakakini/models/login_response_model.dart';
 import 'package:dakakini/models/ountry_cities_response_model.dart';
 import 'package:dakakini/models/sign_model.dart';
 import 'package:dakakini/models/submit_review.dart';
+import 'package:dakakini/models/upload_image_model.dart';
 import 'package:dakakini/models/user_shop.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:dakakini/utils/loaders/progress_dialog.dart';
@@ -17,6 +18,8 @@ class NetworkService {
   CountryCitiesResponse countryCitiesResponse = CountryCitiesResponse();
   BaseResponseModel baseResponseModel = BaseResponseModel();
   SubmitReview submitReview = SubmitReview();
+  /* Network Api Calls */
+  UploadImageModel uploadImageModel = UploadImageModel();
 
   checkIfInternetIsAvailable() async {
     try {
@@ -306,6 +309,85 @@ class NetworkService {
       else
         submitReview.message = '' + technicalErrorMessage;
       return Future.value(submitReview);
+    }
+  }
+
+  Future<UploadImageModel> uploadImageApiCall(context, url, base64Image) async {
+//  ProgressDialogDotted().showProgressDialog(context);
+    var body = {"photo_url": '$base64Image'};
+    var headers = {"Content-Type": "application/x-www-form-urlencoded"};
+    try {
+      final response = await http.post(
+        url,
+        body: body,
+        headers: headers,
+      );
+      final int statusCode = response.statusCode;
+      var decodedResponse = json.decode(response.body);
+      //  ProgressDialogDotted().hideProgressDialog(context);
+      if (statusCode >= 200 && statusCode <= 299) {
+        return UploadImageModel.fromJson(decodedResponse);
+      } else if ((statusCode >= 100 && statusCode <= 199) ||
+          (statusCode >= 300 && statusCode <= 499) ||
+          json == null) {
+        uploadImageModel.status = 1;
+        uploadImageModel.message = decodedResponse['messages'];
+        return Future.value(uploadImageModel);
+      } else if (statusCode >= 500 && statusCode <= 599) {
+        uploadImageModel.status = 0;
+        uploadImageModel.message = 'Internal Server Error';
+        return Future.value(uploadImageModel);
+      }
+    } on Exception catch (e) {
+      //ProgressDialogDotted().hideProgressDialog(context);
+      uploadImageModel.status = 0;
+      if (e.toString().contains("SocketException"))
+        uploadImageModel.message = 'Internet Not Connected';
+      else
+        uploadImageModel.message = '' + technicalErrorMessage;
+      return Future.value(uploadImageModel);
+    }
+
+    Future<UploadImageModel> postShopPhotoApiCall(
+        context, url, shopID, ownerID, urlPhoto) async {
+//  ProgressDialogDotted().showProgressDialog(context);
+      var body = {
+        "shop_id": '$shopID',
+        "owner_id": '$ownerID',
+        "photo": '$urlPhoto'
+      };
+      var headers = {"Content-Type": "application/x-www-form-urlencoded"};
+      try {
+        final response = await http.post(
+          url,
+          body: body,
+          headers: headers,
+        );
+        final int statusCode = response.statusCode;
+        var decodedResponse = json.decode(response.body);
+        //  ProgressDialogDotted().hideProgressDialog(context);
+        if (statusCode >= 200 && statusCode <= 299) {
+          return UploadImageModel.fromJson(decodedResponse);
+        } else if ((statusCode >= 100 && statusCode <= 199) ||
+            (statusCode >= 300 && statusCode <= 499) ||
+            json == null) {
+          uploadImageModel.status = 1;
+          uploadImageModel.message = decodedResponse['messages'];
+          return Future.value(uploadImageModel);
+        } else if (statusCode >= 500 && statusCode <= 599) {
+          uploadImageModel.status = 0;
+          uploadImageModel.message = 'Internal Server Error';
+          return Future.value(uploadImageModel);
+        }
+      } on Exception catch (e) {
+        //ProgressDialogDotted().hideProgressDialog(context);
+        uploadImageModel.status = 0;
+        if (e.toString().contains("SocketException"))
+          uploadImageModel.message = 'Internet Not Connected';
+        else
+          uploadImageModel.message = '' + technicalErrorMessage;
+        return Future.value(uploadImageModel);
+      }
     }
   }
 }
