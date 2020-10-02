@@ -12,76 +12,76 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  bool isIntroViewed = false;
-  bool isUserLoggedIn = false;
   @override
   void initState() {
-    Config.getrememberme().then((value) {
-      if (value == true)
-        isUserLoggedIn = true;
-      else
-        isUserLoggedIn = false;
-    });    super.initState();
-
-    Timer(
-        Duration(seconds: 4),
-        () {
-          checkUserIsLogin();
-        }
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      checkSharePreference();
+    });
+    super.initState();
   }
-  checkUserIsLogin() async {
-    if(isUserLoggedIn){
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (BuildContext context) => HomeScreen()));
-    }else{
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (BuildContext context) => LoginScreen()));
-    }
+
+  checkSharePreference() async {
+    await Config.getrememberme().then((value) async {
+      if (value == true) {
+        isUserLoggedIn = true;
+        await Config.getUserID().then((value) async {
+          loginUserID = value;
+          await Config.getUserType().then((value) {
+            userType = value;
+          });
+        });
+      } else
+        isUserLoggedIn = false;
+    });
+    Timer(Duration(seconds: 4), () {
+      checkUserIsLogin();
+    });
+  }
+
+  checkUserIsLogin() {
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
   }
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width ;
-    double height = MediaQuery.of(context).size.height / 15;
+    double width = MediaQuery.of(context).size.width;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Container(
-         color: Colors.white,
+          color: Colors.white,
           width: width,
           child: Column(
             children: <Widget>[
               Expanded(
                   child: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        //  SizedBox(height: 25,),
-                        SizedBox(
-                          height: 220,
-                          child: Image.asset(
-                            'assets/logo.png',
-                          ),
-                        ),
-
-                        // Image.asset('assets/brokershub.png')
-                      ],
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    //  SizedBox(height: 25,),
+                    SizedBox(
+                      height: 220,
+                      child: Image.asset(
+                        'assets/logo.png',
+                      ),
                     ),
-                  )),
 
-                Container(
+                    // Image.asset('assets/brokershub.png')
+                  ],
+                ),
+              )),
+
+              Container(
                   height: 100,
                   width: MediaQuery.of(context).size.width,
-                    child: Image.asset(
-                      'assets/bottom.png',
-                      fit: BoxFit.fill,
-                    )
-                )
-             // Expanded(flex: 2, child: bottomBarTextCopyright()),
-
+                  child: Image.asset(
+                    'assets/bottom.png',
+                    fit: BoxFit.fill,
+                  ))
+              // Expanded(flex: 2, child: bottomBarTextCopyright()),
             ],
           ),
         ),

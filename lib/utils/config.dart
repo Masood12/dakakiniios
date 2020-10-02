@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -76,6 +77,10 @@ const kDefaultShadow = BoxShadow(
   blurRadius: 4,
   color: Colors.black26,
 );
+
+bool isUserLoggedIn = false;
+int loginUserID;
+int userType;
 
 const String about_us =
     'Lorem Ipsum is simply dummy text of the printing and typesetting industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum';
@@ -415,7 +420,7 @@ class Config {
 
   static setRememberMe(bool rememberme) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('rememberme', false);
+    prefs.setBool('rememberme', rememberme);
   }
 
   static Future<String> getDateForShowingDialog() async {
@@ -430,7 +435,7 @@ class Config {
 
   static clearSharePreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove("userName");
+    prefs.clear();
   }
 }
 
@@ -473,4 +478,13 @@ noImageAvailable({height, width}) {
       width: width,
     ),
   );
+}
+
+class Constant {
+  static LatLng curentLoc;
+  static const String newgroup = "New group";
+
+  static const String settings = "Settings";
+
+  static const List<String> choices = [newgroup, settings];
 }

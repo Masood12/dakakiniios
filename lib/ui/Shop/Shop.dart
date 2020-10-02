@@ -21,15 +21,9 @@ class Shop extends StatefulWidget {
 class _ShopState extends State<Shop> {
   int selectedIndex = 0;
   var title = "Shop Detail";
-  int userType = 0;
 
   @override
   void initState() {
-    Config.getUserType().then((value) {
-      setState(() {
-        userType = value;
-      });
-    });
     super.initState();
   }
 

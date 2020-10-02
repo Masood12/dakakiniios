@@ -16,3 +16,5 @@ final String submitReviewApi = BaseUrl + 'rateShop';
 /* Api For Image Upload */
 const String imageUpload =
     'https://application.dakakini.com/api/services/uploadimg';
+/* add shop location */
+final String addShopLocationApi = BaseUrl + 'AddShopLocation';

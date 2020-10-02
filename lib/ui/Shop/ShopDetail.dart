@@ -185,18 +185,20 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                     color: Colors.grey),
               ),
               Spacer(),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => UploadImage(
-                              shopDetail: widget.shopDetail,
-                            )),
-                  );
-                },
-                child: Icon(Icons.add),
-              )
+              loginUserID == widget.shopDetail.userId
+                  ? GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UploadImage(
+                                    shopDetail: widget.shopDetail,
+                                  )),
+                        );
+                      },
+                      child: Icon(Icons.add),
+                    )
+                  : Container()
             ],
           ),
           UIHelper.verticalSpace(10),
@@ -238,18 +240,21 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                     color: Colors.grey),
               ),
               Spacer(),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AddLocationScreen(
-                              shopDetail: widget.shopDetail,
-                            )),
-                  );
-                },
-                child: Icon(Icons.add),
-              )
+              loginUserID == widget.shopDetail.userId
+                  ? GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddLocationScreen(
+                              
+                                    shopDetail: widget.shopDetail,
+                                  )),
+                        );
+                      },
+                      child: Icon(Icons.add),
+                    )
+                  : Container()
             ],
           ),
           UIHelper.verticalSpace(20),
@@ -294,10 +299,12 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                         color: Colors.grey),
                   ),
                   Spacer(),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Icon(Icons.add),
-                  )
+                  loginUserID == widget.shopDetail.userId
+                      ? GestureDetector(
+                          onTap: () {},
+                          child: Icon(Icons.add),
+                        )
+                      : Container()
                 ],
               ),
               UIHelper.verticalSpace(10),

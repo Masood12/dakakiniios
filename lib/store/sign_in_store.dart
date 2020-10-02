@@ -28,15 +28,13 @@ abstract class _SignInStore with Store {
   @observable
   bool rememberMe = false;
 
-
   validate(context) {
-
     if (email.isEmpty) {
       showToast("Email cannot be empty", true);
       return;
     }
     if (!RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(email)) {
       showToast("Invalid Email", true);
       return;
@@ -47,45 +45,47 @@ abstract class _SignInStore with Store {
     }
     signIn(context);
   }
+
   Future<LoginResponseModel> signIn(context) async {
-    loginResponseModel = await networkService.outhUser(
-        outhUserApi, email, password, context);
+    int userID, usertype;
+    loginResponseModel =
+        await networkService.outhUser(outhUserApi, email, password, context);
     if (loginResponseModel.status == 0) {
       showToast(loginResponseModel.message, true);
     } else {
-
+      userID = loginResponseModel.data.userId;
+      usertype = loginResponseModel.data.userType;
       Config.setUserName("${loginResponseModel.data.name}");
       Config.setUserEmail("${loginResponseModel.data.email}");
-      Config.setUserProfilePicture(
-          "${loginResponseModel.data.image}");
-      Config.setUserID(loginResponseModel.data.userId);
-      Config.setUserType(loginResponseModel.data.userType);
+      Config.setUserProfilePicture("${loginResponseModel.data.image}");
+      Config.setUserID(userID);
+      Config.setUserType(usertype);
       Config.setRememberMe(rememberMe);
       // Config.setUserMobile("${response.data.user}");
-      if(loginResponseModel.data.userType==1005){
+      if (loginResponseModel.data.userType == 1005) {
+        isUserLoggedIn = true;
+        loginUserID = userID;
+        userType = usertype;
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => HomeScreen()),
-              (Route<dynamic> route) => false,
+          (Route<dynamic> route) => false,
         );
-      }else{
-
-        if(loginResponseModel.data.isexpire){
+      } else {
+        if (loginResponseModel.data.isexpire) {
           showToast("Contact Admin to approve", true);
-        }else{
+        } else {
+          isUserLoggedIn = true;
+          loginUserID = userID;
+          userType = usertype;
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => HomeScreen()),
-                (Route<dynamic> route) => false,
+            (Route<dynamic> route) => false,
           );
         }
       }
     }
     return loginResponseModel;
   }
-
-
-
 }
-
-

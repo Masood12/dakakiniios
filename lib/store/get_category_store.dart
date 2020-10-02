@@ -4,6 +4,8 @@ import 'package:dakakini/models/submit_review.dart';
 import 'package:dakakini/network/network_calls_apis.dart';
 import 'package:dakakini/network/network_services.dart';
 import 'package:dakakini/utils/config.dart';
+import 'package:dakakini/models/add_shop_location_model.dart';
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
 part 'get_category_store.g.dart';
@@ -35,6 +37,16 @@ abstract class _GetShopStore with Store {
   int ratingValue;
   @observable
   String toID;
+
+  AddShopLocationModel addShopLocationModel;
+  @observable
+  int shopID;
+  @observable
+  double lat = 0.0;
+  @observable
+  double lng = 0.0;
+  @observable
+  String address;
 
   Future<UserShop> getshopByCatagory(context, categoryId) async {
     if (categoryId == 1) {
@@ -92,5 +104,33 @@ abstract class _GetShopStore with Store {
       showToast(submitReview.message, false);
     }
     return submitReview;
+  }
+
+  validateAddLocationData(context) {
+    if (shopID == null) {
+      showToast("Shop ID can't be empty", true);
+      return;
+    }
+    if (lat == 0.0 || lng == 0.0) {
+      showToast("Latitute Longitude can't be empty", true);
+      return;
+    }
+    if (address.isEmpty) {
+      showToast("Address can't be empty", true);
+      return;
+    }
+    addShopLocation(context);
+  }
+
+  Future<AddShopLocationModel> addShopLocation(context) async {
+    addShopLocationModel = await networkService.addShopLocationApiCall(
+        context, addShopLocationApi, shopID, lat, lng, address);
+    if (addShopLocationModel.status == 0) {
+      showToast(addShopLocationModel.message, true);
+    } else {
+      Navigator.pop(context);
+      showToast(addShopLocationModel.message, false);
+    }
+    return addShopLocationModel;
   }
 }

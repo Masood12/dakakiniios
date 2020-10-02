@@ -7,6 +7,7 @@ import 'package:dakakini/models/sign_model.dart';
 import 'package:dakakini/models/submit_review.dart';
 import 'package:dakakini/models/upload_image_model.dart';
 import 'package:dakakini/models/user_shop.dart';
+import 'package:dakakini/models/add_shop_location_model.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:dakakini/utils/loaders/progress_dialog.dart';
 import 'package:http/http.dart' as http;
@@ -20,6 +21,7 @@ class NetworkService {
   SubmitReview submitReview = SubmitReview();
   /* Network Api Calls */
   UploadImageModel uploadImageModel = UploadImageModel();
+  AddShopLocationModel addShopLocationModel = AddShopLocationModel();
 
   checkIfInternetIsAvailable() async {
     try {
@@ -388,6 +390,53 @@ class NetworkService {
           uploadImageModel.message = '' + technicalErrorMessage;
         return Future.value(uploadImageModel);
       }
+    }
+  }
+
+  Future<AddShopLocationModel> addShopLocationApiCall(
+      context, url, shopID, lat, lng, address) async {
+    ProgressDialogDotted().showProgressDialog(context);
+    var userID = await Config.getUserID();
+    var body = {
+      "shop_id": '$shopID',
+      "user_id": "$userID",
+      "lat": "$lat",
+      "lng": "$lng",
+      "address": "$address",
+    };
+    print("$body");
+    var headers = {"Content-Type": "application/x-www-form-urlencoded"};
+    try {
+      final response = await http.post(
+        url,
+        body: body,
+        headers: headers,
+      );
+      final int statusCode = response.statusCode;
+      print(statusCode);
+      var decodedResponse = json.decode(response.body);
+      ProgressDialogDotted().hideProgressDialog(context);
+      if (statusCode >= 200 && statusCode <= 299) {
+        return AddShopLocationModel.fromJson(decodedResponse);
+      } else if ((statusCode >= 100 && statusCode <= 199) ||
+          (statusCode >= 300 && statusCode <= 499) ||
+          json == null) {
+        addShopLocationModel.status = 1;
+        addShopLocationModel.message = decodedResponse['messages'];
+        return Future.value(addShopLocationModel);
+      } else if (statusCode >= 500 && statusCode <= 599) {
+        addShopLocationModel.status = 0;
+        addShopLocationModel.message = 'Internal Server Error';
+        return Future.value(addShopLocationModel);
+      }
+    } on Exception catch (e) {
+      ProgressDialogDotted().hideProgressDialog(context);
+      addShopLocationModel.status = 0;
+      if (e.toString().contains("SocketException"))
+        addShopLocationModel.message = 'Internet Not Connected';
+      else
+        addShopLocationModel.message = '' + technicalErrorMessage;
+      return Future.value(addShopLocationModel);
     }
   }
 }

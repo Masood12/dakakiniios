@@ -15,7 +15,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   final store = SignInStore();
 
   String msg = '';
@@ -41,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -48,122 +48,125 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 22.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                  width: 250,
-                  height: 300,
-                  child: Image.asset('assets/logo.png')),
-              emailTextFormFeild(),
-              SizedBox(
-                height: 5,
-              ),
-              passwordTextFormFeild(),
-              SizedBox(
-                height: 25,
-              ),
-              signInWidget(),
-              SizedBox(
-                height: 15,
-              ),
-              Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    agreeText(),
-                    Spacer(
-                      flex: 1,
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 22.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                    width: 250,
+                    height: 300,
+                    child: Image.asset('assets/logo.png')),
+                emailTextFormFeild(),
+                SizedBox(
+                  height: 5,
+                ),
+                passwordTextFormFeild(),
+                SizedBox(
+                  height: 25,
+                ),
+                signInWidget(),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      agreeText(),
+                      Spacer(
+                        flex: 1,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  ForgetPasswordScreen()));
+                        },
+                        child: new Text("Forget Your Password?",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontSize: 12.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600)),
+                      )
+                    ]),
+                SizedBox(
+                  height: 15,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                            child: Container(
+                          height: 1,
+                          color: Colors.grey,
+                        )),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                          child: Text(
+                            '0R',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Expanded(
+                            child: Container(
+                          height: 1,
+                          color: Colors.grey,
+                        )),
+                      ]),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SvgPicture.asset(
+                      "assets/facebook.svg",
+                      height: 36,
+                      width: 36,
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    SvgPicture.asset(
+                      "assets/google.svg",
+                      height: 36,
+                      width: 36,
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Don't Have an account?",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(fontSize: 12.0, color: Colors.black)),
+                    SizedBox(
+                      width: 5,
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (BuildContext context) => ForgetPasswordScreen()));
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (BuildContext context) => SignUp()));
                       },
-                      child: new Text("Forget Your Password?",
+                      child: Text("SIGN UP",
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.black,
+                              fontSize: 14.0,
+                              color: colorMain,
                               fontWeight: FontWeight.w600)),
                     )
-                  ]),
-              SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                          child: Container(
-                        height: 1,
-                        color: Colors.grey,
-                      )),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                        child: Text(
-                          '0R',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      Expanded(
-                          child: Container(
-                        height: 1,
-                        color: Colors.grey,
-                      )),
-                    ]),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SvgPicture.asset(
-                    "assets/facebook.svg",
-                    height: 36,
-                    width: 36,
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                  SvgPicture.asset(
-                    "assets/google.svg",
-                    height: 36,
-                    width: 36,
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text("Don't Have an account?",
-                      textAlign: TextAlign.start,
-                      style: TextStyle(fontSize: 12.0, color: Colors.black)),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => SignUp()));
-                    },
-                    child: Text("SIGN UP",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontSize: 14.0,
-                            color: colorMain,
-                            fontWeight: FontWeight.w600)),
-                  )
-                ],
-              )
-            ],
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -171,11 +174,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   signInWidget() {
-    return   Container(
+    return Container(
       width: MediaQuery.of(context).size.width,
       child: RaisedButton(
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
           color: colorMain,
           textColor: Colors.white,
           child: Text("Sign In"),
@@ -186,18 +189,18 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-
   emailTextFormFeild() {
     return TextFormField(
         focusNode: emailFocus,
+        onFieldSubmitted: (term) {
+          fieldFocusChange(context, emailFocus, passwordFocus);
+        },
         textInputAction: TextInputAction.next,
         onChanged: (value) => store.email = value,
         controller: emailController,
-
         decoration: InputDecoration(
           hintText: 'Email',
           hintStyle: TextStyle(fontSize: 12, color: Colors.black),
-
           prefixIcon: Container(
             margin: EdgeInsets.fromLTRB(0, 4, 8, 4),
             child: Icon(
@@ -207,8 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           labelStyle:
-          TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-
+              TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: underLineColor),
           ),
@@ -220,46 +222,43 @@ class _LoginScreenState extends State<LoginScreen> {
 
   passwordTextFormFeild() {
     return Observer(
-        builder: (_) =>
-        TextFormField(
-      obscureText: !passwordVisible,
-      focusNode: passwordFocus,
-      controller: passController,
-      onChanged: (value) => store.password = value,
-      decoration: InputDecoration(
-          hintText: 'Password',
-          hintStyle: TextStyle(fontSize: 12, color: Colors.black),
-
-          suffixIcon: IconButton(
-            icon: Icon(
-                // Based on passwordVisible state choose the icon
-                passwordVisible ? Icons.visibility : Icons.visibility_off,
-                color: Colors.black54),
-            onPressed: () {
-              setState(() {
-                passwordVisible = !passwordVisible;
-              });
-            },
-          ),
-          prefixIcon: Container(
-            margin: EdgeInsets.fromLTRB(0, 4, 8, 4),
-            child: Icon(
-              Icons.lock,
-              size: prefixIconSize,
-              color: Colors.black54,
-            ),
-          ),
-          labelStyle:
-              TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: underLineColor),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: underLineColor),
-        ),
-          ),
-    ));
+        builder: (_) => TextFormField(
+              obscureText: !passwordVisible,
+              focusNode: passwordFocus,
+              controller: passController,
+              onChanged: (value) => store.password = value,
+              decoration: InputDecoration(
+                hintText: 'Password',
+                hintStyle: TextStyle(fontSize: 12, color: Colors.black),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                      // Based on passwordVisible state choose the icon
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
+                      color: Colors.black54),
+                  onPressed: () {
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
+                ),
+                prefixIcon: Container(
+                  margin: EdgeInsets.fromLTRB(0, 4, 8, 4),
+                  child: Icon(
+                    Icons.lock,
+                    size: prefixIconSize,
+                    color: Colors.black54,
+                  ),
+                ),
+                labelStyle:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: underLineColor),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: underLineColor),
+                ),
+              ),
+            ));
   }
 
   agreeText() {
@@ -289,11 +288,10 @@ class _LoginScreenState extends State<LoginScreen> {
         onChanged: (bool value) {
           setState(() {
             checkBoxValue = value;
-            Config.setRememberMe(checkBoxValue);
+            store.rememberMe = value;
           });
         },
       ),
     );
   }
-
 }
