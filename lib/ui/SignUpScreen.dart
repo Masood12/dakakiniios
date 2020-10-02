@@ -180,7 +180,10 @@ class _SignUpState extends State<SignUp> {
             ].map((String value) {
               return new DropdownMenuItem<String>(
                 value: value,
-                child: Container(child: new Text(value)),
+                child: Container(child: new Text(value,style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 12
+                ),)),
                 onTap: () {
                   setState(() {
                     dropDownValue = value;

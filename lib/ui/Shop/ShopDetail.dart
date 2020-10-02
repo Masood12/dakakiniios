@@ -162,7 +162,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
             ],
           ),
           onPressed: () {
-            launchCaller("tell:${widget.shopDetail.shopDetail.cellNo}");
+            //launchCaller("tell:${widget.shopDetail.shopDetail.cellNo}");
           }),
     );
   }

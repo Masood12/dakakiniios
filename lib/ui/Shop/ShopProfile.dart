@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dakakini/ui/Shop/ShoEditProfile.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -430,6 +431,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             textColor: Colors.white,
             child: Text("Edit Profile"),
             onPressed: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (BuildContext context) => EditProfileScrren()));
              // store.validate(context);
             }),
       ),
