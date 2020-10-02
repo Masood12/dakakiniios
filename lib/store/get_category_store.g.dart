@@ -163,6 +163,66 @@ mixin _$GetShopStore on _GetShopStore, Store {
     });
   }
 
+  final _$shopIDAtom = Atom(name: '_GetShopStore.shopID');
+
+  @override
+  int get shopID {
+    _$shopIDAtom.reportRead();
+    return super.shopID;
+  }
+
+  @override
+  set shopID(int value) {
+    _$shopIDAtom.reportWrite(value, super.shopID, () {
+      super.shopID = value;
+    });
+  }
+
+  final _$latAtom = Atom(name: '_GetShopStore.lat');
+
+  @override
+  double get lat {
+    _$latAtom.reportRead();
+    return super.lat;
+  }
+
+  @override
+  set lat(double value) {
+    _$latAtom.reportWrite(value, super.lat, () {
+      super.lat = value;
+    });
+  }
+
+  final _$lngAtom = Atom(name: '_GetShopStore.lng');
+
+  @override
+  double get lng {
+    _$lngAtom.reportRead();
+    return super.lng;
+  }
+
+  @override
+  set lng(double value) {
+    _$lngAtom.reportWrite(value, super.lng, () {
+      super.lng = value;
+    });
+  }
+
+  final _$addressAtom = Atom(name: '_GetShopStore.address');
+
+  @override
+  String get address {
+    _$addressAtom.reportRead();
+    return super.address;
+  }
+
+  @override
+  set address(String value) {
+    _$addressAtom.reportWrite(value, super.address, () {
+      super.address = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
@@ -175,7 +235,11 @@ isClothListLoaded: ${isClothListLoaded},
 isBakhoorListLoaded: ${isBakhoorListLoaded},
 comments: ${comments},
 ratingValue: ${ratingValue},
-toID: ${toID}
+toID: ${toID},
+shopID: ${shopID},
+lat: ${lat},
+lng: ${lng},
+address: ${address}
     ''';
   }
 }

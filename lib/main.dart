@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         statusBarIconBrightness: Brightness.light));
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Dakakini',
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),

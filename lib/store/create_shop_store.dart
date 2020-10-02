@@ -1,6 +1,3 @@
-
-import 'dart:js';
-
 import 'package:mobx/mobx.dart';
 
 import '../models/ountry_cities_response_model.dart';
@@ -61,7 +58,7 @@ abstract class _CreateShopStore with Store {
     if(imagebase64.isEmpty){
       showToast("Select Shop image to continue", true);
     }
-    uploadImageToServer(context);
+   // uploadImageToServer(context);
   }
   Future<UploadImageModel> uploadImageToServer(context) async {
     uploadImageModel = await networkService.uploadImageApiCall(
