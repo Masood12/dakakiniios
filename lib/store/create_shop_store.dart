@@ -42,8 +42,8 @@ abstract class _CreateShopStore with Store {
   @observable
   String imagebase64 = "";
   Future<CountryCitiesResponse> citiesCountries(context) async {
-    citiesResponse = await networkService.getCitiesAndCountries(
-        countryApi, context);
+    citiesResponse =
+        await networkService.getCitiesAndCountries(countryApi, context);
     if (citiesResponse.status == 0) {
       isLoaded = false;
       showToast(citiesResponse.message, true);
@@ -54,15 +54,16 @@ abstract class _CreateShopStore with Store {
     return citiesResponse;
   }
 
-  base64Validation(){
-    if(imagebase64.isEmpty){
+  base64Validation() {
+    if (imagebase64.isEmpty) {
       showToast("Select Shop image to continue", true);
     }
-   // uploadImageToServer(context);
+    // uploadImageToServer(context);
   }
+
   Future<UploadImageModel> uploadImageToServer(context) async {
     uploadImageModel = await networkService.uploadImageApiCall(
-        imageUpload, context,imagebase64);
+        imageUpload, context, imagebase64);
     if (uploadImageModel.status == 0) {
       isLoaded = false;
       showToast(uploadImageModel.message, true);
@@ -73,32 +74,28 @@ abstract class _CreateShopStore with Store {
     return uploadImageModel;
   }
 
-  validateData(){
-    if(shopName.isEmpty){
+  validateData() {
+    if (shopName.isEmpty) {
       showToast("Shop Name cannot be empty", true);
     }
-    if(shopSubtitle.isEmpty){
+    if (shopSubtitle.isEmpty) {
       showToast("Shop subtitle cannot be empty", true);
     }
-    if(catId==null){
+    if (catId == null) {
       showToast("Select Shop Catageory", true);
     }
-    if(countryId==null){
+    if (countryId == null) {
       showToast("Select Shop Country", true);
     }
-    if(cityId==null){
+    if (cityId == null) {
       showToast("Select Shop City", true);
     }
-    if(description.isEmpty){
+    if (description.isEmpty) {
       showToast("Add Shop description", true);
     }
 
     createShop();
   }
 
-  createShop(){
-
-  }
-
-
+  createShop() {}
 }
