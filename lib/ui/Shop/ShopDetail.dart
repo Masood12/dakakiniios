@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dakakini/models/user_shop.dart';
+import 'package:dakakini/store/delete_store.dart';
 import 'package:dakakini/ui/Shop/AddLocationScreen.dart';
 import 'package:dakakini/ui/Shop/LocationScreen.dart';
+import 'package:dakakini/ui/Shop/ShopContactScreen.dart';
 import 'package:dakakini/ui/Shop/create_shop_menu.dart';
 import 'package:dakakini/ui/Shop/upload_image.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +21,7 @@ class ShopDetailScreen extends StatefulWidget {
 }
 
 class _ShopDetailScreenState extends State<ShopDetailScreen> {
+  final deleteStore = DeleteStore();
   @override
   void initState() {
     super.initState();
@@ -163,7 +166,13 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
             ],
           ),
           onPressed: () {
-            //launchCaller("tell:${widget.shopDetail.shopDetail.cellNo}");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ShopContactScreen(
+                        shopDetail: widget.shopDetail,
+                      )),
+            );
           }),
     );
   }
@@ -230,20 +239,35 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                                       height: 120.0, width: 120.0)),
                         ),
                       ),
-                      Container(
-                          padding: EdgeInsets.all(5),
-                          width: 120,
-                          height: 40,
-                          alignment: Alignment.topRight,
-                          child: ClipRRect(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(100.0)),
-                            child: Container(
-                                width: 30,
-                                height: 40,
-                                color: smokeybgColor,
-                                child: Icon(Icons.delete, color: colorMain)),
-                          )),
+                      loginUserID == widget.shopDetail.userId
+                          ? Container(
+                              padding: EdgeInsets.all(5),
+                              width: 120,
+                              height: 40,
+                              alignment: Alignment.topRight,
+                              child: ClipRRect(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(100.0)),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    deleteStore.itemID =
+                                        widget.shopDetail.shopPhotoes[index].id;
+                                    deleteStore.isShopPhotoID = true;
+                                    deleteStore.deleteApi(context);
+                                    setState(() {
+                                      widget.shopDetail.shopPhotoes
+                                          .removeAt(index);
+                                    });
+                                  },
+                                  child: Container(
+                                      width: 30,
+                                      height: 40,
+                                      color: smokeybgColor,
+                                      child:
+                                          Icon(Icons.delete, color: colorMain)),
+                                ),
+                              ))
+                          : Container(),
                     ],
                   );
                 }),
@@ -446,7 +470,21 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                     ),
                   ],
                 ),
-              ))
+              )),
+              loginUserID == widget.shopDetail.userId
+                  ? GestureDetector(
+                      onTap: () {
+                        deleteStore.itemID =
+                            widget.shopDetail.shopMenu[index].menuId;
+                        deleteStore.isShopPhotoID = false;
+                        deleteStore.deleteApi(context);
+                        setState(() {
+                          widget.shopDetail.shopMenu.removeAt(index);
+                        });
+                      },
+                      child: Icon(Icons.delete, color: colorMain),
+                    )
+                  : Container()
             ],
           ),
         ),

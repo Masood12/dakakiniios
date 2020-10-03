@@ -538,7 +538,7 @@ class NetworkService {
     }
   }
 
-  Future<BaseResponseModel> deleteShopMenuAndPhoto(url, context, id) async {
+  Future<BaseResponseModel> deleteShopMenuAndPhoto(context, url, id) async {
     ProgressDialogDotted().showProgressDialog(context);
     url = url + "id=$id";
     try {
