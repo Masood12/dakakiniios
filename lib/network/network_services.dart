@@ -488,4 +488,53 @@ class NetworkService {
       return Future.value(createShopMenu);
     }
   }
+
+
+  Future<BaseResponseModel> createShopApiCall(
+      context, url, name, subTitle, description, imageUrl, catId,cityId,countryId) async {
+    // ProgressDialogDotted().showProgressDialog(context);
+    var userID = await Config.getUserID();
+    var body = {
+      "name": '$name',
+      "sub_title": '$subTitle',
+      "description": '$description',
+      "feature_img": '$imageUrl',
+      "user_id": '$userID',
+      "cat_id": '$catId',
+      "city_id": '$cityId',
+      "country_id": '$countryId'
+    };
+    var headers = {"Content-Type": "application/x-www-form-urlencoded"};
+    try {
+      final response = await http.post(
+        url,
+        body: body,
+        headers: headers,
+      );
+      final int statusCode = response.statusCode;
+      var decodedResponse = json.decode(response.body);
+      // ProgressDialogDotted().hideProgressDialog(context);
+      if (statusCode >= 200 && statusCode <= 299) {
+        return BaseResponseModel.fromJson(decodedResponse);
+      } else if ((statusCode >= 100 && statusCode <= 199) ||
+          (statusCode >= 300 && statusCode <= 499) ||
+          json == null) {
+        baseResponseModel.status = 1;
+        baseResponseModel.message = decodedResponse['messages'];
+        return Future.value(baseResponseModel);
+      } else if (statusCode >= 500 && statusCode <= 599) {
+        baseResponseModel.status = 0;
+        baseResponseModel.message = 'Internal Server Error';
+        return Future.value(baseResponseModel);
+      }
+    } on Exception catch (e) {
+      // ProgressDialogDotted().hideProgressDialog(context);
+      baseResponseModel.status = 0;
+      if (e.toString().contains("SocketException"))
+        baseResponseModel.message = 'Internet Not Connected';
+      else
+        baseResponseModel.message = '' + technicalErrorMessage;
+      return Future.value(baseResponseModel);
+    }
+  }
 }
