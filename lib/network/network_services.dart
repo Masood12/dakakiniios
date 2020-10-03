@@ -7,6 +7,8 @@ import 'package:dakakini/models/sign_model.dart';
 import 'package:dakakini/models/submit_review.dart';
 import 'package:dakakini/models/upload_image_model.dart';
 import 'package:dakakini/models/user_shop.dart';
+import 'package:dakakini/models/create_shop_menu_model.dart';
+import 'package:dakakini/models/add_shop_photo_model.dart';
 import 'package:dakakini/models/add_shop_location_model.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:dakakini/utils/loaders/progress_dialog.dart';
@@ -22,6 +24,8 @@ class NetworkService {
   /* Network Api Calls */
   UploadImageModel uploadImageModel = UploadImageModel();
   AddShopLocationModel addShopLocationModel = AddShopLocationModel();
+  AddShopPhoto addShopPhoto = AddShopPhoto();
+  CreateShopMenu createShopMenu = CreateShopMenu();
 
   checkIfInternetIsAvailable() async {
     try {
@@ -349,47 +353,47 @@ class NetworkService {
         uploadImageModel.message = '' + technicalErrorMessage;
       return Future.value(uploadImageModel);
     }
+  }
 
-    Future<UploadImageModel> postShopPhotoApiCall(
-        context, url, shopID, ownerID, urlPhoto) async {
+  Future<AddShopPhoto> postShopPhotoApiCall(
+      context, url, shopID, ownerID, urlPhoto) async {
 //  ProgressDialogDotted().showProgressDialog(context);
-      var body = {
-        "shop_id": '$shopID',
-        "owner_id": '$ownerID',
-        "photo": '$urlPhoto'
-      };
-      var headers = {"Content-Type": "application/x-www-form-urlencoded"};
-      try {
-        final response = await http.post(
-          url,
-          body: body,
-          headers: headers,
-        );
-        final int statusCode = response.statusCode;
-        var decodedResponse = json.decode(response.body);
-        //  ProgressDialogDotted().hideProgressDialog(context);
-        if (statusCode >= 200 && statusCode <= 299) {
-          return UploadImageModel.fromJson(decodedResponse);
-        } else if ((statusCode >= 100 && statusCode <= 199) ||
-            (statusCode >= 300 && statusCode <= 499) ||
-            json == null) {
-          uploadImageModel.status = 1;
-          uploadImageModel.message = decodedResponse['messages'];
-          return Future.value(uploadImageModel);
-        } else if (statusCode >= 500 && statusCode <= 599) {
-          uploadImageModel.status = 0;
-          uploadImageModel.message = 'Internal Server Error';
-          return Future.value(uploadImageModel);
-        }
-      } on Exception catch (e) {
-        //ProgressDialogDotted().hideProgressDialog(context);
-        uploadImageModel.status = 0;
-        if (e.toString().contains("SocketException"))
-          uploadImageModel.message = 'Internet Not Connected';
-        else
-          uploadImageModel.message = '' + technicalErrorMessage;
-        return Future.value(uploadImageModel);
+    var body = {
+      "shop_id": '$shopID',
+      "owner_id": '$ownerID',
+      "photo": '$urlPhoto'
+    };
+    var headers = {"Content-Type": "application/x-www-form-urlencoded"};
+    try {
+      final response = await http.post(
+        url,
+        body: body,
+        headers: headers,
+      );
+      final int statusCode = response.statusCode;
+      var decodedResponse = json.decode(response.body);
+      //  ProgressDialogDotted().hideProgressDialog(context);
+      if (statusCode >= 200 && statusCode <= 299) {
+        return AddShopPhoto.fromJson(decodedResponse);
+      } else if ((statusCode >= 100 && statusCode <= 199) ||
+          (statusCode >= 300 && statusCode <= 499) ||
+          json == null) {
+        addShopPhoto.status = 1;
+        addShopPhoto.message = decodedResponse['messages'];
+        return Future.value(addShopPhoto);
+      } else if (statusCode >= 500 && statusCode <= 599) {
+        addShopPhoto.status = 0;
+        addShopPhoto.message = 'Internal Server Error';
+        return Future.value(addShopPhoto);
       }
+    } on Exception catch (e) {
+      //ProgressDialogDotted().hideProgressDialog(context);
+      addShopPhoto.status = 0;
+      if (e.toString().contains("SocketException"))
+        addShopPhoto.message = 'Internet Not Connected';
+      else
+        addShopPhoto.message = '' + technicalErrorMessage;
+      return Future.value(addShopPhoto);
     }
   }
 
@@ -437,6 +441,51 @@ class NetworkService {
       else
         addShopLocationModel.message = '' + technicalErrorMessage;
       return Future.value(addShopLocationModel);
+    }
+  }
+
+  Future<CreateShopMenu> createShopMenuApiCall(
+      context, url, shopID, ownerID, urlPhoto, title, desc, price) async {
+    // ProgressDialogDotted().showProgressDialog(context);
+    var body = {
+      "shop_id": '$shopID',
+      "user_id": '$ownerID',
+      "img": '$urlPhoto',
+      "title": '$title',
+      "description": '$desc',
+      "price": '$price'
+    };
+    var headers = {"Content-Type": "application/x-www-form-urlencoded"};
+    try {
+      final response = await http.post(
+        url,
+        body: body,
+        headers: headers,
+      );
+      final int statusCode = response.statusCode;
+      var decodedResponse = json.decode(response.body);
+      // ProgressDialogDotted().hideProgressDialog(context);
+      if (statusCode >= 200 && statusCode <= 299) {
+        return CreateShopMenu.fromJson(decodedResponse);
+      } else if ((statusCode >= 100 && statusCode <= 199) ||
+          (statusCode >= 300 && statusCode <= 499) ||
+          json == null) {
+        createShopMenu.status = 1;
+        createShopMenu.message = decodedResponse['messages'];
+        return Future.value(createShopMenu);
+      } else if (statusCode >= 500 && statusCode <= 599) {
+        createShopMenu.status = 0;
+        createShopMenu.message = 'Internal Server Error';
+        return Future.value(createShopMenu);
+      }
+    } on Exception catch (e) {
+      // ProgressDialogDotted().hideProgressDialog(context);
+      createShopMenu.status = 0;
+      if (e.toString().contains("SocketException"))
+        createShopMenu.message = 'Internet Not Connected';
+      else
+        createShopMenu.message = '' + technicalErrorMessage;
+      return Future.value(createShopMenu);
     }
   }
 }

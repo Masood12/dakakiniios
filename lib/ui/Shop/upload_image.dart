@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:dakakini/models/user_shop.dart';
+import 'package:dakakini/store/upload_image_store.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
@@ -15,7 +16,8 @@ class UploadImage extends StatefulWidget {
 class _UploadImageState extends State<UploadImage> {
   List<Asset> images = List<Asset>();
   String _error = 'No Error Dectected';
-//
+
+  final uploadImageStore = UploadImageStore();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,28 +118,20 @@ class _UploadImageState extends State<UploadImage> {
   }
 
   uploadImageButton() {
-    return RaisedButton(
-      padding: EdgeInsets.all(0),
-      onPressed: () {
-        convertImageToBase64();
-      },
-      color: colorMain,
-      textColor: Colors.white,
-      child: Stack(
-        // mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              'Upload Image',
-              style: TextStyle(
-                  fontSize: buttonFontSize, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: RaisedButton(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
+          color: colorMain,
+          textColor: Colors.white,
+          child: Text(
+            'Upload Image',
           ),
-        ],
-      ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
+          onPressed: () {
+            convertImageToBase64();
+            // store.validate(context);
+          }),
     );
   }
 
@@ -145,7 +139,10 @@ class _UploadImageState extends State<UploadImage> {
     images[0].getByteData().then((value) {
       var buffer = value.buffer;
       var base64Image = base64.encode(Uint8List.view(buffer));
-      //uploadImageApiCall(context, imageUpload, base64Image);
+      uploadImageStore.base64Image = base64Image.toString();
+      uploadImageStore.shopID = widget.shopDetail.shopId;
+      uploadImageStore.ownerID = widget.shopDetail.ownerInfo.userId;
+       uploadImageStore.validate(context);
     });
   }
 }

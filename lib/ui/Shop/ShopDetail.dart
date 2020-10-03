@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dakakini/models/user_shop.dart';
 import 'package:dakakini/ui/Shop/AddLocationScreen.dart';
 import 'package:dakakini/ui/Shop/LocationScreen.dart';
+import 'package:dakakini/ui/Shop/create_shop_menu.dart';
 import 'package:dakakini/ui/Shop/upload_image.dart';
 import 'package:intl/intl.dart';
 import 'package:dakakini/ui/Shop/SeeAllMenu.dart';
@@ -247,7 +248,6 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => AddLocationScreen(
-                              
                                     shopDetail: widget.shopDetail,
                                   )),
                         );
@@ -301,7 +301,16 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                   Spacer(),
                   loginUserID == widget.shopDetail.userId
                       ? GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddShopMenuScreen(
+                                        shopDetail:
+                                            widget.shopDetail,
+                                      )),
+                            );
+                          },
                           child: Icon(Icons.add),
                         )
                       : Container()

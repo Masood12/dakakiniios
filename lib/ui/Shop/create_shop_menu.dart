@@ -1,3 +1,8 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:dakakini/models/user_shop.dart';
+import 'package:dakakini/store/create_menu_store.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +10,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
 class AddShopMenuScreen extends StatefulWidget {
+  final Datum shopDetail;
+  AddShopMenuScreen({this.shopDetail});
   @override
   _ContactUsState createState() => _ContactUsState();
 }
@@ -12,9 +19,12 @@ class AddShopMenuScreen extends StatefulWidget {
 class _ContactUsState extends State<AddShopMenuScreen>
     with SingleTickerProviderStateMixin {
   var imgUrl, userName, userEmail, userMobile, subject;
+
   DateTime dateTime;
   List<Asset> images = List<Asset>();
   String _error = 'No Error Dectected';
+
+  final createMenuStore = CreateMenuStore();
   @override
   void initState() {
     super.initState();
@@ -95,7 +105,7 @@ class _ContactUsState extends State<AddShopMenuScreen>
       child: TextField(
         maxLines: 4,
         style: TextStyle(fontSize: 12),
-        //onChanged: (value) => store.company = value,
+        onChanged: (value) => createMenuStore.desc = value,
         decoration: InputDecoration(
             filled: true,
             fillColor: Colors.white,
@@ -103,7 +113,7 @@ class _ContactUsState extends State<AddShopMenuScreen>
             hintText: 'Type menu description here',
             contentPadding: EdgeInsets.all(10.0),
             labelStyle:
-            TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+                TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(const Radius.circular(10.0)),
                 borderSide: BorderSide(color: colorMain, width: 1.0)),
@@ -119,15 +129,11 @@ class _ContactUsState extends State<AddShopMenuScreen>
     );
   }
 
-
-
   menuTitle(width) {
     return TextFormField(
         // focusNode: emailFocus,
         textInputAction: TextInputAction.next,
-        //  onChanged: (value) => store.email = value,
-        //  controller: emailController,
-
+        onChanged: (value) => createMenuStore.title = value,
         decoration: InputDecoration(
           hintText: 'Menu Name',
           hintStyle: TextStyle(fontSize: 12, color: Colors.black),
@@ -146,9 +152,7 @@ class _ContactUsState extends State<AddShopMenuScreen>
     return TextFormField(
         // focusNode: emailFocus,
         textInputAction: TextInputAction.next,
-        //  onChanged: (value) => store.email = value,
-        //  controller: emailController,
-
+        onChanged: (value) => createMenuStore.price = value,
         decoration: InputDecoration(
           hintText: 'Menu Price',
           hintStyle: TextStyle(fontSize: 12, color: Colors.black),
@@ -168,7 +172,7 @@ class _ContactUsState extends State<AddShopMenuScreen>
       builder: (_) => RaisedButton(
         padding: EdgeInsets.all(0),
         onPressed: () {
-          Navigator.pop(context);
+          //convertImageToBase64();
         },
         color: colorMain,
         textColor: Colors.white,
@@ -190,6 +194,8 @@ class _ContactUsState extends State<AddShopMenuScreen>
       ),
     );
   }
+
+
 
   addMenuImage() {
     Asset asset;
