@@ -1,3 +1,6 @@
+import 'package:dakakini/models/base_response_model.dart';
+import 'package:dakakini/utils/loaders/progress_dialog.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:mobx/mobx.dart';
 
 import '../models/ountry_cities_response_model.dart';
@@ -19,6 +22,7 @@ abstract class _CreateShopStore with Store {
   CountryCitiesResponse citiesResponse;
   @observable
   UploadImageModel uploadImageModel;
+  BaseResponseModel baseResponseModel;
   @observable
   bool isLoaded = false;
   @observable
@@ -41,6 +45,8 @@ abstract class _CreateShopStore with Store {
   String featureImage = "";
   @observable
   String imagebase64 = "";
+  var baseUrlImage = "http://application.dakakini.com/uploads/";
+
   Future<CountryCitiesResponse> citiesCountries(context) async {
     citiesResponse =
         await networkService.getCitiesAndCountries(countryApi, context);
@@ -54,28 +60,27 @@ abstract class _CreateShopStore with Store {
     return citiesResponse;
   }
 
-  base64Validation() {
-    if (imagebase64.isEmpty) {
-      showToast("Select Shop image to continue", true);
-    }
-    // uploadImageToServer(context);
-  }
+  uploadImageToServer(context) async {
+    ProgressDialogDotted().showProgressDialog(context);
 
-  Future<UploadImageModel> uploadImageToServer(context) async {
-    uploadImageModel = await networkService.uploadImageApiCall(
-        imageUpload, context, imagebase64);
+    uploadImageModel = await networkService.uploadImageApiCall(context,
+        imageUpload,imagebase64);
     if (uploadImageModel.status == 0) {
       isLoaded = false;
+      ProgressDialogDotted().hideProgressDialog(context);
+
       showToast(uploadImageModel.message, true);
     } else {
       isLoaded = true;
-      validateData();
+      createShop(context, "$baseUrlImage${uploadImageModel.data}");
     }
-    return uploadImageModel;
   }
 
-  validateData() {
-    if (shopName.isEmpty) {
+  validateData(context){
+    if(imagebase64==null){
+      showToast("Please select valid image", true);
+    }
+    if(shopName.isEmpty){
       showToast("Shop Name cannot be empty", true);
     }
     if (shopSubtitle.isEmpty) {
@@ -93,9 +98,20 @@ abstract class _CreateShopStore with Store {
     if (description.isEmpty) {
       showToast("Add Shop description", true);
     }
+    uploadImageToServer(context);
 
-    createShop();
   }
 
-  createShop() {}
+  Future<BaseResponseModel> createShop(context, photoUrl) async {
+    baseResponseModel = await networkService.createShopApiCall(context,
+        createShop, shopName, shopSubtitle, description, photoUrl,catId,cityId, countryId);
+    ProgressDialogDotted().hideProgressDialog(context);
+    if (baseResponseModel.status == 0) {
+      showToast(baseResponseModel.message, true);
+    } else {
+      showToast(baseResponseModel.message, false);
+    }
+    return baseResponseModel;
+  }
+
 }

@@ -26,3 +26,8 @@ final String createShopMenuApi = BaseUrl + 'CreateShopMenu';
 final String deleteShopMenuApi = BaseUrl + 'DeleteShopMenu?';
 /* delete shop Photo */
 final String deleteShopPhotoApi = BaseUrl + 'DeleteShopPhotoapp?';
+/* create shop menu */
+final String createShop = BaseUrl + 'NewShop';
+
+
+

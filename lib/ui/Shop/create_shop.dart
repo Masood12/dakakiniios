@@ -165,7 +165,7 @@ class _ContactUsState extends State<CreateShopScreen>
         var buffer = value.buffer;
         store.imagebase64 = base64.encode(Uint8List.view(buffer));
         print('Image base64 :::${store.imagebase64}');
-        store.base64Validation();
+        store.validateData(context);
         //uploadImageApiCall(context, imageUpload, base64Image);
       });
     }else{
@@ -185,7 +185,6 @@ class _ContactUsState extends State<CreateShopScreen>
       ),
     );
   }
-
   shopDescription(width) {
     return Container(
       width: width,
