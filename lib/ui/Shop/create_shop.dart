@@ -7,6 +7,7 @@ import 'package:dakakini/utils/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -159,13 +160,18 @@ class _ContactUsState extends State<CreateShopScreen>
   //  await permission.request();
   }
   convertImageToBase64() {
-    images[0].getByteData().then((value) {
-      var buffer = value.buffer;
-      store.imagebase64 = base64.encode(Uint8List.view(buffer));
-      print('Image base64 :::${store.imagebase64}');
-      store.base64Validation();
-      //uploadImageApiCall(context, imageUpload, base64Image);
-    });
+    if(images.length>0){
+      images[0].getByteData().then((value) {
+        var buffer = value.buffer;
+        store.imagebase64 = base64.encode(Uint8List.view(buffer));
+        print('Image base64 :::${store.imagebase64}');
+        store.base64Validation();
+        //uploadImageApiCall(context, imageUpload, base64Image);
+      });
+    }else{
+      showToast("Select Shop image to continue", true);
+    }
+
   }
   labelTextsArea(s) {
     return Observer(

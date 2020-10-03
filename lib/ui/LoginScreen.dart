@@ -7,7 +7,6 @@ import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -121,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         )),
                       ]),
                 ),
-                Row(
+             /*   Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SvgPicture.asset(
@@ -138,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: 36,
                     )
                   ],
-                ),
+                ),*/
                 SizedBox(
                   height: 20,
                 ),

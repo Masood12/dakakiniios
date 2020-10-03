@@ -3,7 +3,7 @@ import 'package:dakakini/ui/Shop/ShoEditProfile.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_svg/svg.dart';
+//import 'package:flutter_svg/svg.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override

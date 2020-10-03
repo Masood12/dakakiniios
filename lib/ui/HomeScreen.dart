@@ -7,7 +7,7 @@ import 'package:dakakini/utils/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_svg/svg.dart';
+//port 'package:flutter_svg/svg.dart';
 
 GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         )
-                      : CircularProgressIndicator()),
+                      : Container()),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10),
