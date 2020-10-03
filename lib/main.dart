@@ -1,5 +1,6 @@
 import 'package:dakakini/ui/HomeScreen.dart';
 import 'package:dakakini/ui/LoginScreen.dart';
+import 'package:dakakini/ui/Shop/ShopContactScreen.dart';
 import 'package:dakakini/ui/Shop/ShopProfile.dart';
 import 'package:dakakini/ui/Shop/ShopScreen.dart';
 import 'package:dakakini/ui/Shop/create_shop.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SplashScreen(),
+      home: ShopContactScreen(),
     );
   }
 }
