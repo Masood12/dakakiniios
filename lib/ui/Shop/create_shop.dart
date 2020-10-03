@@ -25,7 +25,7 @@ class _ContactUsState extends State<CreateShopScreen>
   DateTime dateTime;
   List<Asset> images = List<Asset>();
   String _error = 'No Error Dectected';
-  var dropDownValue = "Select Shop Category";
+  var dropDownValue;
   var dropDownValue3 = " Select Shop Type";
   var citydropDownValue = " Select Shop City";
 
@@ -67,7 +67,14 @@ class _ContactUsState extends State<CreateShopScreen>
         ),
         body: Observer(
     builder: (_) => store.isLoaded?postViewAdvertisment(width):Center(
-      child: Container(
+      child: Center(
+        child: Container(
+          child: Text("Loading.....",
+          style: TextStyle(
+            color: colorMain,
+            fontSize: 22
+          ),),
+        ),
       ),
     )));
   }
@@ -78,7 +85,6 @@ class _ContactUsState extends State<CreateShopScreen>
       child: ListView(
         children: <Widget>[
           //labelTextsArea('Select Image'),
-
           SizedBox(
             height: 10,
           ),
@@ -173,25 +179,14 @@ class _ContactUsState extends State<CreateShopScreen>
     }
 
   }
-  labelTextsArea(s) {
-    return Observer(
-      builder: (_) => Row(
-        children: <Widget>[
-          Text(
-            s,
-            style: TextStyle(color: Colors.black, fontSize: 12),
-          ),
-        ],
-      ),
-    );
-  }
+
   shopDescription(width) {
     return Container(
       width: width,
       child: TextField(
         maxLines: 7,
         style: TextStyle(fontSize: 12),
-        //onChanged: (value) => store.company = value,
+        onChanged: (value) => store.description = value,
         decoration: InputDecoration(
             filled: true,
             fillColor: Colors.white,
@@ -217,6 +212,8 @@ class _ContactUsState extends State<CreateShopScreen>
   
   shopCat() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
+
       children: <Widget>[
         Container(
           height: height40,
@@ -225,11 +222,13 @@ class _ContactUsState extends State<CreateShopScreen>
             child: Container(
               padding: EdgeInsets.symmetric(),
               child: new DropdownButton<String>(
-                hint: Text('Select Shop Category',style: TextStyle(
+                value: dropDownValue,
+                isExpanded: true,
+                hint: Text('Select Shop Category',
+                style: TextStyle(
                   color: Colors.black,
                   fontSize: 12
                 ),),
-                isExpanded: true,
                 icon: Icon(
                   Icons.arrow_drop_down,
                   size: prefixIconSize,
@@ -258,13 +257,13 @@ class _ContactUsState extends State<CreateShopScreen>
                       setState(() {
                         dropDownValue = value;
                         if (dropDownValue == "Food & Sweets") {
-                          store.cityId = 1;
+                          dropDownValueID = "1";
                         } else if (dropDownValue == "Clothes & Accessories") {
-                          store.cityId = 2;
+                          dropDownValueID = "2";
                         } else if (dropDownValue == "Oud & Bakhoor") {
-                          store.cityId = 3;
+                          dropDownValueID = "3";
                         }
-                        //store.userType = dropDownValueID;
+                        store.catId = dropDownValueID;
                       });
                     },
                   );
@@ -381,8 +380,8 @@ class _ContactUsState extends State<CreateShopScreen>
                     ),
                     onTap: () {
                       setState(() {
-                        cityId = data.cityId;
-                        print(cityId);
+                        store.cityId = data.cityId;
+                        //print(cityId);
                         // _error = data.name;
                         //store.userType = dropDownValueID;
                       });
@@ -406,137 +405,15 @@ class _ContactUsState extends State<CreateShopScreen>
       ],
     );
   }
- countryTextFilesWidget(city, location) {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          flex: 2,
-          child: InkWell(
-            onTap: () {
-              // selectCityPicker(context, widget.dashboardStore);
-            },
-            child: Observer(
-              builder: (_) => Container(
-                height: height40,
-                child: TextField(
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12),
-                  //controller: passController,
-                  decoration: InputDecoration(
-                    enabled: false,
-                    fillColor: colorMain,
-                    filled: true,
-                    hintText: "Select City",
-//                      widget.dashboardStore.moreFiltercityName == null
-//                          ? "Select City"
-//                          : widget.dashboardStore.moreFiltercityName,
-                    suffixIcon: Container(
-                      child: Icon(
-                        Icons.arrow_drop_down,
-                        size: prefixIconSize,
-                        color: Colors.white,
-                      ),
-                    ),
-                    hintStyle: TextStyle(color: Colors.white),
-                    contentPadding: EdgeInsets.all(0.0),
-                    labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.grey),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.all(const Radius.circular(7.0)),
-                        borderSide: BorderSide(color: colorMain, width: 1.0)),
-                    disabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(7.0),
-                          topLeft: Radius.circular(7.0)),
-                      borderSide: BorderSide(color: colorMain, width: 1.0),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 3,
-          child: InkWell(
-            onTap: () {
-              //selectLocationPicker(context, widget.dashboardStore);
-            },
-            child: Observer(
-              builder: (_) => Container(
-                height: height40,
-                alignment: Alignment.centerLeft,
-                child: TextField(
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 12),
-                  //controller: passController,
-                  decoration: InputDecoration(
-                    enabled: false,
-                    fillColor: Colors.white,
-                    filled: true,
-                    hintText: "Select Location",
-//                      widget.dashboardStore.moreFilterlocationName == null
-//                          ? "Select Location"
-//                          : widget.dashboardStore.moreFilterlocationName,
-                    hintStyle: TextStyle(color: hintText),
-                    suffixIcon: Container(
-                      child: Icon(
-                        Icons.arrow_drop_down,
-                        size: prefixIconSize,
-                        color: Colors.black,
-                      ),
-                    ),
-                    contentPadding: EdgeInsets.all(10.0),
-                    labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.grey),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.all(const Radius.circular(7.0)),
-                        borderSide: BorderSide(color: colorMain, width: 1.0)),
-                    disabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(7.0),
-                          bottomRight: Radius.circular(7.0)),
-                      borderSide: BorderSide(color: colorMain, width: 1.0),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-  userNameTextFeild(width) {
-    return TextFormField(
-        // focusNode: emailFocus,
-        textInputAction: TextInputAction.next,
-        //  onChanged: (value) => store.email = value,
-        //  controller: emailController,
 
-        decoration: InputDecoration(
-          hintText: 'Subtitle',
-          hintStyle: TextStyle(fontSize: 12, color: Colors.black),
-          labelStyle:
-              TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: underLineColor),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: underLineColor),
-          ),
-        ));
-  }
+
 
   shopNameTextFormField(width) {
     return TextFormField(
-        // focusNode: emailFocus,
         textInputAction: TextInputAction.next,
-        //  onChanged: (value) => store.email = value,
+         onChanged: (value) => store.shopName = value,
         //  controller: emailController,
-
+        style: TextStyle(fontSize: 12),
         decoration: InputDecoration(
           hintText: 'Shop Name',
           hintStyle: TextStyle(fontSize: 12, color: Colors.black),
@@ -553,9 +430,9 @@ class _ContactUsState extends State<CreateShopScreen>
 
   shopSubTitleTetFormField(width) {
     return TextFormField(
-        // focusNode: emailFocus,
+        style: TextStyle(fontSize: 12),
         textInputAction: TextInputAction.next,
-        //  onChanged: (value) => store.email = value,
+         onChanged: (value) => store.shopSubtitle = value,
         //  controller: emailController,
 
         decoration: InputDecoration(
@@ -572,62 +449,6 @@ class _ContactUsState extends State<CreateShopScreen>
         ));
   }
 
-  shopCatageory() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.symmetric(),
-          child: new DropdownButton<String>(
-            value: dropDownValue,
-            isExpanded: true,
-            icon: Icon(Icons.keyboard_arrow_down),
-            underline: Container(
-              height: 0,
-              width: 0,
-            ),
-            items: <String>[
-              'Select Shop Type',
-              'VIP shop',
-              'Gold Shop',
-              'Silver Shop',
-            ].map((String value) {
-              return new DropdownMenuItem<String>(
-                value: value,
-                child: SizedBox(
-                  width: 200,
-                  child: Container(
-                      child: new Text(
-                    value,
-                    style: TextStyle(color: Colors.black, fontSize: 12),
-                  )),
-                ),
-                onTap: () {
-                  setState(() {
-                    dropDownValue = value;
-                    if (dropDownValue == "VIP shop") {
-                      dropDownValueID = "1003";
-                    } else if (dropDownValue == "Gold Shop") {
-                      dropDownValueID = "1002";
-                    } else if (dropDownValue == "Silver Shop") {
-                      dropDownValueID = "1006";
-                    }
-                    //store.userType = dropDownValueID;
-                  });
-                },
-              );
-            }).toList(),
-            onChanged: (_) {},
-          ),
-        ),
-        Container(
-          height: 1,
-          width: MediaQuery.of(context).size.width,
-          color: underLineColor,
-        )
-      ],
-    );
-  }
 
   createShop(width) {
     return Observer(

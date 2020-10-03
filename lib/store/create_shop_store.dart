@@ -32,7 +32,7 @@ abstract class _CreateShopStore with Store {
   @observable
   int countryId;
   @observable
-  int catId;
+  String catId;
   @observable
   int userId;
   @observable
@@ -66,12 +66,10 @@ abstract class _CreateShopStore with Store {
     uploadImageModel = await networkService.uploadImageApiCall(context,
         imageUpload,imagebase64);
     if (uploadImageModel.status == 0) {
-      isLoaded = false;
       ProgressDialogDotted().hideProgressDialog(context);
 
       showToast(uploadImageModel.message, true);
     } else {
-      isLoaded = true;
       createShop(context, "$baseUrlImage${uploadImageModel.data}");
     }
   }

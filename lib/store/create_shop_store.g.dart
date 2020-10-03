@@ -103,13 +103,13 @@ mixin _$CreateShopStore on _CreateShopStore, Store {
   final _$catIdAtom = Atom(name: '_CreateShopStore.catId');
 
   @override
-  int get catId {
+  String get catId {
     _$catIdAtom.reportRead();
     return super.catId;
   }
 
   @override
-  set catId(int value) {
+  set catId(String value) {
     _$catIdAtom.reportWrite(value, super.catId, () {
       super.catId = value;
     });
