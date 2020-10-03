@@ -185,7 +185,6 @@ class _ContactUsState extends State<CreateShopScreen>
       ),
     );
   }
-
   shopDescription(width) {
     return Container(
       width: width,
