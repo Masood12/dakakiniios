@@ -172,7 +172,7 @@ class _ContactUsState extends State<AddShopMenuScreen>
       builder: (_) => RaisedButton(
         padding: EdgeInsets.all(0),
         onPressed: () {
-          //convertImageToBase64();
+          convertImageToBase64();
         },
         color: colorMain,
         textColor: Colors.white,
@@ -195,7 +195,16 @@ class _ContactUsState extends State<AddShopMenuScreen>
     );
   }
 
-
+  convertImageToBase64() {
+    images[0].getByteData().then((value) {
+      var buffer = value.buffer;
+      var base64Image = base64.encode(Uint8List.view(buffer));
+      createMenuStore.base64Image = base64Image;
+      createMenuStore.shopID = widget.shopDetail.shopId;
+      createMenuStore.ownerID = widget.shopDetail.ownerInfo.userId;
+      createMenuStore.validate(context);
+    });
+  }
 
   addMenuImage() {
     Asset asset;

@@ -48,8 +48,8 @@ abstract class _CreateShopStore with Store {
   var baseUrlImage = "http://application.dakakini.com/uploads/";
 
   Future<CountryCitiesResponse> citiesCountries(context) async {
-    citiesResponse = await networkService.getCitiesAndCountries(
-        countryApi, context);
+    citiesResponse =
+        await networkService.getCitiesAndCountries(countryApi, context);
     if (citiesResponse.status == 0) {
       isLoaded = false;
       showToast(citiesResponse.message, true);
@@ -83,23 +83,23 @@ abstract class _CreateShopStore with Store {
       showToast("Shop Name cannot be empty", true);
       return;
     }
-    if(shopSubtitle.isEmpty){
+    if (shopSubtitle.isEmpty) {
       showToast("Shop subtitle cannot be empty", true);
       return;
     }
-    if(catId==null){
+    if (catId == null) {
       showToast("Select Shop Catageory", true);
       return;
     }
-    if(countryId==null){
+    if (countryId == null) {
       showToast("Select Shop Country", true);
       return;
     }
-    if(cityId==null){
+    if (cityId == null) {
       showToast("Select Shop City", true);
       return;
     }
-    if(description.isEmpty){
+    if (description.isEmpty) {
       showToast("Add Shop description", true);
       return;
     }

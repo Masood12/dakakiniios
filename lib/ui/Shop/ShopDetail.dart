@@ -212,20 +212,39 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                 itemBuilder: (context, index) {
                   var shopImage =
                       "${widget.shopDetail.shopPhotoes[index].photo}";
-                  return Container(
-                    margin: EdgeInsets.only(right: 10),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                      child: CachedNetworkImage(
-                          height: 100,
+                  return Stack(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(right: 10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                          child: CachedNetworkImage(
+                              height: 120,
+                              width: 120,
+                              fit: BoxFit.fill,
+                              imageUrl: "$shopImage",
+                              placeholder: (context, url) =>
+                                  noImageAvailable(height: 120.0, width: 120.0),
+                              errorWidget: (context, url, error) =>
+                                  noImageAvailable(
+                                      height: 120.0, width: 120.0)),
+                        ),
+                      ),
+                      Container(
+                          padding: EdgeInsets.all(5),
                           width: 120,
-                          fit: BoxFit.fill,
-                          imageUrl: "$shopImage",
-                          placeholder: (context, url) =>
-                              noImageAvailable(height: 100.0, width: 100.0),
-                          errorWidget: (context, url, error) =>
-                              noImageAvailable(height: 100.0, width: 100.0)),
-                    ),
+                          height: 40,
+                          alignment: Alignment.topRight,
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(100.0)),
+                            child: Container(
+                                width: 30,
+                                height: 40,
+                                color: smokeybgColor,
+                                child: Icon(Icons.delete, color: colorMain)),
+                          )),
+                    ],
                   );
                 }),
           ),
@@ -306,8 +325,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => AddShopMenuScreen(
-                                        shopDetail:
-                                            widget.shopDetail,
+                                        shopDetail: widget.shopDetail,
                                       )),
                             );
                           },

@@ -12,6 +12,7 @@ import 'package:dakakini/models/add_shop_photo_model.dart';
 import 'package:dakakini/models/add_shop_location_model.dart';
 import 'package:dakakini/utils/config.dart';
 import 'package:dakakini/utils/loaders/progress_dialog.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkService {
@@ -489,9 +490,8 @@ class NetworkService {
     }
   }
 
-
-  Future<BaseResponseModel> createShopApiCall(
-      context, url, name, subTitle, description, imageUrl, catId,cityId,countryId) async {
+  Future<BaseResponseModel> createShopApiCall(context, url, name, subTitle,
+      description, imageUrl, catId, cityId, countryId) async {
     // ProgressDialogDotted().showProgressDialog(context);
     var userID = await Config.getUserID();
     var body = {
@@ -531,6 +531,40 @@ class NetworkService {
       }
     } on Exception catch (e) {
       // ProgressDialogDotted().hideProgressDialog(context);
+      baseResponseModel.status = 0;
+      if (e.toString().contains("SocketException"))
+        baseResponseModel.message = 'Internet Not Connected';
+      else
+        baseResponseModel.message = '' + technicalErrorMessage;
+      return Future.value(baseResponseModel);
+    }
+  }
+
+  Future<BaseResponseModel> deleteShopMenuAndPhoto(url, context, id) async {
+    ProgressDialogDotted().showProgressDialog(context);
+    url = url + "id=$id";
+    try {
+      final response = await http.get(url);
+      final int statusCode = response.statusCode;
+      var decodedResponse = json.decode(response.body);
+      print("$url \n $decodedResponse");
+      ProgressDialogDotted().hideProgressDialog(context);
+      print(decodedResponse);
+      if (statusCode >= 200 && statusCode <= 299) {
+        return BaseResponseModel.fromJson(decodedResponse);
+      } else if ((statusCode >= 100 && statusCode <= 199) ||
+          (statusCode >= 300 && statusCode <= 499) ||
+          json == null) {
+        baseResponseModel.status = 0;
+        baseResponseModel.message = decodedResponse['messages'];
+        return Future.value(baseResponseModel);
+      } else if (statusCode >= 500 && statusCode <= 599) {
+        baseResponseModel.status = 0;
+        baseResponseModel.message = 'Internal Server Error';
+        return Future.value(baseResponseModel);
+      }
+    } on Exception catch (e) {
+      ProgressDialogDotted().hideProgressDialog(context);
       baseResponseModel.status = 0;
       if (e.toString().contains("SocketException"))
         baseResponseModel.message = 'Internet Not Connected';

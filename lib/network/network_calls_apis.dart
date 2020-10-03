@@ -22,5 +22,12 @@ final String addShopPhotoApi = BaseUrl + 'addShopPhoto';
 final String addShopLocationApi = BaseUrl + 'AddShopLocation';
 /* create shop menu */
 final String createShopMenuApi = BaseUrl + 'CreateShopMenu';
+/* delete shop menu */
+final String deleteShopMenuApi = BaseUrl + 'DeleteShopMenu?';
+/* delete shop Photo */
+final String deleteShopPhotoApi = BaseUrl + 'DeleteShopPhotoapp?';
 /* create shop menu */
 final String createShop = BaseUrl + 'NewShop';
+
+
+
