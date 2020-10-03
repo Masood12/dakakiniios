@@ -513,6 +513,8 @@ class NetworkService {
       );
       final int statusCode = response.statusCode;
       var decodedResponse = json.decode(response.body);
+      print(decodedResponse);
+
       // ProgressDialogDotted().hideProgressDialog(context);
       if (statusCode >= 200 && statusCode <= 299) {
         return BaseResponseModel.fromJson(decodedResponse);
