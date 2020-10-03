@@ -79,24 +79,31 @@ abstract class _CreateShopStore with Store {
   validateData(context){
     if(imagebase64==null){
       showToast("Please select valid image", true);
+      return;
     }
     if(shopName.isEmpty){
       showToast("Shop Name cannot be empty", true);
+      return;
     }
     if(shopSubtitle.isEmpty){
       showToast("Shop subtitle cannot be empty", true);
+      return;
     }
     if(catId==null){
       showToast("Select Shop Catageory", true);
+      return;
     }
     if(countryId==null){
       showToast("Select Shop Country", true);
+      return;
     }
     if(cityId==null){
       showToast("Select Shop City", true);
+      return;
     }
     if(description.isEmpty){
       showToast("Add Shop description", true);
+      return;
     }
     uploadImageToServer(context);
 
