@@ -109,7 +109,7 @@ abstract class _CreateShopStore with Store {
 
   Future<BaseResponseModel> createShop(context, photoUrl) async {
     baseResponseModel = await networkService.createShopApiCall(context,
-        createShop, shopName, shopSubtitle, description, photoUrl,catId,cityId, countryId);
+        createShopApi, shopName, shopSubtitle, description, photoUrl,catId,cityId, countryId);
     ProgressDialogDotted().hideProgressDialog(context);
     if (baseResponseModel.status == 0) {
       showToast(baseResponseModel.message, true);

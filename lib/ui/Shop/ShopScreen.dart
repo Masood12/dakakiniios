@@ -36,14 +36,16 @@ class _ShopSearchState extends State<ShopSearch>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colorMain,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: colorMain,
-        onPressed: () {
-                Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (BuildContext context) => CreateShopScreen()));
-        },
-        child: Icon(Icons.add),
-      ),
+      floatingActionButton: userType != 1005
+          ? FloatingActionButton(
+              backgroundColor: colorMain,
+              onPressed: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (BuildContext context) => CreateShopScreen()));
+              },
+              child: Icon(Icons.add),
+            )
+          : null,
       body: Container(
         color: Colors.white,
         margin: EdgeInsets.only(top: 25),

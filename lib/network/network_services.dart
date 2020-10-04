@@ -504,6 +504,7 @@ class NetworkService {
       "city_id": '$cityId',
       "country_id": '$countryId'
     };
+    print("$url  \nBody:::::::::     $body");
     var headers = {"Content-Type": "application/x-www-form-urlencoded"};
     try {
       final response = await http.post(
