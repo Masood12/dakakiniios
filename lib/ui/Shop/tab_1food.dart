@@ -88,7 +88,7 @@ class _ShopCardState extends State<ShopFood> {
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
       crossAxisCount: !singleLineCard ? 2 : 1,
-      childAspectRatio: !singleLineCard ? 0.7 : 1.4,
+      childAspectRatio: !singleLineCard ? 0.68 : 1.38,
       children: List.generate(widget.getShopStore.userFoodShopModel.data.length,
           (index) {
         var data = widget.getShopStore.userFoodShopModel.data[index];
@@ -98,10 +98,11 @@ class _ShopCardState extends State<ShopFood> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Shop(
-                  shopDetail: data,
-                  getShopStore: widget.getShopStore,
-                )),
+                MaterialPageRoute(
+                    builder: (context) => Shop(
+                          shopDetail: data,
+                          getShopStore: widget.getShopStore,
+                        )),
               );
             },
             child: Card(
@@ -128,7 +129,15 @@ class _ShopCardState extends State<ShopFood> {
                     ),
                     UIHelper.verticalSpace(5),
                     Row(
-                      children: <Widget>[Text("${data.name}")],
+                      children: <Widget>[
+                        Text("${data.name}"),
+                        Spacer(),
+                        Container(
+                          height: 20,
+                          width: 20,
+                          child: getIcon(data.ownerInfo.typeTitle),
+                        ),
+                      ],
                     ),
                     UIHelper.verticalSpace(5),
                     Text("${data.subTitle}"),

@@ -157,7 +157,9 @@ class _ShopState extends State<Shop> {
           shopDetail: widget.shopDetail,
         );
       case 4:
-        return ProfileScreen();
+        return ProfileScreen(
+          shopDetail: widget.shopDetail,
+        );
     }
   }
 }

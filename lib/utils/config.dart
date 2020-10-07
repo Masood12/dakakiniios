@@ -294,6 +294,23 @@ fieldFocusChange(
   FocusScope.of(context).requestFocus(nextFocus);
 }
 
+getIcon(typeTitle) {
+  switch (typeTitle) {
+    case 'VIP SHOP':
+      return Image.asset('assets/vipicon.png');
+      break;
+    case 'GOLD SHOP':
+      return Image.asset('assets/goldicon.png');
+      break;
+    case 'FREE SHOP':
+      return Image.asset('assets/freeicon.png');
+      break;
+    case 'SILVER SHOP':
+      return Image.asset('assets/silvericon.png');
+      break;
+  }
+}
+
 //
 //computeTimeAndDate(dateAndTime) {
 //  var computedTime;

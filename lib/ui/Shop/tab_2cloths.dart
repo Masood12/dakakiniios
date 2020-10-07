@@ -88,7 +88,7 @@ class _ShopCardState extends State<ShopCloths> {
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
       crossAxisCount: !singleLineCard ? 2 : 1,
-      childAspectRatio: !singleLineCard ? 0.7 : 1.4,
+      childAspectRatio: !singleLineCard ? 0.68 : 1.38,
       children:
           List.generate(widget.getShopStore.userClothShopModel.data.length, (index) {
         var data = widget.getShopStore.userClothShopModel.data[index];
@@ -127,8 +127,16 @@ class _ShopCardState extends State<ShopCloths> {
                                   width: MediaQuery.of(context).size.width)),
                     ),
                     UIHelper.verticalSpace(5),
-                    Row(
-                      children: <Widget>[Text("${data.name}")],
+                     Row(
+                      children: <Widget>[
+                        Text("${data.name}"),
+                        Spacer(),
+                        Container(
+                          height: 20,
+                          width: 20,
+                          child: getIcon(data.ownerInfo.typeTitle),
+                        ),
+                      ],
                     ),
                     UIHelper.verticalSpace(5),
                     Text("${data.subTitle}"),
